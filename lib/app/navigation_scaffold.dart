@@ -10,6 +10,7 @@ class NavigationScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       extendBody: true,
       body: navigationShell,
       bottomNavigationBar: Container(

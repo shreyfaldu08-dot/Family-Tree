@@ -17,10 +17,10 @@ abstract final class HeritageTheme {
       onSecondary: HeritageColors.charcoal,
       secondaryContainer: HeritageColors.surfaceSecondary, // #E9EDF2
       onSecondaryContainer: HeritageColors.charcoal,
-      tertiary: HeritageColors.textSecondary, // #667085
+      tertiary: HeritageColors.textSecondary,
       onTertiary: Colors.white,
-      surface: HeritageColors.background, // #F3F5F8
-      onSurface: HeritageColors.charcoal, // #08090C
+      surface: HeritageColors.surfaceCard,
+      onSurface: HeritageColors.charcoal,
       error: HeritageColors.statusError,
       onError: Colors.white,
       outline: Colors.transparent,
@@ -31,11 +31,11 @@ abstract final class HeritageTheme {
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: HeritageColors.background,
+      scaffoldBackgroundColor: Colors.transparent,
       canvasColor: HeritageColors.surfaceCard,
 
       appBarTheme: AppBarTheme(
-        backgroundColor: HeritageColors.background,
+        backgroundColor: Colors.transparent,
         foregroundColor: HeritageColors.charcoal,
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -118,7 +118,7 @@ abstract final class HeritageTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: HeritageCurves.pill,
-          borderSide: const BorderSide(color: Color(0xFFC7DEFD), width: 1.5),
+          borderSide: const BorderSide(color: Color(0xFFDDD0F8), width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: HeritageCurves.pill,
@@ -174,7 +174,7 @@ abstract final class HeritageTheme {
         backgroundColor: HeritageColors.surfaceCard,
         elevation: 0,
         shadowColor: HeritageColors.subtleShadow,
-        indicatorColor: const Color(0xFFE2EDFD),
+        indicatorColor: const Color(0xFFEFE4FC),
         indicatorShape: RoundedRectangleBorder(
           borderRadius: HeritageCurves.pill,
         ),

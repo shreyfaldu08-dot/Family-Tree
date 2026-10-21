@@ -382,8 +382,10 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                         avatar: const Icon(Icons.search, size: 16, color: HeritageColors.charcoal),
                         label: Text('Find in Tree', style: HeritageTypography.labelSmall),
                         backgroundColor: HeritageColors.surfaceCard.withOpacity(0.95),
-                        side: const BorderSide(color: HeritageColors.borderSubtle, width: 1.0),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        side: BorderSide.none,
+                        shape: RoundedRectangleBorder(borderRadius: HeritageCurves.pill),
+                        elevation: 1,
+                        shadowColor: HeritageColors.subtleShadow,
                         onPressed: () {
                           setState(() {
                             _isSearching = true;

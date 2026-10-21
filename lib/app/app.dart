@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'theme/app_theme.dart';
+import 'theme/colors.dart';
 import 'router.dart';
 
 class FamilyLegacyApp extends ConsumerWidget {
@@ -13,6 +14,14 @@ class FamilyLegacyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: HeritageTheme.lightTheme,
       routerConfig: appRouter,
+      builder: (context, child) {
+        return DecoratedBox(
+          decoration: const BoxDecoration(
+            gradient: HeritageGradients.canvasBackground,
+          ),
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
     );
   }
 }
