@@ -47,11 +47,11 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         children: [
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: HeritageColors.warmIvoryLight,
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: HeritageColors.stone, width: 1.2),
+              gradient: HeritageGradients.premiumCard,
+              borderRadius: HeritageCurves.card,
+              boxShadow: HeritageShadows.card,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

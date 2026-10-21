@@ -58,17 +58,17 @@ class TimelineScreen extends ConsumerWidget {
                         Container(
                           width: 16,
                           height: 16,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            color: HeritageColors.surfaceCard,
-                            border: Border.all(color: HeritageColors.blueHighlight, width: 3),
+                            gradient: HeritageGradients.accentPill,
+                            boxShadow: HeritageShadows.activePill,
                           ),
                         ),
                         if (!isLast)
                           Expanded(
                             child: Container(
                               width: 2,
-                              color: HeritageColors.borderSubtle,
+                              color: const Color(0xFFDCE6F2),
                             ),
                           ),
                       ],
@@ -80,18 +80,11 @@ class TimelineScreen extends ConsumerWidget {
                     Expanded(
                       child: Container(
                         margin: const EdgeInsets.only(bottom: 20),
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: HeritageColors.surfaceCard,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: HeritageColors.subtleShadow,
-                              blurRadius: 8,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
+                          gradient: HeritageGradients.premiumCard,
+                          borderRadius: HeritageCurves.card,
+                          boxShadow: HeritageShadows.card,
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,22 +100,23 @@ class TimelineScreen extends ConsumerWidget {
                                   ),
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                                   decoration: BoxDecoration(
-                                    color: HeritageColors.softBlueAccent,
-                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: HeritageGradients.accentPill,
+                                    borderRadius: HeritageCurves.pill,
+                                    boxShadow: HeritageShadows.activePill,
                                   ),
                                   child: Text(
                                     event.eventType.label,
                                     style: HeritageTypography.labelSmall.copyWith(
                                       color: HeritageColors.charcoal,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w700,
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 10),
                             Text(
                               event.title,
                               style: HeritageTypography.titleMedium.copyWith(

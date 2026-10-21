@@ -42,9 +42,9 @@ class AuditLogsScreen extends ConsumerWidget {
                 margin: const EdgeInsets.only(bottom: 10),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: HeritageColors.warmIvoryLight,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: HeritageColors.stone, width: 1),
+                  gradient: HeritageGradients.premiumCard,
+                  borderRadius: BorderRadius.circular(22),
+                  boxShadow: HeritageShadows.card,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

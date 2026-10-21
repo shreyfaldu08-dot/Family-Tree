@@ -98,9 +98,9 @@ class _MembershipRequestsScreenState extends ConsumerState<MembershipRequestsScr
                       margin: const EdgeInsets.only(bottom: 12),
                       padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
-                        color: HeritageColors.warmIvoryLight,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: HeritageColors.stone, width: 1.2),
+                        gradient: HeritageGradients.premiumCard,
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: HeritageShadows.card,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

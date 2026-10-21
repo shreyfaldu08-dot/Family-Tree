@@ -54,18 +54,11 @@ class DashboardScreen extends ConsumerWidget {
               data: (family) {
                 if (family == null) return const SizedBox.shrink();
                 return Container(
-                  padding: const EdgeInsets.all(22),
+                  padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: HeritageColors.surfaceCard,
-                    borderRadius: BorderRadius.circular(22),
-                    border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: HeritageColors.subtleShadow,
-                        blurRadius: 8,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
+                    gradient: HeritageGradients.premiumCard,
+                    borderRadius: HeritageCurves.cardLarge,
+                    boxShadow: HeritageShadows.card,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,11 +67,11 @@ class DashboardScreen extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                             decoration: BoxDecoration(
-                              color: HeritageColors.softBlueAccent,
-                              borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: HeritageColors.blueHighlight, width: 1),
+                              gradient: HeritageGradients.accentPill,
+                              borderRadius: HeritageCurves.pill,
+                              boxShadow: HeritageShadows.activePill,
                             ),
                             child: Text(
                               isAdmin ? 'PRIMARY ARCHON' : 'APPROVED FAMILY ARCHIVE',
@@ -95,7 +88,7 @@ class DashboardScreen extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 14),
+                      const SizedBox(height: 16),
                       Text(
                         family.name,
                         style: HeritageTypography.displayMedium.copyWith(
@@ -134,30 +127,23 @@ class DashboardScreen extends ConsumerWidget {
             // Signature Feature Call-To-Action: Explore Living Heritage Tree
             InkWell(
               onTap: () => context.push('/tree'),
-              borderRadius: BorderRadius.circular(22),
+              borderRadius: HeritageCurves.card,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
                 decoration: BoxDecoration(
-                  color: HeritageColors.surfaceCard,
-                  borderRadius: BorderRadius.circular(22),
-                  border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: HeritageColors.subtleShadow,
-                      blurRadius: 8,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
+                  gradient: HeritageGradients.heroCard,
+                  borderRadius: HeritageCurves.card,
+                  boxShadow: HeritageShadows.card,
                 ),
                 child: Row(
                   children: [
                     Container(
-                      width: 52,
-                      height: 52,
-                      decoration: BoxDecoration(
-                        color: HeritageColors.softBlueAccent,
+                      width: 54,
+                      height: 54,
+                      decoration: const BoxDecoration(
+                        gradient: HeritageGradients.accentPill,
                         shape: BoxShape.circle,
-                        border: Border.all(color: HeritageColors.blueHighlight, width: 1.0),
+                        boxShadow: HeritageShadows.activePill,
                       ),
                       child: const Icon(
                         Icons.account_tree_rounded,
@@ -255,11 +241,11 @@ class DashboardScreen extends ConsumerWidget {
                 }
                 final event = events.first;
                 return Container(
-                  padding: const EdgeInsets.all(18),
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: HeritageColors.warmIvoryLight,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: HeritageColors.stone, width: 1.2),
+                    gradient: HeritageGradients.premiumCard,
+                    borderRadius: HeritageCurves.card,
+                    boxShadow: HeritageShadows.card,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,16 +254,17 @@ class DashboardScreen extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                             decoration: BoxDecoration(
-                              color: HeritageColors.softBlueAccent,
-                              borderRadius: BorderRadius.circular(10),
+                              gradient: HeritageGradients.accentPill,
+                              borderRadius: HeritageCurves.pill,
+                              boxShadow: HeritageShadows.activePill,
                             ),
                             child: Text(
                               event.eventType.label,
                               style: HeritageTypography.labelSmall.copyWith(
                                 color: HeritageColors.charcoal,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ),
@@ -287,7 +274,7 @@ class DashboardScreen extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 12),
                       Text(
                         event.title,
                         style: HeritageTypography.titleMedium.copyWith(
@@ -330,12 +317,15 @@ class DashboardScreen extends ConsumerWidget {
                 return Column(
                   children: recent.map((person) {
                     return Container(
-                      margin: const EdgeInsets.only(bottom: 8),
+                      margin: const EdgeInsets.only(bottom: 10),
+                      decoration: BoxDecoration(
+                        gradient: HeritageGradients.premiumCard,
+                        borderRadius: BorderRadius.circular(22),
+                        boxShadow: HeritageShadows.card,
+                      ),
                       child: ListTile(
-                        tileColor: HeritageColors.warmIvoryLight,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
-                          side: const BorderSide(color: HeritageColors.stone, width: 1),
+                          borderRadius: BorderRadius.circular(22),
                         ),
                         onTap: () => context.push('/people/${person.id}'),
                         leading: Container(
@@ -343,7 +333,7 @@ class DashboardScreen extends ConsumerWidget {
                           height: 44,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            color: HeritageColors.stoneLight,
+                            gradient: HeritageGradients.avatarPill,
                           ),
                           child: Center(
                             child: Text(
@@ -391,17 +381,17 @@ class _MetricCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: HeritageColors.warmIvoryLight,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: HeritageColors.stone, width: 1.2),
+        gradient: HeritageGradients.premiumCard,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: HeritageShadows.card,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icon, size: 20, color: HeritageColors.charcoal),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           Text(
             value,
             style: HeritageTypography.displaySmall.copyWith(

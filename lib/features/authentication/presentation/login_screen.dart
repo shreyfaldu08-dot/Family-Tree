@@ -128,18 +128,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                 // Card container
                 Container(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(28),
                   decoration: BoxDecoration(
-                    color: HeritageColors.warmIvoryLight,
-                    borderRadius: BorderRadius.circular(26),
-                    border: Border.all(color: HeritageColors.stone, width: 1.2),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: HeritageColors.subtleShadow,
-                        blurRadius: 12,
-                        offset: Offset(0, 4),
-                      ),
-                    ],
+                    gradient: HeritageGradients.premiumCard,
+                    borderRadius: HeritageCurves.cardLarge,
+                    boxShadow: HeritageShadows.card,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,

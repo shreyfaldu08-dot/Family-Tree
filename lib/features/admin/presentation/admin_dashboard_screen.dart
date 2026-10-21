@@ -39,28 +39,21 @@ class AdminDashboardScreen extends ConsumerWidget {
         children: [
           // Admin notice
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: HeritageColors.surfaceCard,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
-              boxShadow: const [
-                BoxShadow(
-                  color: HeritageColors.subtleShadow,
-                  blurRadius: 8,
-                  offset: Offset(0, 2),
-                ),
-              ],
+              gradient: HeritageGradients.heroCard,
+              borderRadius: HeritageCurves.card,
+              boxShadow: HeritageShadows.card,
             ),
             child: Row(
               children: [
                 Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: HeritageColors.softBlueAccent,
+                  width: 48,
+                  height: 48,
+                  decoration: const BoxDecoration(
+                    gradient: HeritageGradients.accentPill,
                     shape: BoxShape.circle,
-                    border: Border.all(color: HeritageColors.blueHighlight, width: 1.0),
+                    boxShadow: HeritageShadows.activePill,
                   ),
                   child: const Icon(Icons.shield_outlined, color: HeritageColors.charcoal, size: 22),
                 ),
@@ -184,28 +177,20 @@ class AdminDashboardScreen extends ConsumerWidget {
     required VoidCallback onTap,
   }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: HeritageColors.warmIvoryLight,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: HeritageColors.stone, width: 1.2),
-        boxShadow: const [
-          BoxShadow(
-            color: HeritageColors.subtleShadow,
-            blurRadius: 6,
-            offset: Offset(0, 2),
-          ),
-        ],
+        gradient: HeritageGradients.premiumCard,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: HeritageShadows.card,
       ),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
         leading: Container(
-          width: 44,
-          height: 44,
-          decoration: BoxDecoration(
-            color: HeritageColors.softBlueAccent,
+          width: 46,
+          height: 46,
+          decoration: const BoxDecoration(
+            gradient: HeritageGradients.avatarPill,
             shape: BoxShape.circle,
-            border: Border.all(color: HeritageColors.blueHighlight, width: 1),
           ),
           child: Icon(icon, color: HeritageColors.charcoal, size: 22),
         ),

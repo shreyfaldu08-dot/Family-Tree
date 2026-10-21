@@ -23,28 +23,19 @@ class PersonNodeWidget extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        width: 150,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      borderRadius: BorderRadius.circular(26),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: 154,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
-          color: HeritageColors.surfaceCard,
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: isSelected
-                ? HeritageColors.blueHighlight
-                : HeritageColors.borderSubtle,
-            width: isSelected ? 1.8 : 1.0,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: isSelected
-                  ? HeritageColors.blueHighlight.withOpacity(0.35)
-                  : HeritageColors.subtleShadow,
-              blurRadius: isSelected ? 8 : 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          gradient: isSelected
+              ? HeritageGradients.heroCard
+              : HeritageGradients.premiumCard,
+          borderRadius: BorderRadius.circular(26),
+          boxShadow: isSelected
+              ? HeritageShadows.activePill
+              : HeritageShadows.card,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -57,15 +48,9 @@ class PersonNodeWidget extends StatelessWidget {
                 Container(
                   width: 52,
                   height: 52,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isSelected
-                          ? HeritageColors.blueHighlight
-                          : HeritageColors.borderSubtle,
-                      width: 1.5,
-                    ),
-                    color: HeritageColors.surfaceSecondary,
+                    gradient: HeritageGradients.avatarPill,
                   ),
                   child: Center(
                     child: Text(
@@ -129,12 +114,15 @@ class PersonNodeWidget extends StatelessWidget {
               GestureDetector(
                 onTap: onToggleExpand,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1.5),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
+                    gradient: node.isExpanded
+                        ? null
+                        : HeritageGradients.accentPill,
                     color: node.isExpanded
                         ? HeritageColors.surfaceSecondary
-                        : HeritageColors.softBlueAccent,
-                    borderRadius: BorderRadius.circular(10),
+                        : null,
+                    borderRadius: HeritageCurves.pill,
                   ),
                   child: Icon(
                     node.isExpanded ? Icons.remove : Icons.add,

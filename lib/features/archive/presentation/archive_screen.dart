@@ -101,16 +101,9 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
-                        color: HeritageColors.warmIvoryLight,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: HeritageColors.stone, width: 1.2),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: HeritageColors.subtleShadow,
-                            blurRadius: 8,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
+                        gradient: HeritageGradients.premiumCard,
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: HeritageShadows.card,
                       ),
                       child: ListTile(
                         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -118,9 +111,8 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
                           width: 48,
                           height: 48,
                           decoration: BoxDecoration(
-                            color: HeritageColors.stoneLight,
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(color: HeritageColors.stoneDark, width: 1),
+                            gradient: HeritageGradients.avatarPill,
+                            borderRadius: BorderRadius.circular(16),
                           ),
                           child: Icon(
                             _getIconForType(asset.mediaType),
@@ -211,26 +203,35 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
 
   Widget _chip(String label, MediaType? type) {
     final isSelected = _selectedType == type;
-    return ChoiceChip(
-      label: Text(label),
-      selected: isSelected,
-      onSelected: (val) {
-        if (val) {
-          setState(() {
-            _selectedType = type;
-          });
-        }
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _selectedType = type;
+        });
       },
-      selectedColor: HeritageColors.softBlueAccent,
-      backgroundColor: HeritageColors.surfaceSecondary,
-      side: BorderSide(
-        color: isSelected ? HeritageColors.blueHighlight : HeritageColors.borderSubtle,
-        width: 1.0,
-      ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      labelStyle: HeritageTypography.labelSmall.copyWith(
-        color: isSelected ? HeritageColors.charcoal : HeritageColors.charcoalMuted,
-        fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+      borderRadius: HeritageCurves.pill,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+        decoration: BoxDecoration(
+          gradient: isSelected
+              ? HeritageGradients.accentPill
+              : null,
+          color: isSelected
+              ? null
+              : HeritageColors.surfaceSecondary,
+          borderRadius: HeritageCurves.pill,
+          boxShadow: isSelected
+              ? HeritageShadows.activePill
+              : null,
+        ),
+        child: Text(
+          label,
+          style: HeritageTypography.labelSmall.copyWith(
+            color: isSelected ? HeritageColors.charcoal : HeritageColors.charcoalMuted,
+            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+          ),
+        ),
       ),
     );
   }

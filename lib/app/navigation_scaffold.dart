@@ -10,12 +10,20 @@ class NavigationScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: navigationShell,
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          border: Border(top: BorderSide(color: HeritageColors.stone, width: 1)),
+        margin: const EdgeInsets.fromLTRB(18, 0, 18, 16),
+        decoration: BoxDecoration(
+          gradient: HeritageGradients.pillTrack,
+          borderRadius: BorderRadius.circular(32),
+          boxShadow: HeritageShadows.card,
         ),
+        clipBehavior: Clip.antiAlias,
         child: NavigationBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          height: 66,
           selectedIndex: navigationShell.currentIndex,
           onDestinationSelected: (index) {
             navigationShell.goBranch(

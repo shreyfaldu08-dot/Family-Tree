@@ -66,9 +66,9 @@ class _InvitationManagerScreenState extends ConsumerState<InvitationManagerScree
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: HeritageColors.warmIvoryLight,
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: HeritageColors.stone, width: 1.2),
+              gradient: HeritageGradients.premiumCard,
+              borderRadius: HeritageCurves.card,
+              boxShadow: HeritageShadows.card,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

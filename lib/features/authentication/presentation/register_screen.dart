@@ -73,11 +73,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
           child: Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(28),
             decoration: BoxDecoration(
-              color: HeritageColors.warmIvoryLight,
-              borderRadius: BorderRadius.circular(26),
-              border: Border.all(color: HeritageColors.stone, width: 1.2),
+              gradient: HeritageGradients.premiumCard,
+              borderRadius: HeritageCurves.cardLarge,
+              boxShadow: HeritageShadows.card,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

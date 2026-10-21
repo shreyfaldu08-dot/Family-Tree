@@ -178,12 +178,15 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                   itemBuilder: (ctx, i) {
                     final person = filtered[i];
                     return Container(
-                      margin: const EdgeInsets.only(bottom: 8),
+                      margin: const EdgeInsets.only(bottom: 10),
+                      decoration: BoxDecoration(
+                        gradient: HeritageGradients.premiumCard,
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: HeritageShadows.card,
+                      ),
                       child: ListTile(
-                        tileColor: HeritageColors.warmIvoryLight,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
-                          side: const BorderSide(color: HeritageColors.stone, width: 1.1),
+                          borderRadius: BorderRadius.circular(24),
                         ),
                         onTap: () => context.push('/people/${person.id}'),
                         leading: Stack(
@@ -193,7 +196,7 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                               height: 48,
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: HeritageColors.stoneLight,
+                                gradient: HeritageGradients.avatarPill,
                               ),
                               child: Center(
                                 child: Text(
@@ -212,13 +215,13 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                                 child: Container(
                                   padding: const EdgeInsets.all(2),
                                   decoration: const BoxDecoration(
-                                    color: HeritageColors.forestGreen,
+                                    gradient: HeritageGradients.successBadge,
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
                                     Icons.check,
                                     size: 10,
-                                    color: Colors.white,
+                                    color: HeritageColors.statusSuccess,
                                   ),
                                 ),
                               ),
@@ -260,26 +263,35 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
 
   Widget _filterChip(String label, LifeStatusFilter filter) {
     final isSelected = _statusFilter == filter;
-    return ChoiceChip(
-      label: Text(label),
-      selected: isSelected,
-      onSelected: (val) {
-        if (val) {
-          setState(() {
-            _statusFilter = filter;
-          });
-        }
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _statusFilter = filter;
+        });
       },
-      selectedColor: HeritageColors.softBlueAccent,
-      backgroundColor: HeritageColors.surfaceSecondary,
-      side: BorderSide(
-        color: isSelected ? HeritageColors.blueHighlight : HeritageColors.borderSubtle,
-        width: 1.0,
-      ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      labelStyle: HeritageTypography.labelSmall.copyWith(
-        color: isSelected ? HeritageColors.charcoal : HeritageColors.charcoalMuted,
-        fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+      borderRadius: HeritageCurves.pill,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+        decoration: BoxDecoration(
+          gradient: isSelected
+              ? HeritageGradients.accentPill
+              : null,
+          color: isSelected
+              ? null
+              : HeritageColors.surfaceSecondary,
+          borderRadius: HeritageCurves.pill,
+          boxShadow: isSelected
+              ? HeritageShadows.activePill
+              : null,
+        ),
+        child: Text(
+          label,
+          style: HeritageTypography.labelSmall.copyWith(
+            color: isSelected ? HeritageColors.charcoal : HeritageColors.charcoalMuted,
+            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+          ),
+        ),
       ),
     );
   }

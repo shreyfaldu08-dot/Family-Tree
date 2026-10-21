@@ -28,7 +28,7 @@ class TreePreviewSheet extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
       decoration: const BoxDecoration(
         color: HeritageColors.warmIvoryLight,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        borderRadius: HeritageCurves.sheet,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -37,26 +37,25 @@ class TreePreviewSheet extends StatelessWidget {
           // Drag handle
           Center(
             child: Container(
-              width: 38,
-              height: 4,
+              width: 44,
+              height: 5,
               decoration: BoxDecoration(
                 color: HeritageColors.borderSubtle,
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: HeritageCurves.pill,
               ),
             ),
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 20),
 
           Row(
             children: [
               // Avatar
               Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
+                width: 68,
+                height: 68,
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: HeritageColors.surfaceSecondary,
-                  border: Border.all(color: HeritageColors.blueHighlight, width: 2),
+                  gradient: HeritageGradients.avatarPill,
                 ),
                 child: Center(
                   child: Text(
@@ -113,13 +112,13 @@ class TreePreviewSheet extends StatelessWidget {
           ),
 
           if (person.bio != null && person.bio!.isNotEmpty) ...[
-            const SizedBox(height: 14),
+            const SizedBox(height: 16),
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: HeritageColors.surfaceSecondary,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: HeritageColors.borderSubtle, width: 1),
+                gradient: HeritageGradients.premiumCard,
+                borderRadius: BorderRadius.circular(22),
+                boxShadow: HeritageShadows.card,
               ),
               child: Text(
                 person.bio!,

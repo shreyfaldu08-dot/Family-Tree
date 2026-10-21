@@ -69,22 +69,18 @@ class _MemberListScreenState extends ConsumerState<MemberListScreen> {
                   margin: const EdgeInsets.only(bottom: 10),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: HeritageColors.warmIvoryLight,
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: HeritageColors.stone, width: 1.2),
+                    gradient: HeritageGradients.premiumCard,
+                    borderRadius: BorderRadius.circular(22),
+                    boxShadow: HeritageShadows.card,
                   ),
                   child: Row(
                     children: [
                       Container(
-                        width: 44,
-                        height: 44,
+                        width: 46,
+                        height: 46,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: isAdmin ? HeritageColors.softBlueAccent : HeritageColors.surfaceSecondary,
-                          border: Border.all(
-                            color: isAdmin ? HeritageColors.blueHighlight : HeritageColors.borderSubtle,
-                            width: 1.0,
-                          ),
+                          gradient: isAdmin ? HeritageGradients.accentPill : HeritageGradients.avatarPill,
                         ),
                         child: Icon(
                           isAdmin ? Icons.shield : Icons.person_outline,

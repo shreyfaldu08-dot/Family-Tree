@@ -236,13 +236,13 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                       // Back / Brand button
                       InkWell(
                         onTap: () => context.go('/'),
-                        borderRadius: BorderRadius.circular(24),
+                        borderRadius: HeritageCurves.pill,
                         child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: HeritageColors.surfaceCard.withOpacity(0.95),
+                          padding: const EdgeInsets.all(12),
+                          decoration: const BoxDecoration(
+                            gradient: HeritageGradients.pillTrack,
                             shape: BoxShape.circle,
-                            border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
+                            boxShadow: HeritageShadows.pill,
                           ),
                           child: const Icon(
                             Icons.arrow_back_rounded,
@@ -253,18 +253,21 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                       ),
                       const SizedBox(width: 10),
 
-                      // Mode Switcher (Ancestors / Descendants / Overview)
+                      // Mode Switcher Pill (Ancestry / Descendants / Full)
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.all(3),
+                          padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
-                            color: HeritageColors.surfaceCard.withOpacity(0.95),
-                            borderRadius: BorderRadius.circular(24),
-                            border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
+                            gradient: HeritageGradients.pillTrack,
+                            borderRadius: HeritageCurves.pill,
+                            boxShadow: HeritageShadows.pill,
                           ),
                           child: Row(
                             children: TreeMode.values.map((mode) {
                               final isSelected = mode == _currentMode;
+                              final displayLabel = mode == TreeMode.overview
+                                  ? 'Full'
+                                  : mode.label.split(' ').first;
                               return Expanded(
                                 child: InkWell(
                                   onTap: () {
@@ -272,19 +275,25 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                                       _currentMode = mode;
                                     });
                                   },
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 7),
+                                  borderRadius: HeritageCurves.pill,
+                                  child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 200),
+                                    curve: Curves.easeInOut,
+                                    padding: const EdgeInsets.symmetric(vertical: 9),
                                     decoration: BoxDecoration(
-                                      color: isSelected
-                                          ? HeritageColors.softBlueAccent
-                                          : Colors.transparent,
-                                      borderRadius: BorderRadius.circular(20),
+                                      gradient: isSelected
+                                          ? HeritageGradients.accentPill
+                                          : null,
+                                      borderRadius: HeritageCurves.pill,
+                                      boxShadow: isSelected
+                                          ? HeritageShadows.activePill
+                                          : null,
                                     ),
                                     child: Text(
-                                      mode.label.split(' ').first,
+                                      displayLabel,
                                       textAlign: TextAlign.center,
                                       style: HeritageTypography.labelSmall.copyWith(
+                                        fontSize: 12.5,
                                         color: isSelected
                                             ? HeritageColors.charcoal
                                             : HeritageColors.charcoalMuted,
@@ -300,18 +309,18 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 10),
 
                       // Reset Zoom / Center Button
                       InkWell(
                         onTap: () => _centerOnNode(const Offset(2500, 2500)),
-                        borderRadius: BorderRadius.circular(24),
+                        borderRadius: HeritageCurves.pill,
                         child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: HeritageColors.surfaceCard.withOpacity(0.95),
+                          padding: const EdgeInsets.all(12),
+                          decoration: const BoxDecoration(
+                            gradient: HeritageGradients.pillTrack,
                             shape: BoxShape.circle,
-                            border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
+                            boxShadow: HeritageShadows.pill,
                           ),
                           child: const Icon(
                             Icons.center_focus_strong_rounded,
@@ -324,14 +333,14 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                   ),
 
                   // Search toggle
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   if (_isSearching)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 14),
+                      padding: const EdgeInsets.symmetric(horizontal: 18),
                       decoration: BoxDecoration(
-                        color: HeritageColors.surfaceCard,
-                        borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
+                        gradient: HeritageGradients.premiumCard,
+                        borderRadius: HeritageCurves.pill,
+                        boxShadow: HeritageShadows.pill,
                       ),
                       child: TextField(
                         controller: _searchController,

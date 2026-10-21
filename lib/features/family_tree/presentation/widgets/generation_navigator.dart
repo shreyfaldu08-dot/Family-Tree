@@ -27,18 +27,11 @@ class GenerationNavigator extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: HeritageColors.surfaceCard.withOpacity(0.96),
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
-        boxShadow: const [
-          BoxShadow(
-            color: HeritageColors.subtleShadow,
-            blurRadius: 8,
-            offset: Offset(0, 2),
-          ),
-        ],
+        gradient: HeritageGradients.pillTrack,
+        borderRadius: HeritageCurves.pill,
+        boxShadow: HeritageShadows.pill,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -55,7 +48,7 @@ class GenerationNavigator extends StatelessWidget {
               color: HeritageColors.charcoalMuted,
             ),
           ),
-          const SizedBox(width: 6),
+          const SizedBox(width: 8),
           Flexible(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -66,20 +59,20 @@ class GenerationNavigator extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 3),
                     child: InkWell(
                       onTap: () => onSelectGeneration(g),
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: HeritageCurves.pill,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
+                          gradient: isSelected
+                              ? HeritageGradients.accentPill
+                              : null,
                           color: isSelected
-                              ? HeritageColors.softBlueAccent
+                              ? null
                               : HeritageColors.surfaceSecondary,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: isSelected
-                                ? HeritageColors.blueHighlight
-                                : HeritageColors.borderSubtle,
-                            width: 1,
-                          ),
+                          borderRadius: HeritageCurves.pill,
+                          boxShadow: isSelected
+                              ? HeritageShadows.activePill
+                              : null,
                         ),
                         child: Text(
                           g == 0 ? '0' : (g > 0 ? '+$g' : '$g'),

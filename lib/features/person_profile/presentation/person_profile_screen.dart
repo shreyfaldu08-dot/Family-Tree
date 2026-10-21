@@ -86,20 +86,38 @@ class PersonProfileScreen extends ConsumerWidget {
                     onPressed: () => context.push('/admin/persons/edit/${person.id}'),
                   ),
               ],
-              bottom: TabBar(
-                isScrollable: true,
-                indicatorColor: HeritageColors.charcoal,
-                labelColor: HeritageColors.charcoal,
-                unselectedLabelColor: HeritageColors.charcoalMuted,
-                labelStyle: HeritageTypography.labelSmall.copyWith(fontWeight: FontWeight.w700),
-                tabs: const [
-                  Tab(text: 'Overview'),
-                  Tab(text: 'Connections'),
-                  Tab(text: 'Life Story'),
-                  Tab(text: 'Memories'),
-                  Tab(text: 'Documents'),
-                  Tab(text: 'Timeline'),
-                ],
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(56),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    gradient: HeritageGradients.pillTrack,
+                    borderRadius: HeritageCurves.pill,
+                    boxShadow: HeritageShadows.pill,
+                  ),
+                  child: TabBar(
+                    isScrollable: true,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    dividerColor: Colors.transparent,
+                    indicator: BoxDecoration(
+                      gradient: HeritageGradients.accentPill,
+                      borderRadius: HeritageCurves.pill,
+                      boxShadow: HeritageShadows.activePill,
+                    ),
+                    labelColor: HeritageColors.charcoal,
+                    unselectedLabelColor: HeritageColors.charcoalMuted,
+                    labelStyle: HeritageTypography.labelSmall.copyWith(fontWeight: FontWeight.w700),
+                    tabs: const [
+                      Tab(text: 'Overview'),
+                      Tab(text: 'Connections'),
+                      Tab(text: 'Life Story'),
+                      Tab(text: 'Memories'),
+                      Tab(text: 'Documents'),
+                      Tab(text: 'Timeline'),
+                    ],
+                  ),
+                ),
               ),
             ),
             body: TabBarView(
@@ -135,21 +153,20 @@ class PersonProfileScreen extends ConsumerWidget {
       children: [
         // Portrait & Core Identity Card
         Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: HeritageColors.warmIvoryLight,
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: HeritageColors.stone, width: 1.2),
+            gradient: HeritageGradients.premiumCard,
+            borderRadius: HeritageCurves.cardLarge,
+            boxShadow: HeritageShadows.card,
           ),
           child: Row(
             children: [
               Container(
-                width: 72,
-                height: 72,
-                decoration: BoxDecoration(
+                width: 76,
+                height: 76,
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: HeritageColors.surfaceSecondary,
-                  border: Border.all(color: HeritageColors.blueHighlight, width: 2),
+                  gradient: HeritageGradients.avatarPill,
                 ),
                 child: Center(
                   child: Text(
@@ -173,42 +190,46 @@ class PersonProfileScreen extends ConsumerWidget {
                     ],
                     const SizedBox(height: 4),
                     Text(person.lifeDateSpan, style: HeritageTypography.lifeDates),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 8),
                     Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                           decoration: BoxDecoration(
+                            gradient: person.isLiving
+                                ? HeritageGradients.successBadge
+                                : null,
                             color: person.isLiving
-                                ? HeritageColors.statusSuccessBackground
+                                ? null
                                 : HeritageColors.surfaceSecondary,
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: HeritageCurves.pill,
                           ),
                           child: Text(
                             person.isLiving ? 'Living' : 'Deceased',
                             style: HeritageTypography.labelSmall.copyWith(
                               color: person.isLiving ? HeritageColors.statusSuccess : HeritageColors.charcoal,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
                         if (person.isVerified) ...[
                           const SizedBox(width: 8),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                             decoration: BoxDecoration(
-                              color: HeritageColors.softBlueAccent,
-                              borderRadius: BorderRadius.circular(10),
+                              gradient: HeritageGradients.accentPill,
+                              borderRadius: HeritageCurves.pill,
+                              boxShadow: HeritageShadows.activePill,
                             ),
                             child: Row(
                               children: [
                                 const Icon(Icons.verified_outlined, size: 12, color: HeritageColors.charcoal),
-                                const SizedBox(width: 3),
+                                const SizedBox(width: 4),
                                 Text(
                                   'Archival Verified',
                                   style: HeritageTypography.labelSmall.copyWith(
                                     color: HeritageColors.charcoal,
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
                               ],
@@ -239,11 +260,11 @@ class PersonProfileScreen extends ConsumerWidget {
           Text('Biographical Summary', style: HeritageTypography.titleMedium),
           const SizedBox(height: 8),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              color: HeritageColors.warmIvoryLight,
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: HeritageColors.stone, width: 1),
+              gradient: HeritageGradients.premiumCard,
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: HeritageShadows.card,
             ),
             child: Text(
               person.bio!,

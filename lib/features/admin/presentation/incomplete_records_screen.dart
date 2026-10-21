@@ -60,9 +60,9 @@ class IncompleteRecordsScreen extends ConsumerWidget {
               return Container(
                 margin: const EdgeInsets.only(bottom: 10),
                 decoration: BoxDecoration(
-                  color: HeritageColors.warmIvoryLight,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: HeritageColors.stone, width: 1.2),
+                  gradient: HeritageGradients.premiumCard,
+                  borderRadius: BorderRadius.circular(22),
+                  boxShadow: HeritageShadows.card,
                 ),
                 child: ListTile(
                   title: Text(person.displayName, style: HeritageTypography.titleSmall),

@@ -115,11 +115,11 @@ class _RelationshipManagerScreenState extends ConsumerState<RelationshipManagerS
             children: [
               // Builder Form Card
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: HeritageColors.warmIvoryLight,
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: HeritageColors.stone, width: 1.2),
+                  gradient: HeritageGradients.premiumCard,
+                  borderRadius: HeritageCurves.cardLarge,
+                  boxShadow: HeritageShadows.card,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -212,11 +212,11 @@ class _RelationshipManagerScreenState extends ConsumerState<RelationshipManagerS
                       if (pA == null || pB == null) return const SizedBox.shrink();
 
                       return Container(
-                        margin: const EdgeInsets.only(bottom: 8),
+                        margin: const EdgeInsets.only(bottom: 10),
                         decoration: BoxDecoration(
-                          color: HeritageColors.warmIvoryLight,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: HeritageColors.stone, width: 1),
+                          gradient: HeritageGradients.premiumCard,
+                          borderRadius: BorderRadius.circular(22),
+                          boxShadow: HeritageShadows.card,
                         ),
                         child: ListTile(
                           title: Text(

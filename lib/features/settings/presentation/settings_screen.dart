@@ -27,21 +27,20 @@ class SettingsScreen extends ConsumerWidget {
         children: [
           // Profile Details Card
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(22),
             decoration: BoxDecoration(
-              color: HeritageColors.warmIvoryLight,
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: HeritageColors.stone, width: 1.2),
+              gradient: HeritageGradients.premiumCard,
+              borderRadius: HeritageCurves.cardLarge,
+              boxShadow: HeritageShadows.card,
             ),
             child: Row(
               children: [
                 Container(
-                  width: 56,
-                  height: 56,
-                  decoration: BoxDecoration(
-                    color: HeritageColors.softBlueAccent,
+                  width: 60,
+                  height: 60,
+                  decoration: const BoxDecoration(
+                    gradient: HeritageGradients.avatarPill,
                     shape: BoxShape.circle,
-                    border: Border.all(color: HeritageColors.blueHighlight, width: 1.5),
                   ),
                   child: Center(
                     child: Text(
@@ -69,18 +68,20 @@ class SettingsScreen extends ConsumerWidget {
                         profileAsync.valueOrNull?.email ?? 'heritage.archon@familylegacy.org',
                         style: HeritageTypography.bodySmall,
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                         decoration: BoxDecoration(
+                          gradient: isAdmin
+                              ? HeritageGradients.accentPill
+                              : null,
                           color: isAdmin
-                              ? HeritageColors.softBlueAccent
+                              ? null
                               : HeritageColors.surfaceSecondary,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: isAdmin ? HeritageColors.blueHighlight : HeritageColors.borderSubtle,
-                            width: 1.0,
-                          ),
+                          borderRadius: HeritageCurves.pill,
+                          boxShadow: isAdmin
+                              ? HeritageShadows.activePill
+                              : null,
                         ),
                         child: Text(
                           isAdmin
@@ -105,11 +106,11 @@ class SettingsScreen extends ConsumerWidget {
           Text('Authorization Role Testing', style: HeritageTypography.displaySmall),
           const SizedBox(height: 8),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: HeritageColors.warmIvoryLight,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: HeritageColors.stone, width: 1.2),
+              gradient: HeritageGradients.premiumCard,
+              borderRadius: HeritageCurves.card,
+              boxShadow: HeritageShadows.card,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
