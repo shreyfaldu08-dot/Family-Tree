@@ -20,9 +20,27 @@ class DashboardScreen extends ConsumerWidget {
     final isAdmin = membership?.canWriteFamilyData ?? false;
 
     return Scaffold(
-      backgroundColor: HeritageColors.warmIvory,
       appBar: AppBar(
-        title: Text('Vansora', style: HeritageTypography.displaySmall),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                gradient: HeritageGradients.accentPill,
+                borderRadius: HeritageCurves.pill,
+                boxShadow: HeritageShadows.activePill,
+              ),
+              child: const Icon(
+                Icons.auto_stories_rounded,
+                size: 15,
+                color: HeritageColors.charcoal,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text('Vansora', style: HeritageTypography.displaySmall),
+          ],
+        ),
         actions: [
           if (isAdmin)
             IconButton(
@@ -381,7 +399,7 @@ class _MetricCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
       decoration: BoxDecoration(
         gradient: HeritageGradients.premiumCard,
         borderRadius: BorderRadius.circular(24),
@@ -390,12 +408,19 @@ class _MetricCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 20, color: HeritageColors.charcoal),
+          Container(
+            padding: const EdgeInsets.all(7),
+            decoration: const BoxDecoration(
+              gradient: HeritageGradients.avatarPill,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, size: 16, color: HeritageColors.charcoal),
+          ),
           const SizedBox(height: 10),
           Text(
             value,
             style: HeritageTypography.displaySmall.copyWith(
-              fontSize: 22,
+              fontSize: 21,
               fontWeight: FontWeight.w700,
               color: HeritageColors.charcoal,
             ),
@@ -405,7 +430,11 @@ class _MetricCard extends StatelessWidget {
             label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: HeritageTypography.bodySmall.copyWith(fontSize: 11),
+            style: HeritageTypography.bodySmall.copyWith(
+              fontSize: 10.5,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.1,
+            ),
           ),
         ],
       ),

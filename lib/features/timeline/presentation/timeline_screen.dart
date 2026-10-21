@@ -68,7 +68,7 @@ class TimelineScreen extends ConsumerWidget {
                           Expanded(
                             child: Container(
                               width: 2,
-                              color: const Color(0xFFDCE6F2),
+                              color: HeritageColors.stoneDark,
                             ),
                           ),
                       ],
