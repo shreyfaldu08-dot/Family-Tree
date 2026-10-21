@@ -22,7 +22,7 @@ class DashboardScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: HeritageColors.warmIvory,
       appBar: AppBar(
-        title: Text('Family Legacy', style: HeritageTypography.displaySmall),
+        title: Text('Vansora', style: HeritageTypography.displaySmall),
         actions: [
           if (isAdmin)
             IconButton(

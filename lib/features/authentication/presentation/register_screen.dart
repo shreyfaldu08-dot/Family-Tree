@@ -83,7 +83,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Join Family Legacy',
+                  'Join Vansora',
                   style: HeritageTypography.displaySmall,
                 ),
                 const SizedBox(height: 4),

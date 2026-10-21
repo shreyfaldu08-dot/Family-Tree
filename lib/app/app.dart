@@ -9,7 +9,7 @@ class FamilyLegacyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
-      title: 'Family Legacy',
+      title: 'Vansora',
       debugShowCheckedModeBanner: false,
       theme: HeritageTheme.lightTheme,
       routerConfig: appRouter,

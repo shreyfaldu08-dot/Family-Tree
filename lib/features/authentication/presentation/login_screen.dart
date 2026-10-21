@@ -113,7 +113,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(height: 20),
 
                 Text(
-                  'Family Legacy',
+                  'Vansora',
                   textAlign: TextAlign.center,
                   style: HeritageTypography.displayLarge.copyWith(fontSize: 34),
                 ),

@@ -13,7 +13,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Verify main brand heading renders
-    expect(find.text('Family Legacy'), findsWidgets);
+    expect(find.text('Vansora'), findsWidgets);
 
     // Verify bottom navigation destinations
     expect(find.text('Home'), findsOneWidget);

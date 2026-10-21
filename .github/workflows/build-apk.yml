@@ -37,7 +37,7 @@ jobs:
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: family-legacy-release-apk
+          name: vansora-release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
           retention-days: 30
@@ -46,11 +46,12 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
         with:
-          tag_name: v1.0.0
-          name: Family Legacy v1.0.0 (Android Release)
+          tag_name: v1.0.1
+          name: Vansora v1.0.1 (Android Release)
           body: |
-            ### Family Legacy Android App Build
-            - **Theme**: Soft iOS-inspired aesthetic
+            ### Vansora Android Application
+            - **App Name**: Vansora
+            - **Theme**: Soft minimal iOS-inspired aesthetic
             - **Backend**: Supabase Connected
             - **Direct APK**: Download `app-release.apk` below directly onto your Android device.
           files: build/app/outputs/flutter-apk/app-release.apk
