@@ -28,21 +28,21 @@ class PersonNodeWidget extends StatelessWidget {
         width: 150,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
-          color: HeritageColors.warmIvoryLight,
-          borderRadius: BorderRadius.circular(20),
+          color: HeritageColors.surfaceCard,
+          borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: isSelected
-                ? HeritageColors.mutedBrass
-                : HeritageColors.stoneDark,
-            width: isSelected ? 2.2 : 1.2,
+                ? HeritageColors.blueHighlight
+                : HeritageColors.borderSubtle,
+            width: isSelected ? 1.8 : 1.0,
           ),
           boxShadow: [
             BoxShadow(
               color: isSelected
-                  ? HeritageColors.mutedBrass.withOpacity(0.25)
+                  ? HeritageColors.blueHighlight.withOpacity(0.35)
                   : HeritageColors.subtleShadow,
-              blurRadius: isSelected ? 12 : 6,
-              offset: const Offset(0, 3),
+              blurRadius: isSelected ? 8 : 4,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
@@ -61,17 +61,17 @@ class PersonNodeWidget extends StatelessWidget {
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isSelected
-                          ? HeritageColors.mutedBrass
-                          : HeritageColors.forestGreen,
-                      width: 1.8,
+                          ? HeritageColors.blueHighlight
+                          : HeritageColors.borderSubtle,
+                      width: 1.5,
                     ),
-                    color: HeritageColors.stoneLight,
+                    color: HeritageColors.surfaceSecondary,
                   ),
                   child: Center(
                     child: Text(
                       person.initials,
                       style: HeritageTypography.titleMedium.copyWith(
-                        color: HeritageColors.forestGreen,
+                        color: HeritageColors.charcoal,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -84,13 +84,13 @@ class PersonNodeWidget extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(2),
                       decoration: const BoxDecoration(
-                        color: HeritageColors.forestGreen,
+                        color: HeritageColors.statusSuccessBackground,
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
                         Icons.check,
                         size: 11,
-                        color: HeritageColors.warmIvoryLight,
+                        color: HeritageColors.statusSuccess,
                       ),
                     ),
                   ),
@@ -108,9 +108,7 @@ class PersonNodeWidget extends StatelessWidget {
               style: HeritageTypography.titleSmall.copyWith(
                 fontSize: 13,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                color: isSelected
-                    ? HeritageColors.forestGreenDark
-                    : HeritageColors.charcoal,
+                color: HeritageColors.charcoal,
               ),
             ),
 
@@ -134,14 +132,14 @@ class PersonNodeWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1.5),
                   decoration: BoxDecoration(
                     color: node.isExpanded
-                        ? HeritageColors.stone
-                        : HeritageColors.mutedBrass.withOpacity(0.2),
+                        ? HeritageColors.surfaceSecondary
+                        : HeritageColors.softBlueAccent,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
                     node.isExpanded ? Icons.remove : Icons.add,
                     size: 11,
-                    color: HeritageColors.forestGreen,
+                    color: HeritageColors.charcoal,
                   ),
                 ),
               ),

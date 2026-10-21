@@ -5,7 +5,7 @@ abstract final class SupabaseConfig {
   /// `--dart-define=SUPABASE_URL=... --dart-define=SUPABASE_ANON_KEY=...`
   static const String supabaseUrl = String.fromEnvironment(
     'SUPABASE_URL',
-    defaultValue: 'https://family-legacy-heritage.supabase.co',
+    defaultValue: 'https://oprsufxivnrpevkdjghx.supabase.co',
   );
 
   static const String supabaseAnonKey = String.fromEnvironment(

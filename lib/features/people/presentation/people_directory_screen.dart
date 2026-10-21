@@ -40,7 +40,7 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
         actions: [
           if (isAdmin)
             IconButton(
-              icon: const Icon(Icons.person_add_alt_1, color: HeritageColors.forestGreen),
+              icon: const Icon(Icons.person_add_alt_1, color: HeritageColors.charcoal),
               tooltip: 'Add Person Record',
               onPressed: () => context.push('/admin/persons/new'),
             ),
@@ -51,7 +51,7 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
           // Search & Filter Box
           Container(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-            color: HeritageColors.warmIvory,
+            color: HeritageColors.background,
             child: Column(
               children: [
                 // Search field
@@ -59,7 +59,7 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                   controller: _searchController,
                   decoration: InputDecoration(
                     hintText: 'Search by full, maiden, or alternate name...',
-                    prefixIcon: const Icon(Icons.search, color: HeritageColors.forestGreen),
+                    prefixIcon: const Icon(Icons.search, color: HeritageColors.charcoalMuted),
                     suffixIcon: _searchQuery.isNotEmpty
                         ? IconButton(
                             icon: const Icon(Icons.clear, size: 18),
@@ -100,7 +100,7 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                         _sortOrder == SortOrder.chronological
                             ? Icons.history
                             : Icons.sort_by_alpha,
-                        color: HeritageColors.forestGreen,
+                        color: HeritageColors.charcoal,
                       ),
                       tooltip: _sortOrder == SortOrder.chronological
                           ? 'Sort: Chronological'
@@ -270,10 +270,15 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
           });
         }
       },
-      selectedColor: HeritageColors.mutedBrass,
-      backgroundColor: HeritageColors.stoneLight,
+      selectedColor: HeritageColors.softBlueAccent,
+      backgroundColor: HeritageColors.surfaceSecondary,
+      side: BorderSide(
+        color: isSelected ? HeritageColors.blueHighlight : HeritageColors.borderSubtle,
+        width: 1.0,
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       labelStyle: HeritageTypography.labelSmall.copyWith(
-        color: isSelected ? Colors.white : HeritageColors.charcoal,
+        color: isSelected ? HeritageColors.charcoal : HeritageColors.charcoalMuted,
         fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
       ),
     );

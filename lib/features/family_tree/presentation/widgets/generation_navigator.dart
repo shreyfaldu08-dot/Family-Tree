@@ -29,14 +29,14 @@ class GenerationNavigator extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: HeritageColors.warmIvoryLight.withOpacity(0.96),
+        color: HeritageColors.surfaceCard.withOpacity(0.96),
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: HeritageColors.stoneDark, width: 1.2),
+        border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
         boxShadow: const [
           BoxShadow(
             color: HeritageColors.subtleShadow,
-            blurRadius: 10,
-            offset: Offset(0, 4),
+            blurRadius: 8,
+            offset: Offset(0, 2),
           ),
         ],
       ),
@@ -46,7 +46,7 @@ class GenerationNavigator extends StatelessWidget {
           const Icon(
             Icons.timeline_rounded,
             size: 16,
-            color: HeritageColors.forestGreen,
+            color: HeritageColors.charcoal,
           ),
           const SizedBox(width: 8),
           Text(
@@ -71,13 +71,13 @@ class GenerationNavigator extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? HeritageColors.forestGreen
-                              : HeritageColors.stoneLight,
+                              ? HeritageColors.softBlueAccent
+                              : HeritageColors.surfaceSecondary,
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
                             color: isSelected
-                                ? HeritageColors.forestGreen
-                                : HeritageColors.stone,
+                                ? HeritageColors.blueHighlight
+                                : HeritageColors.borderSubtle,
                             width: 1,
                           ),
                         ),
@@ -85,8 +85,8 @@ class GenerationNavigator extends StatelessWidget {
                           g == 0 ? '0' : (g > 0 ? '+$g' : '$g'),
                           style: HeritageTypography.labelSmall.copyWith(
                             color: isSelected
-                                ? HeritageColors.warmIvoryLight
-                                : HeritageColors.charcoal,
+                                ? HeritageColors.charcoal
+                                : HeritageColors.charcoalMuted,
                             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                           ),
                         ),

@@ -39,9 +39,9 @@ class SettingsScreen extends ConsumerWidget {
                   width: 56,
                   height: 56,
                   decoration: BoxDecoration(
-                    color: HeritageColors.forestGreen,
+                    color: HeritageColors.softBlueAccent,
                     shape: BoxShape.circle,
-                    border: Border.all(color: HeritageColors.mutedBrass, width: 1.5),
+                    border: Border.all(color: HeritageColors.blueHighlight, width: 1.5),
                   ),
                   child: Center(
                     child: Text(
@@ -49,7 +49,7 @@ class SettingsScreen extends ConsumerWidget {
                           ? profileAsync.valueOrNull!.displayName![0].toUpperCase()
                           : 'A',
                       style: HeritageTypography.displaySmall.copyWith(
-                        color: Colors.white,
+                        color: HeritageColors.charcoal,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -74,16 +74,20 @@ class SettingsScreen extends ConsumerWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
                           color: isAdmin
-                              ? HeritageColors.forestGreen.withOpacity(0.12)
-                              : HeritageColors.stoneDark.withOpacity(0.3),
+                              ? HeritageColors.softBlueAccent
+                              : HeritageColors.surfaceSecondary,
                           borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: isAdmin ? HeritageColors.blueHighlight : HeritageColors.borderSubtle,
+                            width: 1.0,
+                          ),
                         ),
                         child: Text(
                           isAdmin
                               ? 'Role: Primary Admin (Write Authorization)'
                               : 'Role: Approved Member (Strict Read-Only)',
                           style: HeritageTypography.labelSmall.copyWith(
-                            color: isAdmin ? HeritageColors.forestGreenDark : HeritageColors.charcoal,
+                            color: HeritageColors.charcoal,
                             fontWeight: FontWeight.w700,
                           ),
                         ),

@@ -40,7 +40,7 @@ class TreePreviewSheet extends StatelessWidget {
               width: 38,
               height: 4,
               decoration: BoxDecoration(
-                color: HeritageColors.stoneDark,
+                color: HeritageColors.borderSubtle,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -55,14 +55,14 @@ class TreePreviewSheet extends StatelessWidget {
                 height: 64,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: HeritageColors.stoneLight,
-                  border: Border.all(color: HeritageColors.mutedBrass, width: 2),
+                  color: HeritageColors.surfaceSecondary,
+                  border: Border.all(color: HeritageColors.blueHighlight, width: 2),
                 ),
                 child: Center(
                   child: Text(
                     person.initials,
                     style: HeritageTypography.displaySmall.copyWith(
-                      color: HeritageColors.forestGreen,
+                      color: HeritageColors.charcoal,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -117,9 +117,9 @@ class TreePreviewSheet extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: HeritageColors.warmIvory,
+                color: HeritageColors.surfaceSecondary,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: HeritageColors.stone, width: 1),
+                border: Border.all(color: HeritageColors.borderSubtle, width: 1),
               ),
               child: Text(
                 person.bio!,
@@ -169,7 +169,7 @@ class TreePreviewSheet extends StatelessWidget {
               icon: const Icon(Icons.person_add_alt_1, size: 18),
               label: const Text('Add Relative Connection (Admin)'),
               style: TextButton.styleFrom(
-                foregroundColor: HeritageColors.forestGreenDark,
+                foregroundColor: HeritageColors.charcoal,
               ),
             ),
           ],

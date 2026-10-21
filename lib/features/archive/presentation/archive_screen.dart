@@ -28,7 +28,7 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
         actions: [
           if (isAdmin)
             IconButton(
-              icon: const Icon(Icons.add_photo_alternate_outlined, color: HeritageColors.forestGreen),
+              icon: const Icon(Icons.add_photo_alternate_outlined, color: HeritageColors.charcoal),
               tooltip: 'Upload Private Media (Admin)',
               onPressed: () {
                 _showUploadMockDialog(context);
@@ -221,10 +221,15 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
           });
         }
       },
-      selectedColor: HeritageColors.mutedBrass,
-      backgroundColor: HeritageColors.stoneLight,
+      selectedColor: HeritageColors.softBlueAccent,
+      backgroundColor: HeritageColors.surfaceSecondary,
+      side: BorderSide(
+        color: isSelected ? HeritageColors.blueHighlight : HeritageColors.borderSubtle,
+        width: 1.0,
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       labelStyle: HeritageTypography.labelSmall.copyWith(
-        color: isSelected ? Colors.white : HeritageColors.charcoal,
+        color: isSelected ? HeritageColors.charcoal : HeritageColors.charcoalMuted,
         fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
       ),
     );

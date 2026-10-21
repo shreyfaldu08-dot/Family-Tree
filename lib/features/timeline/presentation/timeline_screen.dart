@@ -60,15 +60,15 @@ class TimelineScreen extends ConsumerWidget {
                           height: 16,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: HeritageColors.warmIvoryLight,
-                            border: Border.all(color: HeritageColors.forestGreen, width: 3),
+                            color: HeritageColors.surfaceCard,
+                            border: Border.all(color: HeritageColors.blueHighlight, width: 3),
                           ),
                         ),
                         if (!isLast)
                           Expanded(
                             child: Container(
                               width: 2,
-                              color: HeritageColors.stoneDark,
+                              color: HeritageColors.borderSubtle,
                             ),
                           ),
                       ],
@@ -82,14 +82,14 @@ class TimelineScreen extends ConsumerWidget {
                         margin: const EdgeInsets.only(bottom: 20),
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: HeritageColors.warmIvoryLight,
+                          color: HeritageColors.surfaceCard,
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: HeritageColors.stone, width: 1.2),
+                          border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
                           boxShadow: const [
                             BoxShadow(
                               color: HeritageColors.subtleShadow,
                               blurRadius: 8,
-                              offset: Offset(0, 3),
+                              offset: Offset(0, 2),
                             ),
                           ],
                         ),
@@ -103,19 +103,20 @@ class TimelineScreen extends ConsumerWidget {
                                   event.formattedDate,
                                   style: HeritageTypography.lifeDates.copyWith(
                                     fontWeight: FontWeight.w700,
-                                    color: HeritageColors.forestGreen,
+                                    color: HeritageColors.charcoal,
                                   ),
                                 ),
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                   decoration: BoxDecoration(
-                                    color: HeritageColors.stoneLight,
+                                    color: HeritageColors.softBlueAccent,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Text(
                                     event.eventType.label,
                                     style: HeritageTypography.labelSmall.copyWith(
                                       color: HeritageColors.charcoal,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ),

@@ -34,7 +34,7 @@ abstract final class HeritageTypography {
     fontSize: 20,
     fontWeight: FontWeight.w600,
     fontStyle: FontStyle.italic,
-    color: HeritageColors.forestGreen,
+    color: HeritageColors.charcoal,
     height: 1.3,
   );
 

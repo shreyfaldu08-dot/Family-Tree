@@ -81,15 +81,15 @@ class PersonProfileScreen extends ConsumerWidget {
                 ),
                 if (isAdmin)
                   IconButton(
-                    icon: const Icon(Icons.edit_outlined, color: HeritageColors.forestGreen),
+                    icon: const Icon(Icons.edit_outlined, color: HeritageColors.charcoal),
                     tooltip: 'Edit Record (Admin)',
                     onPressed: () => context.push('/admin/persons/edit/${person.id}'),
                   ),
               ],
               bottom: TabBar(
                 isScrollable: true,
-                indicatorColor: HeritageColors.forestGreen,
-                labelColor: HeritageColors.forestGreen,
+                indicatorColor: HeritageColors.charcoal,
+                labelColor: HeritageColors.charcoal,
                 unselectedLabelColor: HeritageColors.charcoalMuted,
                 labelStyle: HeritageTypography.labelSmall.copyWith(fontWeight: FontWeight.w700),
                 tabs: const [
@@ -148,14 +148,14 @@ class PersonProfileScreen extends ConsumerWidget {
                 height: 72,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: HeritageColors.stoneLight,
-                  border: Border.all(color: HeritageColors.mutedBrass, width: 2),
+                  color: HeritageColors.surfaceSecondary,
+                  border: Border.all(color: HeritageColors.blueHighlight, width: 2),
                 ),
                 child: Center(
                   child: Text(
                     person.initials,
                     style: HeritageTypography.displayMedium.copyWith(
-                      color: HeritageColors.forestGreen,
+                      color: HeritageColors.charcoal,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -180,14 +180,15 @@ class PersonProfileScreen extends ConsumerWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                           decoration: BoxDecoration(
                             color: person.isLiving
-                                ? HeritageColors.forestGreen.withOpacity(0.12)
-                                : HeritageColors.stoneDark.withOpacity(0.4),
+                                ? HeritageColors.statusSuccessBackground
+                                : HeritageColors.surfaceSecondary,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
                             person.isLiving ? 'Living' : 'Deceased',
                             style: HeritageTypography.labelSmall.copyWith(
-                              color: person.isLiving ? HeritageColors.forestGreen : HeritageColors.charcoal,
+                              color: person.isLiving ? HeritageColors.statusSuccess : HeritageColors.charcoal,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
@@ -196,16 +197,19 @@ class PersonProfileScreen extends ConsumerWidget {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
-                              color: HeritageColors.mutedBrass.withOpacity(0.15),
+                              color: HeritageColors.softBlueAccent,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
                               children: [
-                                const Icon(Icons.verified_outlined, size: 12, color: HeritageColors.mutedBrass),
+                                const Icon(Icons.verified_outlined, size: 12, color: HeritageColors.charcoal),
                                 const SizedBox(width: 3),
                                 Text(
                                   'Archival Verified',
-                                  style: HeritageTypography.labelSmall.copyWith(color: HeritageColors.mutedBrassDark),
+                                  style: HeritageTypography.labelSmall.copyWith(
+                                    color: HeritageColors.charcoal,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ],
                             ),

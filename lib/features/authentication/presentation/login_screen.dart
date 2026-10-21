@@ -91,19 +91,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     width: 74,
                     height: 74,
                     decoration: BoxDecoration(
-                      color: HeritageColors.forestGreen,
+                      color: HeritageColors.softBlueAccent,
                       shape: BoxShape.circle,
+                      border: Border.all(color: HeritageColors.blueHighlight, width: 1.5),
                       boxShadow: const [
                         BoxShadow(
                           color: HeritageColors.subtleShadow,
-                          blurRadius: 14,
-                          offset: Offset(0, 5),
+                          blurRadius: 10,
+                          offset: Offset(0, 3),
                         ),
                       ],
                     ),
                     child: const Icon(
                       Icons.auto_stories_rounded,
-                      color: HeritageColors.mutedBrassLight,
+                      color: HeritageColors.charcoal,
                       size: 36,
                     ),
                   ),

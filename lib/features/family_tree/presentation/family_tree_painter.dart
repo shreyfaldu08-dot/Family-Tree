@@ -14,18 +14,18 @@ class LivingHeritageTreePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final branchPaint = Paint()
-      ..color = HeritageColors.forestGreen.withOpacity(0.55)
-      ..strokeWidth = 2.4
+      ..color = HeritageColors.borderSubtle
+      ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
     final brassAccentPaint = Paint()
-      ..color = HeritageColors.mutedBrass
-      ..strokeWidth = 2.0
+      ..color = HeritageColors.blueHighlight
+      ..strokeWidth = 1.8
       ..style = PaintingStyle.stroke;
 
     final dotPaint = Paint()
-      ..color = HeritageColors.mutedBrass
+      ..color = HeritageColors.blueHighlight
       ..style = PaintingStyle.fill;
 
     // Draw organic curved branches connecting parents to children

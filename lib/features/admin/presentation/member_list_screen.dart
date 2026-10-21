@@ -80,11 +80,15 @@ class _MemberListScreenState extends ConsumerState<MemberListScreen> {
                         height: 44,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: isAdmin ? HeritageColors.forestGreen : HeritageColors.stoneLight,
+                          color: isAdmin ? HeritageColors.softBlueAccent : HeritageColors.surfaceSecondary,
+                          border: Border.all(
+                            color: isAdmin ? HeritageColors.blueHighlight : HeritageColors.borderSubtle,
+                            width: 1.0,
+                          ),
                         ),
                         child: Icon(
                           isAdmin ? Icons.shield : Icons.person_outline,
-                          color: isAdmin ? Colors.white : HeritageColors.forestGreen,
+                          color: HeritageColors.charcoal,
                           size: 20,
                         ),
                       ),
@@ -101,7 +105,7 @@ class _MemberListScreenState extends ConsumerState<MemberListScreen> {
                             Text(
                               isAdmin ? 'Primary Archon (Sole Admin)' : 'Approved Member (Read-Only)',
                               style: HeritageTypography.bodySmall.copyWith(
-                                color: isAdmin ? HeritageColors.forestGreen : HeritageColors.charcoalMuted,
+                                color: isAdmin ? HeritageColors.charcoal : HeritageColors.charcoalMuted,
                                 fontWeight: isAdmin ? FontWeight.w700 : FontWeight.w400,
                               ),
                             ),

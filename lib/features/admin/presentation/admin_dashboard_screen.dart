@@ -41,12 +41,29 @@ class AdminDashboardScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: HeritageColors.forestGreen,
+              color: HeritageColors.surfaceCard,
               borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
+              boxShadow: const [
+                BoxShadow(
+                  color: HeritageColors.subtleShadow,
+                  blurRadius: 8,
+                  offset: Offset(0, 2),
+                ),
+              ],
             ),
             child: Row(
               children: [
-                const Icon(Icons.shield_outlined, color: HeritageColors.warmIvoryLight, size: 28),
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: HeritageColors.softBlueAccent,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: HeritageColors.blueHighlight, width: 1.0),
+                  ),
+                  child: const Icon(Icons.shield_outlined, color: HeritageColors.charcoal, size: 22),
+                ),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(
@@ -55,7 +72,7 @@ class AdminDashboardScreen extends ConsumerWidget {
                       Text(
                         'Primary Archon Authorization',
                         style: HeritageTypography.titleSmall.copyWith(
-                          color: HeritageColors.warmIvoryLight,
+                          color: HeritageColors.charcoal,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -63,7 +80,7 @@ class AdminDashboardScreen extends ConsumerWidget {
                       Text(
                         'Canonical writes and membership management are cryptographically secured by PostgreSQL Row Level Security.',
                         style: HeritageTypography.bodySmall.copyWith(
-                          color: HeritageColors.stoneLight,
+                          color: HeritageColors.charcoalMuted,
                           fontSize: 11.5,
                         ),
                       ),
@@ -186,11 +203,11 @@ class AdminDashboardScreen extends ConsumerWidget {
           width: 44,
           height: 44,
           decoration: BoxDecoration(
-            color: HeritageColors.forestGreen.withOpacity(0.08),
+            color: HeritageColors.softBlueAccent,
             shape: BoxShape.circle,
-            border: Border.all(color: HeritageColors.forestGreen, width: 1),
+            border: Border.all(color: HeritageColors.blueHighlight, width: 1),
           ),
-          child: Icon(icon, color: HeritageColors.forestGreen, size: 22),
+          child: Icon(icon, color: HeritageColors.charcoal, size: 22),
         ),
         title: Text(title, style: HeritageTypography.titleSmall),
         subtitle: Text(subtitle, style: HeritageTypography.bodySmall),

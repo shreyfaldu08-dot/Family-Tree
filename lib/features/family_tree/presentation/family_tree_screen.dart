@@ -240,14 +240,14 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: HeritageColors.warmIvoryLight.withOpacity(0.95),
+                            color: HeritageColors.surfaceCard.withOpacity(0.95),
                             shape: BoxShape.circle,
-                            border: Border.all(color: HeritageColors.stoneDark, width: 1.2),
+                            border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
                           ),
                           child: const Icon(
                             Icons.arrow_back_rounded,
                             size: 20,
-                            color: HeritageColors.forestGreen,
+                            color: HeritageColors.charcoal,
                           ),
                         ),
                       ),
@@ -258,9 +258,9 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(3),
                           decoration: BoxDecoration(
-                            color: HeritageColors.warmIvoryLight.withOpacity(0.95),
+                            color: HeritageColors.surfaceCard.withOpacity(0.95),
                             borderRadius: BorderRadius.circular(24),
-                            border: Border.all(color: HeritageColors.stoneDark, width: 1.2),
+                            border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
                           ),
                           child: Row(
                             children: TreeMode.values.map((mode) {
@@ -277,7 +277,7 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                                     padding: const EdgeInsets.symmetric(vertical: 7),
                                     decoration: BoxDecoration(
                                       color: isSelected
-                                          ? HeritageColors.forestGreen
+                                          ? HeritageColors.softBlueAccent
                                           : Colors.transparent,
                                       borderRadius: BorderRadius.circular(20),
                                     ),
@@ -286,8 +286,8 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                                       textAlign: TextAlign.center,
                                       style: HeritageTypography.labelSmall.copyWith(
                                         color: isSelected
-                                            ? HeritageColors.warmIvoryLight
-                                            : HeritageColors.charcoal,
+                                            ? HeritageColors.charcoal
+                                            : HeritageColors.charcoalMuted,
                                         fontWeight: isSelected
                                             ? FontWeight.w700
                                             : FontWeight.w500,
@@ -309,14 +309,14 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: HeritageColors.warmIvoryLight.withOpacity(0.95),
+                            color: HeritageColors.surfaceCard.withOpacity(0.95),
                             shape: BoxShape.circle,
-                            border: Border.all(color: HeritageColors.stoneDark, width: 1.2),
+                            border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
                           ),
                           child: const Icon(
                             Icons.center_focus_strong_rounded,
                             size: 20,
-                            color: HeritageColors.forestGreen,
+                            color: HeritageColors.charcoal,
                           ),
                         ),
                       ),
@@ -329,9 +329,9 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 14),
                       decoration: BoxDecoration(
-                        color: HeritageColors.warmIvoryLight,
+                        color: HeritageColors.surfaceCard,
                         borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: HeritageColors.stoneDark, width: 1.2),
+                        border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
                       ),
                       child: TextField(
                         controller: _searchController,
@@ -341,7 +341,7 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,
                           focusedBorder: InputBorder.none,
-                          icon: const Icon(Icons.search, size: 18, color: HeritageColors.forestGreen),
+                          icon: const Icon(Icons.search, size: 18, color: HeritageColors.charcoalMuted),
                           suffixIcon: IconButton(
                             icon: const Icon(Icons.close, size: 18),
                             onPressed: () {
@@ -370,9 +370,11 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: ActionChip(
-                        avatar: const Icon(Icons.search, size: 16, color: HeritageColors.forestGreen),
+                        avatar: const Icon(Icons.search, size: 16, color: HeritageColors.charcoal),
                         label: Text('Find in Tree', style: HeritageTypography.labelSmall),
-                        backgroundColor: HeritageColors.warmIvoryLight.withOpacity(0.95),
+                        backgroundColor: HeritageColors.surfaceCard.withOpacity(0.95),
+                        side: const BorderSide(color: HeritageColors.borderSubtle, width: 1.0),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                         onPressed: () {
                           setState(() {
                             _isSearching = true;

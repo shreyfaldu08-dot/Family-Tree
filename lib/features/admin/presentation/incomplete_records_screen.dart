@@ -37,7 +37,7 @@ class IncompleteRecordsScreen extends ConsumerWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.verified_outlined, size: 54, color: HeritageColors.forestGreen),
+                    const Icon(Icons.verified_outlined, size: 54, color: HeritageColors.charcoal),
                     const SizedBox(height: 14),
                     Text('Archive In Integrity', style: HeritageTypography.displaySmall),
                     const SizedBox(height: 6),

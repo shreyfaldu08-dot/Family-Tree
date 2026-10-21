@@ -56,13 +56,14 @@ class DashboardScreen extends ConsumerWidget {
                 return Container(
                   padding: const EdgeInsets.all(22),
                   decoration: BoxDecoration(
-                    color: HeritageColors.forestGreen,
-                    borderRadius: BorderRadius.circular(26),
+                    color: HeritageColors.surfaceCard,
+                    borderRadius: BorderRadius.circular(22),
+                    border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
                     boxShadow: const [
                       BoxShadow(
                         color: HeritageColors.subtleShadow,
-                        blurRadius: 16,
-                        offset: Offset(0, 6),
+                        blurRadius: 8,
+                        offset: Offset(0, 2),
                       ),
                     ],
                   ),
@@ -75,21 +76,21 @@ class DashboardScreen extends ConsumerWidget {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                             decoration: BoxDecoration(
-                              color: HeritageColors.mutedBrass.withOpacity(0.25),
+                              color: HeritageColors.softBlueAccent,
                               borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: HeritageColors.mutedBrass, width: 1),
+                              border: Border.all(color: HeritageColors.blueHighlight, width: 1),
                             ),
                             child: Text(
                               isAdmin ? 'PRIMARY ARCHON' : 'APPROVED FAMILY ARCHIVE',
                               style: HeritageTypography.labelSmall.copyWith(
-                                color: HeritageColors.mutedBrassLight,
+                                color: HeritageColors.charcoal,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                           ),
                           const Icon(
                             Icons.auto_stories_outlined,
-                            color: HeritageColors.mutedBrassLight,
+                            color: HeritageColors.charcoalMuted,
                             size: 22,
                           ),
                         ],
@@ -98,7 +99,7 @@ class DashboardScreen extends ConsumerWidget {
                       Text(
                         family.name,
                         style: HeritageTypography.displayMedium.copyWith(
-                          color: HeritageColors.warmIvoryLight,
+                          color: HeritageColors.charcoal,
                         ),
                       ),
                       if (family.motto != null) ...[
@@ -107,7 +108,7 @@ class DashboardScreen extends ConsumerWidget {
                           '“${family.motto!}”',
                           style: HeritageTypography.storyHeadline.copyWith(
                             fontSize: 15,
-                            color: HeritageColors.stoneLight,
+                            color: HeritageColors.charcoalMuted,
                           ),
                         ),
                       ],
@@ -118,7 +119,7 @@ class DashboardScreen extends ConsumerWidget {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: HeritageTypography.bodySmall.copyWith(
-                            color: HeritageColors.stone,
+                            color: HeritageColors.charcoalMuted,
                           ),
                         ),
                       ],
@@ -137,14 +138,14 @@ class DashboardScreen extends ConsumerWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                 decoration: BoxDecoration(
-                  color: HeritageColors.warmIvoryLight,
+                  color: HeritageColors.surfaceCard,
                   borderRadius: BorderRadius.circular(22),
-                  border: Border.all(color: HeritageColors.mutedBrass, width: 1.5),
+                  border: Border.all(color: HeritageColors.borderSubtle, width: 1.0),
                   boxShadow: const [
                     BoxShadow(
                       color: HeritageColors.subtleShadow,
-                      blurRadius: 10,
-                      offset: Offset(0, 4),
+                      blurRadius: 8,
+                      offset: Offset(0, 2),
                     ),
                   ],
                 ),
@@ -154,13 +155,13 @@ class DashboardScreen extends ConsumerWidget {
                       width: 52,
                       height: 52,
                       decoration: BoxDecoration(
-                        color: HeritageColors.forestGreen.withOpacity(0.12),
+                        color: HeritageColors.softBlueAccent,
                         shape: BoxShape.circle,
-                        border: Border.all(color: HeritageColors.forestGreen, width: 1.2),
+                        border: Border.all(color: HeritageColors.blueHighlight, width: 1.0),
                       ),
                       child: const Icon(
                         Icons.account_tree_rounded,
-                        color: HeritageColors.forestGreen,
+                        color: HeritageColors.charcoal,
                         size: 26,
                       ),
                     ),
@@ -172,14 +173,16 @@ class DashboardScreen extends ConsumerWidget {
                           Text(
                             'Explore Living Heritage Tree',
                             style: HeritageTypography.titleMedium.copyWith(
-                              color: HeritageColors.forestGreenDark,
+                              color: HeritageColors.charcoal,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                           const SizedBox(height: 2),
                           Text(
                             'Interactive 10-generation lineage visualization',
-                            style: HeritageTypography.bodySmall,
+                            style: HeritageTypography.bodySmall.copyWith(
+                              color: HeritageColors.charcoalMuted,
+                            ),
                           ),
                         ],
                       ),
@@ -187,7 +190,7 @@ class DashboardScreen extends ConsumerWidget {
                     const Icon(
                       Icons.arrow_forward_ios_rounded,
                       size: 16,
-                      color: HeritageColors.mutedBrass,
+                      color: HeritageColors.charcoalMuted,
                     ),
                   ],
                 ),
@@ -267,12 +270,15 @@ class DashboardScreen extends ConsumerWidget {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
-                              color: HeritageColors.stoneLight,
+                              color: HeritageColors.softBlueAccent,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
                               event.eventType.label,
-                              style: HeritageTypography.labelSmall.copyWith(color: HeritageColors.forestGreen),
+                              style: HeritageTypography.labelSmall.copyWith(
+                                color: HeritageColors.charcoal,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                           Text(
@@ -343,7 +349,7 @@ class DashboardScreen extends ConsumerWidget {
                             child: Text(
                               person.initials,
                               style: HeritageTypography.titleSmall.copyWith(
-                                color: HeritageColors.forestGreen,
+                                color: HeritageColors.charcoal,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -394,7 +400,7 @@ class _MetricCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 20, color: HeritageColors.forestGreen),
+          Icon(icon, size: 20, color: HeritageColors.charcoal),
           const SizedBox(height: 8),
           Text(
             value,

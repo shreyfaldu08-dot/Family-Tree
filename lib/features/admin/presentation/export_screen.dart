@@ -81,7 +81,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               children: [
                 Text('Exported Archive Payload', style: HeritageTypography.displaySmall),
                 IconButton(
-                  icon: const Icon(Icons.copy, color: HeritageColors.forestGreen),
+                  icon: const Icon(Icons.copy, color: HeritageColors.charcoal),
                   tooltip: 'Copy JSON',
                   onPressed: () {
                     Clipboard.setData(ClipboardData(text: _exportedJson!));
