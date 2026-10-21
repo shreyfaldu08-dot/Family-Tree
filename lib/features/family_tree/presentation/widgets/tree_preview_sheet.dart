@@ -1,0 +1,180 @@
+import 'package:flutter/material.dart';
+import '../../../../app/theme/colors.dart';
+import '../../../../app/theme/typography.dart';
+import '../../../../data/models/person.dart';
+import '../../../../data/models/membership.dart';
+
+class TreePreviewSheet extends StatelessWidget {
+  final Person person;
+  final FamilyMembership? membership;
+  final VoidCallback onViewFullProfile;
+  final VoidCallback onFocusTree;
+  final VoidCallback? onAddRelative;
+
+  const TreePreviewSheet({
+    super.key,
+    required this.person,
+    required this.membership,
+    required this.onViewFullProfile,
+    required this.onFocusTree,
+    this.onAddRelative,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isAdmin = membership?.canWriteFamilyData ?? false;
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+      decoration: const BoxDecoration(
+        color: HeritageColors.warmIvoryLight,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Drag handle
+          Center(
+            child: Container(
+              width: 38,
+              height: 4,
+              decoration: BoxDecoration(
+                color: HeritageColors.stoneDark,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+          ),
+          const SizedBox(height: 18),
+
+          Row(
+            children: [
+              // Avatar
+              Container(
+                width: 64,
+                height: 64,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: HeritageColors.stoneLight,
+                  border: Border.all(color: HeritageColors.mutedBrass, width: 2),
+                ),
+                child: Center(
+                  child: Text(
+                    person.initials,
+                    style: HeritageTypography.displaySmall.copyWith(
+                      color: HeritageColors.forestGreen,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      person.displayName,
+                      style: HeritageTypography.displaySmall.copyWith(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      person.lifeDateSpan,
+                      style: HeritageTypography.lifeDates.copyWith(fontSize: 13),
+                    ),
+                    if (person.birthPlace != null && person.birthPlace!.isNotEmpty) ...[
+                      const SizedBox(height: 2),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.location_on_outlined,
+                            size: 13,
+                            color: HeritageColors.charcoalMuted,
+                          ),
+                          const SizedBox(width: 3),
+                          Expanded(
+                            child: Text(
+                              person.birthPlace!,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: HeritageTypography.bodySmall,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          if (person.bio != null && person.bio!.isNotEmpty) ...[
+            const SizedBox(height: 14),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: HeritageColors.warmIvory,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: HeritageColors.stone, width: 1),
+              ),
+              child: Text(
+                person.bio!,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: HeritageTypography.bodySmall.copyWith(
+                  fontStyle: FontStyle.italic,
+                  color: HeritageColors.charcoal,
+                ),
+              ),
+            ),
+          ],
+
+          const SizedBox(height: 20),
+
+          // Actions
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: onFocusTree,
+                  icon: const Icon(Icons.filter_center_focus, size: 18),
+                  label: const Text('Focus Tree'),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: onViewFullProfile,
+                  icon: const Icon(Icons.menu_book, size: 18),
+                  label: const Text('Full Profile'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          if (isAdmin && onAddRelative != null) ...[
+            const SizedBox(height: 10),
+            TextButton.icon(
+              onPressed: onAddRelative,
+              icon: const Icon(Icons.person_add_alt_1, size: 18),
+              label: const Text('Add Relative Connection (Admin)'),
+              style: TextButton.styleFrom(
+                foregroundColor: HeritageColors.forestGreenDark,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
