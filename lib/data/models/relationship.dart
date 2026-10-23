@@ -35,12 +35,49 @@ enum RelationshipType {
   }
 }
 
+enum LineageType {
+  biological,
+  adopted,
+  step,
+  foster;
+
+  static LineageType fromString(String? val) {
+    switch (val?.toLowerCase()) {
+      case 'adopted':
+        return LineageType.adopted;
+      case 'step':
+        return LineageType.step;
+      case 'foster':
+        return LineageType.foster;
+      case 'biological':
+      default:
+        return LineageType.biological;
+    }
+  }
+
+  String get dbValue => name;
+
+  String get label {
+    switch (this) {
+      case LineageType.biological:
+        return 'Biological';
+      case LineageType.adopted:
+        return 'Adopted';
+      case LineageType.step:
+        return 'Step';
+      case LineageType.foster:
+        return 'Foster';
+    }
+  }
+}
+
 class Relationship {
   final String id;
   final String familyId;
   final String personId;
   final String relatedPersonId;
   final RelationshipType type;
+  final LineageType lineage;
   final DateTime? startDate;
   final DateTime? endDate;
   final String? notes;
@@ -54,6 +91,7 @@ class Relationship {
     required this.personId,
     required this.relatedPersonId,
     required this.type,
+    this.lineage = LineageType.biological,
     this.startDate,
     this.endDate,
     this.notes,
@@ -69,6 +107,7 @@ class Relationship {
       personId: json['person_id'] as String,
       relatedPersonId: json['related_person_id'] as String,
       type: RelationshipType.fromString(json['relationship_type'] as String?),
+      lineage: LineageType.fromString(json['lineage'] as String?),
       startDate: json['start_date'] != null
           ? DateTime.tryParse(json['start_date'] as String)
           : null,
@@ -93,6 +132,7 @@ class Relationship {
       'person_id': personId,
       'related_person_id': relatedPersonId,
       'relationship_type': type.dbValue,
+      'lineage': lineage.dbValue,
       'start_date': startDate?.toIso8601String().split('T').first,
       'end_date': endDate?.toIso8601String().split('T').first,
       'notes': notes,

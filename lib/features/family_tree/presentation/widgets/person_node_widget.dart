@@ -21,6 +21,8 @@ class PersonNodeWidget extends StatelessWidget {
     final isSelected = node.isSelected;
     final hasBranch = node.children.isNotEmpty || node.parents.isNotEmpty;
 
+    final isRoot = person.generationHint == 1;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(26),
@@ -48,9 +50,12 @@ class PersonNodeWidget extends StatelessWidget {
                 Container(
                   width: 52,
                   height: 52,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: HeritageGradients.avatarPill,
+                    border: isRoot
+                        ? Border.all(color: const Color(0xFFD97706).withOpacity(0.45), width: 2)
+                        : null,
                   ),
                   child: Center(
                     child: Text(
@@ -62,6 +67,23 @@ class PersonNodeWidget extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (isRoot)
+                  Positioned(
+                    top: -4,
+                    right: -2,
+                    child: Container(
+                      padding: const EdgeInsets.all(3),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFFEF3C7),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.auto_awesome_rounded,
+                        size: 10,
+                        color: Color(0xFFD97706),
+                      ),
+                    ),
+                  ),
                 if (person.isVerified)
                   Positioned(
                     bottom: -2,

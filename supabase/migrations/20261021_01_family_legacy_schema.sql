@@ -1,6 +1,6 @@
 -- ==============================================================================
 -- FAMILY LEGACY DATABASE SCHEMA
--- Version: 1.0.0
+-- Version: 1.1.0
 -- Dialect: PostgreSQL 15+ (Supabase)
 -- ==============================================================================
 
@@ -36,6 +36,12 @@ END $$;
 
 DO $$ BEGIN
     CREATE TYPE relationship_type AS ENUM ('parent', 'child', 'spouse', 'sibling');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE lineage_type AS ENUM ('biological', 'adopted', 'step', 'foster');
 EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;
@@ -82,7 +88,7 @@ CREATE TABLE IF NOT EXISTS public.families (
     motto TEXT,
     description TEXT,
     origin_place TEXT,
-    created_by UUID NOT NULL REFERENCES public.profiles(id) ON DELETE RESTRICT,
+    created_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now()),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
 );
@@ -116,7 +122,8 @@ CREATE TABLE IF NOT EXISTS public.invitations (
     family_id UUID NOT NULL REFERENCES public.families(id) ON DELETE CASCADE,
     code_hash TEXT NOT NULL UNIQUE,
     recipient_email TEXT,
-    created_by UUID NOT NULL REFERENCES public.profiles(id) ON DELETE RESTRICT,
+    target_role member_role NOT NULL DEFAULT 'viewer',
+    created_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
     expires_at TIMESTAMPTZ NOT NULL,
     is_revoked BOOLEAN NOT NULL DEFAULT FALSE,
     redeemed_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
@@ -148,6 +155,7 @@ CREATE TABLE IF NOT EXISTS public.membership_requests (
 CREATE TABLE IF NOT EXISTS public.persons (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     family_id UUID NOT NULL REFERENCES public.families(id) ON DELETE CASCADE,
+    linked_user_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     preferred_name TEXT,
@@ -157,11 +165,16 @@ CREATE TABLE IF NOT EXISTS public.persons (
     birth_date DATE,
     birth_date_approx BOOLEAN NOT NULL DEFAULT FALSE,
     birth_year_approx INTEGER,
+    birth_year INTEGER,
+    birth_month INTEGER,
+    birth_day INTEGER,
     birth_place TEXT,
     death_date DATE,
     death_date_approx BOOLEAN NOT NULL DEFAULT FALSE,
     death_year_approx INTEGER,
-    death_place TEXT,
+    death_year INTEGER,
+    death_month INTEGER,
+    death_day INTEGER,
     is_living BOOLEAN NOT NULL DEFAULT TRUE,
     bio TEXT,
     life_story TEXT,
@@ -169,11 +182,23 @@ CREATE TABLE IF NOT EXISTS public.persons (
     is_verified BOOLEAN NOT NULL DEFAULT FALSE,
     generation_hint INTEGER,
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now()),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now()),
+    CONSTRAINT chk_living_death_consistency CHECK (
+        (is_living = TRUE AND death_date IS NULL AND death_year_approx IS NULL AND death_year IS NULL) OR
+        (is_living = FALSE)
+    ),
+    CONSTRAINT chk_birth_before_death CHECK (
+        birth_date IS NULL OR death_date IS NULL OR death_date >= birth_date
+    ),
+    CONSTRAINT chk_birth_month CHECK (birth_month IS NULL OR (birth_month BETWEEN 1 AND 12)),
+    CONSTRAINT chk_death_month CHECK (death_month IS NULL OR (death_month BETWEEN 1 AND 12)),
+    CONSTRAINT chk_birth_day CHECK (birth_day IS NULL OR (birth_day BETWEEN 1 AND 31)),
+    CONSTRAINT chk_death_day CHECK (death_day IS NULL OR (death_day BETWEEN 1 AND 31))
 );
 
 CREATE INDEX IF NOT EXISTS idx_persons_family ON public.persons(family_id);
 CREATE INDEX IF NOT EXISTS idx_persons_names ON public.persons(family_id, last_name, first_name);
+CREATE INDEX IF NOT EXISTS idx_persons_linked_user ON public.persons(linked_user_id);
 
 -- ------------------------------------------------------------------------------
 -- 7. RELATIONSHIPS
@@ -185,6 +210,7 @@ CREATE TABLE IF NOT EXISTS public.relationships (
     person_id UUID NOT NULL REFERENCES public.persons(id) ON DELETE CASCADE,
     related_person_id UUID NOT NULL REFERENCES public.persons(id) ON DELETE CASCADE,
     relationship_type relationship_type NOT NULL,
+    lineage lineage_type NOT NULL DEFAULT 'biological',
     start_date DATE,
     end_date DATE,
     notes TEXT,
@@ -192,12 +218,14 @@ CREATE TABLE IF NOT EXISTS public.relationships (
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now()),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now()),
     CONSTRAINT chk_no_self_relation CHECK (person_id <> related_person_id),
+    CONSTRAINT chk_rel_dates CHECK (start_date IS NULL OR end_date IS NULL OR end_date >= start_date),
     CONSTRAINT uq_person_relationship UNIQUE (family_id, person_id, related_person_id, relationship_type)
 );
 
 CREATE INDEX IF NOT EXISTS idx_relationships_family ON public.relationships(family_id);
 CREATE INDEX IF NOT EXISTS idx_relationships_person ON public.relationships(person_id);
 CREATE INDEX IF NOT EXISTS idx_relationships_related ON public.relationships(related_person_id);
+CREATE INDEX IF NOT EXISTS idx_relationships_lineage ON public.relationships(lineage);
 
 -- ------------------------------------------------------------------------------
 -- 8. MEDIA ASSETS (Private bucket files metadata)
@@ -214,7 +242,7 @@ CREATE TABLE IF NOT EXISTS public.media_assets (
     captured_date_approx BOOLEAN NOT NULL DEFAULT FALSE,
     mime_type TEXT,
     file_size_bytes BIGINT,
-    uploader_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE RESTRICT,
+    uploader_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now()),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
 );
@@ -298,7 +326,7 @@ CREATE TABLE IF NOT EXISTS public.person_sources (
 CREATE TABLE IF NOT EXISTS public.audit_logs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     family_id UUID NOT NULL REFERENCES public.families(id) ON DELETE CASCADE,
-    actor_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE RESTRICT,
+    actor_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
     action TEXT NOT NULL,
     entity_type TEXT NOT NULL,
     entity_id UUID NOT NULL,

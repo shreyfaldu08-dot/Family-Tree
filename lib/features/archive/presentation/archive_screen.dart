@@ -57,7 +57,7 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
             ),
           ),
 
-          const Divider(height: 1),
+          const SizedBox(height: 6),
 
           Expanded(
             child: mediaAsync.when(
@@ -74,20 +74,43 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
                 if (filtered.isEmpty) {
                   return Center(
                     child: Padding(
-                      padding: const EdgeInsets.all(32),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.photo_library_outlined, size: 52, color: HeritageColors.sage),
-                          const SizedBox(height: 12),
-                          Text('No Archival Assets in this Category', style: HeritageTypography.titleMedium),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Historical documents and audio recordings are securely preserved in private storage.',
-                            textAlign: TextAlign.center,
-                            style: HeritageTypography.bodySmall,
-                          ),
-                        ],
+                      padding: const EdgeInsets.symmetric(horizontal: 28),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                        decoration: BoxDecoration(
+                          gradient: HeritageGradients.premiumCard,
+                          borderRadius: HeritageCurves.cardLarge,
+                          boxShadow: HeritageShadows.card,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 64,
+                              height: 64,
+                              decoration: const BoxDecoration(
+                                gradient: HeritageGradients.avatarPill,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.auto_stories_rounded,
+                                size: 28,
+                                color: HeritageColors.charcoal,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Preserve Your First Memory',
+                              style: HeritageTypography.titleMedium.copyWith(fontWeight: FontWeight.w700),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              'Upload vintage family photographs, letters, or audio recordings to safely preserve them in your encrypted family archive.',
+                              textAlign: TextAlign.center,
+                              style: HeritageTypography.bodySmall,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

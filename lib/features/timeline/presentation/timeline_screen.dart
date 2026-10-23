@@ -37,7 +37,46 @@ class TimelineScreen extends ConsumerWidget {
         data: (events) {
           if (events.isEmpty) {
             return Center(
-              child: Text('No historical events recorded.', style: HeritageTypography.bodyMedium),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 28),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                  decoration: BoxDecoration(
+                    gradient: HeritageGradients.premiumCard,
+                    borderRadius: HeritageCurves.cardLarge,
+                    boxShadow: HeritageShadows.card,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 60,
+                        height: 60,
+                        decoration: const BoxDecoration(
+                          gradient: HeritageGradients.avatarPill,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.timeline_rounded,
+                          size: 28,
+                          color: HeritageColors.charcoal,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No Milestones Yet',
+                        style: HeritageTypography.titleMedium.copyWith(fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        'Document births, marriages, migrations, and major historical achievements across your family generations.',
+                        textAlign: TextAlign.center,
+                        style: HeritageTypography.bodySmall,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             );
           }
 

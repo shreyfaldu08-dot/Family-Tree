@@ -18,6 +18,7 @@ class _RelationshipManagerScreenState extends ConsumerState<RelationshipManagerS
   String? _personAId;
   String? _personBId;
   RelationshipType _relType = RelationshipType.parent;
+  LineageType _lineage = LineageType.biological;
   bool _isSaving = false;
 
   @override
@@ -52,6 +53,7 @@ class _RelationshipManagerScreenState extends ConsumerState<RelationshipManagerS
         personId: _personAId!,
         relatedPersonId: _personBId!,
         type: _relType,
+        lineage: _lineage,
         isVerified: true,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
@@ -166,6 +168,23 @@ class _RelationshipManagerScreenState extends ConsumerState<RelationshipManagerS
                         if (val != null) setState(() => _relType = val);
                       },
                     ),
+
+                    if (_relType == RelationshipType.parent || _relType == RelationshipType.child) ...[
+                      const SizedBox(height: 12),
+                      DropdownButtonFormField<LineageType>(
+                        value: _lineage,
+                        decoration: const InputDecoration(labelText: 'Lineage / Classification'),
+                        items: LineageType.values.map((l) {
+                          return DropdownMenuItem(
+                            value: l,
+                            child: Text(l.label),
+                          );
+                        }).toList(),
+                        onChanged: (val) {
+                          if (val != null) setState(() => _lineage = val);
+                        },
+                      ),
+                    ],
 
                     const SizedBox(height: 12),
 

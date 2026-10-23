@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -256,56 +257,67 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                       // Mode Switcher Pill (Ancestry / Descendants / Full)
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
-                            gradient: HeritageGradients.pillTrack,
                             borderRadius: HeritageCurves.pill,
                             boxShadow: HeritageShadows.pill,
                           ),
-                          child: Row(
-                            children: TreeMode.values.map((mode) {
-                              final isSelected = mode == _currentMode;
-                              final displayLabel = mode == TreeMode.overview
-                                  ? 'Full'
-                                  : mode.label.split(' ').first;
-                              return Expanded(
-                                child: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _currentMode = mode;
-                                    });
-                                  },
+                          child: ClipRRect(
+                            borderRadius: HeritageCurves.pill,
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.85),
                                   borderRadius: HeritageCurves.pill,
-                                  child: AnimatedContainer(
-                                    duration: const Duration(milliseconds: 200),
-                                    curve: Curves.easeInOut,
-                                    padding: const EdgeInsets.symmetric(vertical: 9),
-                                    decoration: BoxDecoration(
-                                      gradient: isSelected
-                                          ? HeritageGradients.accentPill
-                                          : null,
-                                      borderRadius: HeritageCurves.pill,
-                                      boxShadow: isSelected
-                                          ? HeritageShadows.activePill
-                                          : null,
-                                    ),
-                                    child: Text(
-                                      displayLabel,
-                                      textAlign: TextAlign.center,
-                                      style: HeritageTypography.labelSmall.copyWith(
-                                        fontSize: 12.5,
-                                        color: isSelected
-                                            ? HeritageColors.charcoal
-                                            : HeritageColors.charcoalMuted,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w700
-                                            : FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
                                 ),
-                              );
-                            }).toList(),
+                                child: Row(
+                                  children: TreeMode.values.map((mode) {
+                                    final isSelected = mode == _currentMode;
+                                    final displayLabel = mode == TreeMode.overview
+                                        ? 'Full'
+                                        : mode.label.split(' ').first;
+                                    return Expanded(
+                                      child: InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            _currentMode = mode;
+                                          });
+                                        },
+                                        borderRadius: HeritageCurves.pill,
+                                        child: AnimatedContainer(
+                                          duration: const Duration(milliseconds: 200),
+                                          curve: Curves.easeInOut,
+                                          padding: const EdgeInsets.symmetric(vertical: 10),
+                                          decoration: BoxDecoration(
+                                            gradient: isSelected
+                                                ? HeritageGradients.accentPill
+                                                : null,
+                                            borderRadius: HeritageCurves.pill,
+                                            boxShadow: isSelected
+                                                ? HeritageShadows.activePill
+                                                : null,
+                                          ),
+                                          child: Text(
+                                            displayLabel,
+                                            textAlign: TextAlign.center,
+                                            style: HeritageTypography.labelSmall.copyWith(
+                                              fontSize: 12.5,
+                                              color: isSelected
+                                                  ? HeritageColors.charcoal
+                                                  : HeritageColors.charcoalMuted,
+                                              fontWeight: isSelected
+                                                  ? FontWeight.w700
+                                                  : FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
