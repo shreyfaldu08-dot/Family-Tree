@@ -16,17 +16,11 @@ void main() {
     // Verify main brand heading renders
     expect(find.text('Vansora'), findsWidgets);
 
-    // Verify bottom navigation destinations and short labels
+    // Verify bottom navigation icon destinations render cleanly
     expect(find.byIcon(Icons.cottage_rounded), findsOneWidget);
     expect(find.byIcon(Icons.park_outlined), findsOneWidget);
     expect(find.byIcon(Icons.diversity_3_outlined), findsOneWidget);
     expect(find.byIcon(Icons.auto_stories_outlined), findsWidgets);
     expect(find.byIcon(Icons.person_outline_rounded), findsOneWidget);
-
-    expect(find.text('Home'), findsWidgets);
-    expect(find.text('Family Tree'), findsOneWidget);
-    expect(find.text('People'), findsOneWidget);
-    expect(find.text('Archive'), findsOneWidget);
-    expect(find.text('Profile'), findsOneWidget);
   });
 }

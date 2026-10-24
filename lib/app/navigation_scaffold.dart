@@ -28,8 +28,8 @@ class NavigationScaffold extends StatelessWidget {
           child: NavigationBar(
             backgroundColor: AppColors.surface,
             elevation: 0,
-            height: 64,
-            labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+            height: 58,
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
             selectedIndex: navigationShell.currentIndex,
             indicatorColor: AppColors.paleSage,
             indicatorShape: RoundedRectangleBorder(
@@ -45,27 +45,27 @@ class NavigationScaffold extends StatelessWidget {
               NavigationDestination(
                 icon: Icon(Icons.cottage_outlined, color: AppColors.textSecondary),
                 selectedIcon: Icon(Icons.cottage_rounded, color: AppColors.textPrimary),
-                label: 'Home',
+                label: '',
               ),
               NavigationDestination(
                 icon: Icon(Icons.park_outlined, color: AppColors.textSecondary),
                 selectedIcon: Icon(Icons.park_rounded, color: AppColors.textPrimary),
-                label: 'Family Tree',
+                label: '',
               ),
               NavigationDestination(
                 icon: Icon(Icons.diversity_3_outlined, color: AppColors.textSecondary),
                 selectedIcon: Icon(Icons.diversity_3_rounded, color: AppColors.textPrimary),
-                label: 'People',
+                label: '',
               ),
               NavigationDestination(
                 icon: Icon(Icons.auto_stories_outlined, color: AppColors.textSecondary),
                 selectedIcon: Icon(Icons.auto_stories_rounded, color: AppColors.textPrimary),
-                label: 'Archive',
+                label: '',
               ),
               NavigationDestination(
                 icon: Icon(Icons.person_outline_rounded, color: AppColors.textSecondary),
                 selectedIcon: Icon(Icons.person_rounded, color: AppColors.textPrimary),
-                label: 'Profile',
+                label: '',
               ),
             ],
           ),

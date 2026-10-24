@@ -187,7 +187,7 @@ abstract final class HeritageTheme {
         indicatorShape: RoundedRectangleBorder(
           borderRadius: HeritageCurves.pill, // Stadium capsule indicator
         ),
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
             return HeritageTypography.labelSmall.copyWith(
