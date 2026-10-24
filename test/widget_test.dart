@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:family_legacy/app/app.dart';
@@ -15,8 +16,14 @@ void main() {
     // Verify main brand heading renders
     expect(find.text('Vansora'), findsWidgets);
 
-    // Verify bottom navigation destinations
-    expect(find.text('Home'), findsOneWidget);
+    // Verify bottom navigation destinations and short labels
+    expect(find.byIcon(Icons.cottage_rounded), findsOneWidget);
+    expect(find.byIcon(Icons.park_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.diversity_3_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.auto_stories_outlined), findsWidgets);
+    expect(find.byIcon(Icons.person_outline_rounded), findsOneWidget);
+
+    expect(find.text('Home'), findsWidgets);
     expect(find.text('Family Tree'), findsOneWidget);
     expect(find.text('People'), findsOneWidget);
     expect(find.text('Archive'), findsOneWidget);

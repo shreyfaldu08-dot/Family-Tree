@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/typography.dart';
 import '../../../data/models/person.dart';
-import '../../../data/models/relationship.dart';
 import '../../../data/providers/repository_providers.dart';
 
 class PersonProfileScreen extends ConsumerWidget {
@@ -15,7 +14,7 @@ class PersonProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final personsAsync = ref.watch(familyPersonsProvider);
-    final relsAsync = ref.watch(familyRelationshipsProvider);
+    final relationshipsAsync = ref.watch(familyRelationshipsProvider);
     final mediaAsync = ref.watch(familyMediaProvider);
     final timelineAsync = ref.watch(familyTimelineProvider);
     final membership = ref.watch(currentMembershipProvider).valueOrNull;
@@ -23,40 +22,41 @@ class PersonProfileScreen extends ConsumerWidget {
 
     return personsAsync.when(
       loading: () => const Scaffold(
-        backgroundColor: HeritageColors.warmIvory,
-        body: Center(child: CircularProgressIndicator(color: HeritageColors.forestGreen)),
+        backgroundColor: AppColors.background,
+        body: Center(child: CircularProgressIndicator(color: AppColors.primary)),
       ),
       error: (err, _) => Scaffold(
-        appBar: AppBar(),
+        backgroundColor: AppColors.background,
         body: Center(child: Text('Error: $err')),
       ),
       data: (allPersons) {
         final person = allPersons.where((p) => p.id == personId).firstOrNull;
-
         if (person == null) {
-          return Scaffold(
-            appBar: AppBar(),
-            body: Center(
-              child: Text('Person record not found.', style: HeritageTypography.titleMedium),
-            ),
+          return const Scaffold(
+            backgroundColor: AppColors.background,
+            body: Center(child: Text('Person record not found.')),
           );
         }
 
-        final allRels = relsAsync.valueOrNull ?? const [];
+        final allRels = relationshipsAsync.valueOrNull ?? const [];
         final allMedia = mediaAsync.valueOrNull ?? const [];
         final allEvents = timelineAsync.valueOrNull ?? const [];
 
-        // Linked family members
+        // Linked relatives
         final parentIds = allRels
-            .where((r) => r.type == RelationshipType.parent && r.relatedPersonId == person.id)
+            .where((r) => r.relatedPersonId == person.id && r.type.dbValue == 'parent')
             .map((r) => r.personId)
             .toSet();
+
         final childIds = allRels
-            .where((r) => r.type == RelationshipType.parent && r.personId == person.id)
+            .where((r) => r.personId == person.id && r.type.dbValue == 'parent')
             .map((r) => r.relatedPersonId)
             .toSet();
+
         final spouseIds = allRels
-            .where((r) => r.type == RelationshipType.spouse && (r.personId == person.id || r.relatedPersonId == person.id))
+            .where((r) =>
+                (r.personId == person.id || r.relatedPersonId == person.id) &&
+                r.type.dbValue == 'spouse')
             .map((r) => r.personId == person.id ? r.relatedPersonId : r.personId)
             .toSet();
 
@@ -70,7 +70,7 @@ class PersonProfileScreen extends ConsumerWidget {
         return DefaultTabController(
           length: 6,
           child: Scaffold(
-            backgroundColor: HeritageColors.warmIvory,
+            backgroundColor: AppColors.background,
             appBar: AppBar(
               title: Text(person.displayName, style: HeritageTypography.displaySmall),
               actions: [
@@ -81,7 +81,7 @@ class PersonProfileScreen extends ConsumerWidget {
                 ),
                 if (isAdmin)
                   IconButton(
-                    icon: const Icon(Icons.edit_outlined, color: HeritageColors.charcoal),
+                    icon: const Icon(Icons.edit_outlined, color: AppColors.textPrimary),
                     tooltip: 'Edit Record (Admin)',
                     onPressed: () => context.push('/admin/persons/edit/${person.id}'),
                   ),
@@ -92,21 +92,20 @@ class PersonProfileScreen extends ConsumerWidget {
                   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    gradient: HeritageGradients.pillTrack,
+                    color: AppColors.surface,
                     borderRadius: HeritageCurves.pill,
-                    boxShadow: HeritageShadows.pill,
+                    boxShadow: HeritageShadows.card,
                   ),
                   child: TabBar(
                     isScrollable: true,
                     indicatorSize: TabBarIndicatorSize.tab,
                     dividerColor: Colors.transparent,
                     indicator: BoxDecoration(
-                      gradient: HeritageGradients.accentPill,
+                      color: AppColors.paleSage,
                       borderRadius: HeritageCurves.pill,
-                      boxShadow: HeritageShadows.activePill,
                     ),
-                    labelColor: HeritageColors.charcoal,
-                    unselectedLabelColor: HeritageColors.charcoalMuted,
+                    labelColor: AppColors.textPrimary,
+                    unselectedLabelColor: AppColors.textSecondary,
                     labelStyle: HeritageTypography.labelSmall.copyWith(fontWeight: FontWeight.w700),
                     tabs: const [
                       Tab(text: 'Overview'),
@@ -155,7 +154,7 @@ class PersonProfileScreen extends ConsumerWidget {
         Container(
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            gradient: HeritageGradients.premiumCard,
+            color: AppColors.surface,
             borderRadius: HeritageCurves.cardLarge,
             boxShadow: HeritageShadows.card,
           ),
@@ -166,13 +165,13 @@ class PersonProfileScreen extends ConsumerWidget {
                 height: 76,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: HeritageGradients.avatarPill,
+                  color: AppColors.lightSage,
                 ),
                 child: Center(
                   child: Text(
                     person.initials,
                     style: HeritageTypography.displayMedium.copyWith(
-                      color: HeritageColors.charcoal,
+                      color: AppColors.primary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -194,20 +193,15 @@ class PersonProfileScreen extends ConsumerWidget {
                     Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                           decoration: BoxDecoration(
-                            gradient: person.isLiving
-                                ? HeritageGradients.successBadge
-                                : null,
-                            color: person.isLiving
-                                ? null
-                                : HeritageColors.surfaceSecondary,
+                            color: AppColors.lightSage,
                             borderRadius: HeritageCurves.pill,
                           ),
                           child: Text(
                             person.isLiving ? 'Living' : 'Deceased',
                             style: HeritageTypography.labelSmall.copyWith(
-                              color: person.isLiving ? HeritageColors.statusSuccess : HeritageColors.charcoal,
+                              color: person.isLiving ? AppColors.primary : AppColors.textSecondary,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -215,20 +209,19 @@ class PersonProfileScreen extends ConsumerWidget {
                         if (person.isVerified) ...[
                           const SizedBox(width: 8),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                             decoration: BoxDecoration(
-                              gradient: HeritageGradients.accentPill,
+                              color: AppColors.paleSage,
                               borderRadius: HeritageCurves.pill,
-                              boxShadow: HeritageShadows.activePill,
                             ),
                             child: Row(
                               children: [
-                                const Icon(Icons.verified_outlined, size: 12, color: HeritageColors.charcoal),
+                                const Icon(Icons.check_circle_rounded, size: 13, color: AppColors.primary),
                                 const SizedBox(width: 4),
                                 Text(
                                   'Archival Verified',
                                   style: HeritageTypography.labelSmall.copyWith(
-                                    color: HeritageColors.charcoal,
+                                    color: AppColors.textPrimary,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
@@ -260,15 +253,17 @@ class PersonProfileScreen extends ConsumerWidget {
           Text('Biographical Summary', style: HeritageTypography.titleMedium),
           const SizedBox(height: 8),
           Container(
-            padding: const EdgeInsets.all(18),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              gradient: HeritageGradients.premiumCard,
-              borderRadius: BorderRadius.circular(24),
-              boxShadow: HeritageShadows.card,
+              color: AppColors.lightSage,
+              borderRadius: HeritageCurves.card,
             ),
             child: Text(
               person.bio!,
-              style: HeritageTypography.bodyMedium.copyWith(height: 1.5),
+              style: HeritageTypography.bodyMedium.copyWith(
+                height: 1.5,
+                color: AppColors.textPrimary,
+              ),
             ),
           ),
         ],
@@ -312,23 +307,27 @@ class PersonProfileScreen extends ConsumerWidget {
         const SizedBox(height: 8),
         if (people.isEmpty)
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
             decoration: BoxDecoration(
-              color: HeritageColors.warmIvoryLight,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: HeritageColors.stone, width: 1),
+              color: AppColors.surface,
+              borderRadius: HeritageCurves.card,
+              boxShadow: HeritageShadows.card,
             ),
             child: Text('No $title recorded yet.', style: HeritageTypography.bodySmall),
           )
         else
           ...people.map((p) => Container(
-                margin: const EdgeInsets.only(bottom: 6),
+                margin: const EdgeInsets.only(bottom: 8),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: HeritageCurves.card,
+                  boxShadow: HeritageShadows.card,
+                ),
                 child: ListTile(
-                  tileColor: HeritageColors.warmIvoryLight,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    side: const BorderSide(color: HeritageColors.stone, width: 1),
+                    borderRadius: HeritageCurves.card,
                   ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
                   onTap: () => context.push('/people/${p.id}'),
                   title: Text(p.displayName, style: HeritageTypography.titleSmall),
                   subtitle: Text(p.lifeDateSpan, style: HeritageTypography.lifeDates),
@@ -347,15 +346,17 @@ class PersonProfileScreen extends ConsumerWidget {
         Text('Life Chronicle', style: HeritageTypography.displaySmall),
         const SizedBox(height: 14),
         Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: HeritageColors.warmIvoryLight,
-            borderRadius: BorderRadius.circular(22),
-            border: Border.all(color: HeritageColors.stone, width: 1.2),
+            color: AppColors.surface,
+            borderRadius: HeritageCurves.cardLarge,
+            boxShadow: HeritageShadows.card,
           ),
           child: Text(
             story,
-            style: HeritageTypography.storyBody,
+            style: HeritageTypography.storyBody.copyWith(
+              color: AppColors.textPrimary,
+            ),
           ),
         ),
       ],
@@ -374,15 +375,23 @@ class PersonProfileScreen extends ConsumerWidget {
         else
           ...photos.map((m) => Container(
                 margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.all(14),
+                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
                 decoration: BoxDecoration(
-                  color: HeritageColors.warmIvoryLight,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: HeritageColors.stone, width: 1),
+                  color: AppColors.surface,
+                  borderRadius: HeritageCurves.card,
+                  boxShadow: HeritageShadows.card,
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.photo_outlined, color: HeritageColors.forestGreen, size: 28),
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.lightSage,
+                      ),
+                      child: const Icon(Icons.photo_outlined, color: AppColors.primary, size: 22),
+                    ),
                     const SizedBox(width: 14),
                     Expanded(
                       child: Column(
@@ -413,15 +422,23 @@ class PersonProfileScreen extends ConsumerWidget {
         else
           ...docs.map((d) => Container(
                 margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.all(14),
+                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
                 decoration: BoxDecoration(
-                  color: HeritageColors.warmIvoryLight,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: HeritageColors.stone, width: 1),
+                  color: AppColors.surface,
+                  borderRadius: HeritageCurves.card,
+                  boxShadow: HeritageShadows.card,
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.description_outlined, color: HeritageColors.mutedBrass, size: 28),
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.lightSage,
+                      ),
+                      child: const Icon(Icons.description_outlined, color: AppColors.primary, size: 22),
+                    ),
                     const SizedBox(width: 14),
                     Expanded(
                       child: Column(
@@ -450,12 +467,12 @@ class PersonProfileScreen extends ConsumerWidget {
           const Text('No linked historical events recorded.')
         else
           ...events.map((e) => Container(
-                margin: const EdgeInsets.only(bottom: 10),
-                padding: const EdgeInsets.all(14),
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
                 decoration: BoxDecoration(
-                  color: HeritageColors.warmIvoryLight,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: HeritageColors.stone, width: 1),
+                  color: AppColors.surface,
+                  borderRadius: HeritageCurves.card,
+                  boxShadow: HeritageShadows.card,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -484,13 +501,16 @@ class PersonProfileScreen extends ConsumerWidget {
             width: 120,
             child: Text(
               label,
-              style: HeritageTypography.labelMedium.copyWith(color: HeritageColors.charcoalMuted),
+              style: HeritageTypography.labelMedium.copyWith(color: AppColors.textSecondary),
             ),
           ),
           Expanded(
             child: Text(
               value,
-              style: HeritageTypography.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+              style: HeritageTypography.bodyMedium.copyWith(
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary,
+              ),
             ),
           ),
         ],

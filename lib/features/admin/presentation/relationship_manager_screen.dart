@@ -119,7 +119,7 @@ class _RelationshipManagerScreenState extends ConsumerState<RelationshipManagerS
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  gradient: HeritageGradients.premiumCard,
+                  color: AppColors.surface,
                   borderRadius: HeritageCurves.cardLarge,
                   boxShadow: HeritageShadows.card,
                 ),
@@ -231,13 +231,17 @@ class _RelationshipManagerScreenState extends ConsumerState<RelationshipManagerS
                       if (pA == null || pB == null) return const SizedBox.shrink();
 
                       return Container(
-                        margin: const EdgeInsets.only(bottom: 10),
+                        margin: const EdgeInsets.only(bottom: 12),
                         decoration: BoxDecoration(
-                          gradient: HeritageGradients.premiumCard,
-                          borderRadius: BorderRadius.circular(22),
+                          color: AppColors.surface,
+                          borderRadius: HeritageCurves.card,
                           boxShadow: HeritageShadows.card,
                         ),
                         child: ListTile(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: HeritageCurves.card,
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
                           title: Text(
                             '${pA.displayName} → ${r.type.label} → ${pB.displayName}',
                             style: HeritageTypography.titleSmall.copyWith(fontSize: 13.5),

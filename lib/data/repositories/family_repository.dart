@@ -19,11 +19,11 @@ class FamilyRepository {
   }
 
   Future<Family?> getFamily(String familyId, FamilyMembership? membership) async {
-    SecurityGuards.assertCanRead(membership);
-
     if (!_supabase.isInitialized) {
       return _currentFamily;
     }
+
+    SecurityGuards.assertCanRead(membership);
 
     try {
       final res = await _supabase.client

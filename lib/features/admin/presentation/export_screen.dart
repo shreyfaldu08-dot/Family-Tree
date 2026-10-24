@@ -49,8 +49,8 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              gradient: HeritageGradients.premiumCard,
-              borderRadius: HeritageCurves.card,
+              color: AppColors.surface,
+              borderRadius: HeritageCurves.cardLarge,
               boxShadow: HeritageShadows.card,
             ),
             child: Column(
@@ -81,7 +81,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               children: [
                 Text('Exported Archive Payload', style: HeritageTypography.displaySmall),
                 IconButton(
-                  icon: const Icon(Icons.copy, color: HeritageColors.charcoal),
+                  icon: const Icon(Icons.copy, color: AppColors.textPrimary),
                   tooltip: 'Copy JSON',
                   onPressed: () {
                     Clipboard.setData(ClipboardData(text: _exportedJson!));
@@ -97,8 +97,8 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               height: 380,
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: HeritageColors.charcoal,
-                borderRadius: BorderRadius.circular(18),
+                color: AppColors.lightSage,
+                borderRadius: HeritageCurves.card,
               ),
               child: SingleChildScrollView(
                 child: SelectableText(
@@ -106,7 +106,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
                   style: const TextStyle(
                     fontFamily: 'monospace',
                     fontSize: 11.5,
-                    color: HeritageColors.stoneLight,
+                    color: AppColors.textPrimary,
                   ),
                 ),
               ),

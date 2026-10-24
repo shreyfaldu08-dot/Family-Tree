@@ -66,11 +66,11 @@ class _MemberListScreenState extends ConsumerState<MemberListScreen> {
                 final isAdmin = m.role == MemberRole.primaryAdmin;
 
                 return Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  padding: const EdgeInsets.all(16),
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
                   decoration: BoxDecoration(
-                    gradient: HeritageGradients.premiumCard,
-                    borderRadius: BorderRadius.circular(22),
+                    color: AppColors.surface,
+                    borderRadius: HeritageCurves.card,
                     boxShadow: HeritageShadows.card,
                   ),
                   child: Row(
@@ -80,11 +80,11 @@ class _MemberListScreenState extends ConsumerState<MemberListScreen> {
                         height: 46,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          gradient: isAdmin ? HeritageGradients.accentPill : HeritageGradients.avatarPill,
+                          color: isAdmin ? AppColors.paleSage : AppColors.lightSage,
                         ),
                         child: Icon(
                           isAdmin ? Icons.shield : Icons.person_outline,
-                          color: HeritageColors.charcoal,
+                          color: isAdmin ? AppColors.primary : AppColors.textPrimary,
                           size: 20,
                         ),
                       ),

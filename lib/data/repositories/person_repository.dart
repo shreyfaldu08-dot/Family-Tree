@@ -12,11 +12,11 @@ class PersonRepository {
   }
 
   Future<List<Person>> getPersonsForFamily(String familyId, FamilyMembership? membership) async {
-    SecurityGuards.assertCanRead(membership);
-
     if (!_supabase.isInitialized) {
       return List.unmodifiable(_memoryStore.where((p) => p.familyId == familyId));
     }
+
+    SecurityGuards.assertCanRead(membership);
 
     try {
       final res = await _supabase.client
@@ -36,8 +36,6 @@ class PersonRepository {
   }
 
   Future<Person?> getPersonById(String personId, FamilyMembership? membership) async {
-    SecurityGuards.assertCanRead(membership);
-
     if (!_supabase.isInitialized) {
       try {
         return _memoryStore.firstWhere((p) => p.id == personId);
@@ -45,6 +43,8 @@ class PersonRepository {
         return null;
       }
     }
+
+    SecurityGuards.assertCanRead(membership);
 
     try {
       final res = await _supabase.client

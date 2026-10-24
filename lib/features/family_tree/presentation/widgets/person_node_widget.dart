@@ -19,49 +19,57 @@ class PersonNodeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final person = node.person;
     final isSelected = node.isSelected;
+    final isDirectLine = node.relativeGeneration != 0;
     final hasBranch = node.children.isNotEmpty || node.parents.isNotEmpty;
-
     final isRoot = person.generationHint == 1;
+
+    // Node Background & Border per Vansora Specification
+    final Color nodeBg = isSelected
+        ? AppColors.treeNodeSelectedBackground // #C7E2C9 Soft Mint
+        : (isDirectLine ? AppColors.treeNodeAncestorBackground : AppColors.treeNodeNormalBackground); // #EDF4EA / #FFFFFF
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(26),
+      borderRadius: HeritageCurves.card,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         width: 154,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
-          gradient: isSelected
-              ? HeritageGradients.heroCard
-              : HeritageGradients.premiumCard,
-          borderRadius: BorderRadius.circular(26),
+          color: nodeBg,
+          borderRadius: HeritageCurves.card,
           boxShadow: isSelected
-              ? HeritageShadows.activePill
+              ? [
+                  BoxShadow(
+                    color: AppColors.primary.withOpacity(0.25),
+                    blurRadius: 14,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 4),
+                  ),
+                  ...HeritageShadows.card,
+                ]
               : HeritageShadows.card,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Portrait Avatar with verification badge
+            // Portrait Avatar
             Stack(
               alignment: Alignment.center,
               clipBehavior: Clip.none,
               children: [
                 Container(
-                  width: 52,
-                  height: 52,
+                  width: 50,
+                  height: 50,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    gradient: HeritageGradients.avatarPill,
-                    border: isRoot
-                        ? Border.all(color: const Color(0xFFD97706).withOpacity(0.45), width: 2)
-                        : null,
+                    color: isSelected ? AppColors.paleSage : AppColors.lightSage,
                   ),
                   child: Center(
                     child: Text(
                       person.initials,
                       style: HeritageTypography.titleMedium.copyWith(
-                        color: HeritageColors.charcoal,
+                        color: AppColors.textPrimary,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -74,13 +82,13 @@ class PersonNodeWidget extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(3),
                       decoration: const BoxDecoration(
-                        color: Color(0xFFFEF3C7),
+                        color: AppColors.paleSage,
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
                         Icons.auto_awesome_rounded,
                         size: 10,
-                        color: Color(0xFFD97706),
+                        color: AppColors.primary,
                       ),
                     ),
                   ),
@@ -91,13 +99,13 @@ class PersonNodeWidget extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(2),
                       decoration: const BoxDecoration(
-                        color: HeritageColors.statusSuccessBackground,
+                        color: AppColors.surface,
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
-                        Icons.check,
-                        size: 11,
-                        color: HeritageColors.statusSuccess,
+                        Icons.check_circle_rounded,
+                        size: 14,
+                        color: AppColors.primary,
                       ),
                     ),
                   ),
@@ -115,7 +123,7 @@ class PersonNodeWidget extends StatelessWidget {
               style: HeritageTypography.titleSmall.copyWith(
                 fontSize: 13,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                color: HeritageColors.charcoal,
+                color: AppColors.textPrimary,
               ),
             ),
 
@@ -127,29 +135,25 @@ class PersonNodeWidget extends StatelessWidget {
               textAlign: TextAlign.center,
               style: HeritageTypography.lifeDates.copyWith(
                 fontSize: 10.5,
+                color: AppColors.textSecondary,
               ),
             ),
 
-            // Expand/collapse indicator if branch exists
+            // Branch expand / collapse indicator
             if (hasBranch && onToggleExpand != null) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: 5),
               GestureDetector(
                 onTap: onToggleExpand,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                   decoration: BoxDecoration(
-                    gradient: node.isExpanded
-                        ? null
-                        : HeritageGradients.accentPill,
-                    color: node.isExpanded
-                        ? HeritageColors.surfaceSecondary
-                        : null,
+                    color: node.isExpanded ? AppColors.lightSage : AppColors.paleSage,
                     borderRadius: HeritageCurves.pill,
                   ),
                   child: Icon(
                     node.isExpanded ? Icons.remove : Icons.add,
                     size: 11,
-                    color: HeritageColors.charcoal,
+                    color: AppColors.textPrimary,
                   ),
                 ),
               ),

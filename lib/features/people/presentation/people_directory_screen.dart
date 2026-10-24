@@ -34,13 +34,13 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
     final isAdmin = membership?.canWriteFamilyData ?? false;
 
     return Scaffold(
-      backgroundColor: HeritageColors.warmIvory,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text('People Directory', style: HeritageTypography.displaySmall),
         actions: [
           if (isAdmin)
             IconButton(
-              icon: const Icon(Icons.person_add_alt_1, color: HeritageColors.charcoal),
+              icon: const Icon(Icons.person_add_alt_1, color: AppColors.textPrimary),
               tooltip: 'Add Person Record',
               onPressed: () => context.push('/admin/persons/new'),
             ),
@@ -51,15 +51,15 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
           // Search & Filter Box
           Container(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-            color: HeritageColors.background,
+            color: AppColors.background,
             child: Column(
               children: [
-                // Search field
+                // Search field (Pure White background, Soft Border, Focus Primary Green)
                 TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
                     hintText: 'Search by full, maiden, or alternate name...',
-                    prefixIcon: const Icon(Icons.search, color: HeritageColors.charcoalMuted),
+                    prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
                     suffixIcon: _searchQuery.isNotEmpty
                         ? IconButton(
                             icon: const Icon(Icons.clear, size: 18),
@@ -100,7 +100,7 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                         _sortOrder == SortOrder.chronological
                             ? Icons.history
                             : Icons.sort_by_alpha,
-                        color: HeritageColors.charcoal,
+                        color: AppColors.textPrimary,
                       ),
                       tooltip: _sortOrder == SortOrder.chronological
                           ? 'Sort: Chronological'
@@ -108,8 +108,8 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                       onPressed: () {
                         setState(() {
                           _sortOrder = _sortOrder == SortOrder.chronological
-                              ? SortOrder.alphabetical
-                              : SortOrder.chronological;
+                          ? SortOrder.alphabetical
+                          : SortOrder.chronological;
                         });
                       },
                     ),
@@ -125,7 +125,7 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
           Expanded(
             child: personsAsync.when(
               loading: () => const Center(
-                child: CircularProgressIndicator(color: HeritageColors.forestGreen),
+                child: CircularProgressIndicator(color: AppColors.primary),
               ),
               error: (err, _) => Center(child: Text('Error loading directory: $err')),
               data: (allPersons) {
@@ -157,7 +157,7 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                         decoration: BoxDecoration(
-                          gradient: HeritageGradients.premiumCard,
+                          color: AppColors.surface,
                           borderRadius: HeritageCurves.cardLarge,
                           boxShadow: HeritageShadows.card,
                         ),
@@ -168,25 +168,30 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                               width: 60,
                               height: 60,
                               decoration: const BoxDecoration(
-                                gradient: HeritageGradients.avatarPill,
+                                color: AppColors.lightSage,
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
                                 Icons.person_search_rounded,
                                 size: 28,
-                                color: HeritageColors.charcoal,
+                                color: AppColors.primary,
                               ),
                             ),
                             const SizedBox(height: 16),
                             Text(
                               'No Family Members Found',
-                              style: HeritageTypography.titleMedium.copyWith(fontWeight: FontWeight.w700),
+                              style: HeritageTypography.titleMedium.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.textPrimary,
+                              ),
                             ),
                             const SizedBox(height: 6),
                             Text(
                               'Try adjusting your search query, or clear your filters to view all recorded ancestors.',
                               textAlign: TextAlign.center,
-                              style: HeritageTypography.bodySmall,
+                              style: HeritageTypography.bodySmall.copyWith(
+                                color: AppColors.textSecondary,
+                              ),
                             ),
                           ],
                         ),
@@ -201,16 +206,17 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                   itemBuilder: (ctx, i) {
                     final person = filtered[i];
                     return Container(
-                      margin: const EdgeInsets.only(bottom: 10),
+                      margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
-                        gradient: HeritageGradients.premiumCard,
-                        borderRadius: BorderRadius.circular(24),
+                        color: AppColors.surface,
+                        borderRadius: HeritageCurves.card,
                         boxShadow: HeritageShadows.card,
                       ),
                       child: ListTile(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
+                          borderRadius: HeritageCurves.card,
                         ),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
                         onTap: () => context.push('/people/${person.id}'),
                         leading: Stack(
                           children: [
@@ -219,13 +225,13 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                               height: 48,
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
-                                gradient: HeritageGradients.avatarPill,
+                                color: AppColors.lightSage,
                               ),
                               child: Center(
                                 child: Text(
                                   person.initials,
                                   style: HeritageTypography.titleMedium.copyWith(
-                                    color: HeritageColors.forestGreen,
+                                    color: AppColors.primary,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
@@ -238,13 +244,13 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                                 child: Container(
                                   padding: const EdgeInsets.all(2),
                                   decoration: const BoxDecoration(
-                                    gradient: HeritageGradients.successBadge,
+                                    color: AppColors.surface,
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
-                                    Icons.check,
-                                    size: 10,
-                                    color: HeritageColors.statusSuccess,
+                                    Icons.check_circle_rounded,
+                                    size: 13,
+                                    color: AppColors.primary,
                                   ),
                                 ),
                               ),
@@ -252,7 +258,10 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                         ),
                         title: Text(
                           person.displayName,
-                          style: HeritageTypography.titleSmall.copyWith(fontSize: 15),
+                          style: HeritageTypography.titleSmall.copyWith(
+                            fontSize: 15,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -263,14 +272,17 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                                 person.birthPlace!,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: HeritageTypography.bodySmall.copyWith(fontSize: 11),
+                                style: HeritageTypography.bodySmall.copyWith(
+                                  fontSize: 11,
+                                  color: AppColors.textSecondary,
+                                ),
                               ),
                           ],
                         ),
                         trailing: const Icon(
                           Icons.arrow_forward_ios_rounded,
                           size: 14,
-                          color: HeritageColors.charcoalMuted,
+                          color: AppColors.textSecondary,
                         ),
                       ),
                     );
@@ -297,21 +309,14 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
         decoration: BoxDecoration(
-          gradient: isSelected
-              ? HeritageGradients.accentPill
-              : null,
-          color: isSelected
-              ? null
-              : HeritageColors.surfaceSecondary,
+          color: isSelected ? AppColors.paleSage : AppColors.lightSage,
           borderRadius: HeritageCurves.pill,
-          boxShadow: isSelected
-              ? HeritageShadows.activePill
-              : null,
+          boxShadow: isSelected ? HeritageShadows.activePill : null,
         ),
         child: Text(
           label,
           style: HeritageTypography.labelSmall.copyWith(
-            color: isSelected ? HeritageColors.charcoal : HeritageColors.charcoalMuted,
+            color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
           ),
         ),

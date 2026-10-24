@@ -16,8 +16,6 @@ class TimelineRepository {
     FamilyMembership? membership, {
     String? personId,
   }) async {
-    SecurityGuards.assertCanRead(membership);
-
     if (!_supabase.isInitialized) {
       var list = _memoryStore.where((e) => e.familyId == familyId).toList();
       if (personId != null) {
@@ -30,6 +28,8 @@ class TimelineRepository {
       });
       return List.unmodifiable(list);
     }
+
+    SecurityGuards.assertCanRead(membership);
 
     try {
       final res = await _supabase.client

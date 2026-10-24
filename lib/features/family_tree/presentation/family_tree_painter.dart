@@ -13,28 +13,45 @@ class LivingHeritageTreePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final branchPaint = Paint()
-      ..color = HeritageColors.borderSubtle
-      ..strokeWidth = 2.0
+    // Normal relationship line (#DCE7DA Soft Border)
+    final normalBranchPaint = Paint()
+      ..color = AppColors.treeNormalLine
+      ..strokeWidth = 1.8
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-    final brassAccentPaint = Paint()
-      ..color = HeritageColors.blueHighlight
-      ..strokeWidth = 1.8
-      ..style = PaintingStyle.stroke;
+    // Emphasized relationship line (#9BC5A0 Fresh Green)
+    final emphasizedBranchPaint = Paint()
+      ..color = AppColors.treeEmphasizedLine
+      ..strokeWidth = 2.2
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+
+    // Selected direct line (#76A982 Primary Green)
+    final selectedBranchPaint = Paint()
+      ..color = AppColors.treeSelectedPath
+      ..strokeWidth = 2.5
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
 
     final dotPaint = Paint()
-      ..color = HeritageColors.blueHighlight
+      ..color = AppColors.primary
+      ..style = PaintingStyle.fill;
+
+    final normalDotPaint = Paint()
+      ..color = AppColors.border
       ..style = PaintingStyle.fill;
 
     // Draw organic curved branches connecting parents to children
     for (final node in nodes.values) {
       final fromPos = node.position;
+      final isFromFocused = node.id == focusPersonId;
 
       for (final child in node.children) {
         if (!nodes.containsKey(child.id)) continue;
         final toPos = child.position;
+        final isToFocused = child.id == focusPersonId;
+        final isConnectedToFocus = isFromFocused || isToFocused;
 
         // Draw organic S-curve Bézier line from parent to child
         final path = Path();
@@ -50,22 +67,27 @@ class LivingHeritageTreePainter extends CustomPainter {
           toPos.dy - 38, // Top of child node
         );
 
-        canvas.drawPath(path, branchPaint);
+        final paint = isConnectedToFocus
+            ? (node.isSelected || child.isSelected ? selectedBranchPaint : emphasizedBranchPaint)
+            : normalBranchPaint;
 
-        // Draw small brass junction bud at midpoint
+        canvas.drawPath(path, paint);
+
+        // Draw small junction bud at midpoint
         final midX = (fromPos.dx + toPos.dx) / 2;
-        canvas.drawCircle(Offset(midX, midY), 3.0, dotPaint);
+        canvas.drawCircle(Offset(midX, midY), isConnectedToFocus ? 3.0 : 2.5, isConnectedToFocus ? dotPaint : normalDotPaint);
       }
 
       // Draw spouse connection if spouse is in the tree
       if (node.spouse != null && nodes.containsKey(node.spouse!.id)) {
         final spPos = node.spouse!.position;
         if (fromPos.dx < spPos.dx) {
+          final isSpouseFocused = node.id == focusPersonId || node.spouse!.id == focusPersonId;
           final spousePath = Path();
           spousePath.moveTo(fromPos.dx + 48, fromPos.dy);
           spousePath.lineTo(spPos.dx - 48, spPos.dy);
-          canvas.drawPath(spousePath, brassAccentPaint);
-          canvas.drawCircle(Offset((fromPos.dx + spPos.dx) / 2, fromPos.dy), 3.5, dotPaint);
+          canvas.drawPath(spousePath, isSpouseFocused ? selectedBranchPaint : emphasizedBranchPaint);
+          canvas.drawCircle(Offset((fromPos.dx + spPos.dx) / 2, fromPos.dy), 3.0, isSpouseFocused ? dotPaint : normalDotPaint);
         }
       }
     }

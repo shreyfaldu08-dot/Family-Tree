@@ -16,7 +16,6 @@ class GenerationNavigator extends StatelessWidget {
     required this.onSelectGeneration,
   });
 
-
   @override
   Widget build(BuildContext context) {
     if (minGeneration == maxGeneration) return const SizedBox.shrink();
@@ -29,7 +28,7 @@ class GenerationNavigator extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        gradient: HeritageGradients.pillTrack,
+        color: AppColors.surface,
         borderRadius: HeritageCurves.pill,
         boxShadow: HeritageShadows.pill,
       ),
@@ -39,13 +38,13 @@ class GenerationNavigator extends StatelessWidget {
           const Icon(
             Icons.timeline_rounded,
             size: 16,
-            color: HeritageColors.charcoal,
+            color: AppColors.primary,
           ),
           const SizedBox(width: 8),
           Text(
             'Generations:',
             style: HeritageTypography.labelSmall.copyWith(
-              color: HeritageColors.charcoalMuted,
+              color: AppColors.textSecondary,
             ),
           ),
           const SizedBox(width: 8),
@@ -63,23 +62,16 @@ class GenerationNavigator extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
-                          gradient: isSelected
-                              ? HeritageGradients.accentPill
-                              : null,
-                          color: isSelected
-                              ? null
-                              : HeritageColors.surfaceSecondary,
+                          color: isSelected ? AppColors.paleSage : AppColors.lightSage,
                           borderRadius: HeritageCurves.pill,
-                          boxShadow: isSelected
-                              ? HeritageShadows.activePill
-                              : null,
+                          boxShadow: isSelected ? HeritageShadows.activePill : null,
                         ),
                         child: Text(
                           g == 0 ? '0' : (g > 0 ? '+$g' : '$g'),
                           style: HeritageTypography.labelSmall.copyWith(
                             color: isSelected
-                                ? HeritageColors.charcoal
-                                : HeritageColors.charcoalMuted,
+                                ? AppColors.textPrimary
+                                : AppColors.textSecondary,
                             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                           ),
                         ),

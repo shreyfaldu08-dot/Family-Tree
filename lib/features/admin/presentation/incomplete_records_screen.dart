@@ -58,13 +58,17 @@ class IncompleteRecordsScreen extends ConsumerWidget {
             itemBuilder: (ctx, i) {
               final person = list[i];
               return Container(
-                margin: const EdgeInsets.only(bottom: 10),
+                margin: const EdgeInsets.only(bottom: 12),
                 decoration: BoxDecoration(
-                  gradient: HeritageGradients.premiumCard,
-                  borderRadius: BorderRadius.circular(22),
+                  color: AppColors.surface,
+                  borderRadius: HeritageCurves.card,
                   boxShadow: HeritageShadows.card,
                 ),
                 child: ListTile(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: HeritageCurves.card,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
                   title: Text(person.displayName, style: HeritageTypography.titleSmall),
                   subtitle: Text(
                     !person.isVerified

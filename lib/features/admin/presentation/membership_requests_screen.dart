@@ -98,8 +98,8 @@ class _MembershipRequestsScreenState extends ConsumerState<MembershipRequestsScr
                       margin: const EdgeInsets.only(bottom: 12),
                       padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
-                        gradient: HeritageGradients.premiumCard,
-                        borderRadius: BorderRadius.circular(24),
+                        color: AppColors.surface,
+                        borderRadius: HeritageCurves.card,
                         boxShadow: HeritageShadows.card,
                       ),
                       child: Column(
@@ -113,12 +113,12 @@ class _MembershipRequestsScreenState extends ConsumerState<MembershipRequestsScr
                                 style: HeritageTypography.titleSmall.copyWith(fontSize: 16),
                               ),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                                 decoration: BoxDecoration(
-                                  color: HeritageColors.mutedBrass.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(10),
+                                  color: AppColors.paleSage,
+                                  borderRadius: HeritageCurves.pill,
                                 ),
-                                child: Text('Pending Approval', style: HeritageTypography.labelSmall),
+                                child: Text('Pending Approval', style: HeritageTypography.labelSmall.copyWith(color: AppColors.textPrimary)),
                               ),
                             ],
                           ),
@@ -137,8 +137,9 @@ class _MembershipRequestsScreenState extends ConsumerState<MembershipRequestsScr
                                 child: OutlinedButton(
                                   onPressed: () => _reject(req.id),
                                   style: OutlinedButton.styleFrom(
+                                    backgroundColor: const Color(0xFFFDE8E8),
                                     foregroundColor: HeritageColors.statusError,
-                                    side: const BorderSide(color: HeritageColors.statusError),
+                                    side: BorderSide.none,
                                   ),
                                   child: const Text('Reject'),
                                 ),

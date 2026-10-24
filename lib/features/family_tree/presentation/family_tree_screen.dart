@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -240,15 +239,15 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                         borderRadius: HeritageCurves.pill,
                         child: Container(
                           padding: const EdgeInsets.all(12),
-                          decoration: const BoxDecoration(
-                            gradient: HeritageGradients.pillTrack,
+                          decoration: BoxDecoration(
+                            color: AppColors.surface,
                             shape: BoxShape.circle,
-                            boxShadow: HeritageShadows.pill,
+                            boxShadow: HeritageShadows.card,
                           ),
                           child: const Icon(
                             Icons.arrow_back_rounded,
                             size: 20,
-                            color: HeritageColors.charcoal,
+                            color: AppColors.textPrimary,
                           ),
                         ),
                       ),
@@ -257,67 +256,52 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                       // Mode Switcher Pill (Ancestry / Descendants / Full)
                       Expanded(
                         child: Container(
+                          padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
+                            color: AppColors.surface,
                             borderRadius: HeritageCurves.pill,
-                            boxShadow: HeritageShadows.pill,
+                            boxShadow: HeritageShadows.card,
                           ),
-                          child: ClipRRect(
-                            borderRadius: HeritageCurves.pill,
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.85),
+                          child: Row(
+                            children: TreeMode.values.map((mode) {
+                              final isSelected = mode == _currentMode;
+                              final displayLabel = mode == TreeMode.overview
+                                  ? 'Full'
+                                  : mode.label.split(' ').first;
+                              return Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _currentMode = mode;
+                                    });
+                                  },
                                   borderRadius: HeritageCurves.pill,
-                                ),
-                                child: Row(
-                                  children: TreeMode.values.map((mode) {
-                                    final isSelected = mode == _currentMode;
-                                    final displayLabel = mode == TreeMode.overview
-                                        ? 'Full'
-                                        : mode.label.split(' ').first;
-                                    return Expanded(
-                                      child: InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            _currentMode = mode;
-                                          });
-                                        },
-                                        borderRadius: HeritageCurves.pill,
-                                        child: AnimatedContainer(
-                                          duration: const Duration(milliseconds: 200),
-                                          curve: Curves.easeInOut,
-                                          padding: const EdgeInsets.symmetric(vertical: 10),
-                                          decoration: BoxDecoration(
-                                            gradient: isSelected
-                                                ? HeritageGradients.accentPill
-                                                : null,
-                                            borderRadius: HeritageCurves.pill,
-                                            boxShadow: isSelected
-                                                ? HeritageShadows.activePill
-                                                : null,
-                                          ),
-                                          child: Text(
-                                            displayLabel,
-                                            textAlign: TextAlign.center,
-                                            style: HeritageTypography.labelSmall.copyWith(
-                                              fontSize: 12.5,
-                                              color: isSelected
-                                                  ? HeritageColors.charcoal
-                                                  : HeritageColors.charcoalMuted,
-                                              fontWeight: isSelected
-                                                  ? FontWeight.w700
-                                                  : FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
+                                  child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 200),
+                                    curve: Curves.easeInOut,
+                                    padding: const EdgeInsets.symmetric(vertical: 9),
+                                    decoration: BoxDecoration(
+                                      color: isSelected ? AppColors.paleSage : Colors.transparent,
+                                      borderRadius: HeritageCurves.pill,
+                                      boxShadow: isSelected ? HeritageShadows.activePill : null,
+                                    ),
+                                    child: Text(
+                                      displayLabel,
+                                      textAlign: TextAlign.center,
+                                      style: HeritageTypography.labelSmall.copyWith(
+                                        fontSize: 12.5,
+                                        color: isSelected
+                                            ? AppColors.textPrimary
+                                            : AppColors.textSecondary,
+                                        fontWeight: isSelected
+                                            ? FontWeight.w700
+                                            : FontWeight.w500,
                                       ),
-                                    );
-                                  }).toList(),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
+                              );
+                            }).toList(),
                           ),
                         ),
                       ),
@@ -329,15 +313,15 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                         borderRadius: HeritageCurves.pill,
                         child: Container(
                           padding: const EdgeInsets.all(12),
-                          decoration: const BoxDecoration(
-                            gradient: HeritageGradients.pillTrack,
+                          decoration: BoxDecoration(
+                            color: AppColors.surface,
                             shape: BoxShape.circle,
-                            boxShadow: HeritageShadows.pill,
+                            boxShadow: HeritageShadows.card,
                           ),
                           child: const Icon(
                             Icons.center_focus_strong_rounded,
                             size: 20,
-                            color: HeritageColors.charcoal,
+                            color: AppColors.textPrimary,
                           ),
                         ),
                       ),

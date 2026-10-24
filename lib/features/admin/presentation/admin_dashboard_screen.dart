@@ -42,20 +42,19 @@ class AdminDashboardScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               gradient: HeritageGradients.heroCard,
-              borderRadius: HeritageCurves.card,
+              borderRadius: HeritageCurves.cardLarge,
               boxShadow: HeritageShadows.card,
             ),
             child: Row(
               children: [
                 Container(
-                  width: 48,
-                  height: 48,
+                  width: 46,
+                  height: 46,
                   decoration: const BoxDecoration(
-                    gradient: HeritageGradients.accentPill,
+                    color: AppColors.paleSage,
                     shape: BoxShape.circle,
-                    boxShadow: HeritageShadows.activePill,
                   ),
-                  child: const Icon(Icons.shield_outlined, color: HeritageColors.charcoal, size: 22),
+                  child: const Icon(Icons.shield_outlined, color: AppColors.textPrimary, size: 22),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
@@ -179,24 +178,27 @@ class AdminDashboardScreen extends ConsumerWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        gradient: HeritageGradients.premiumCard,
-        borderRadius: BorderRadius.circular(24),
+        color: AppColors.surface,
+        borderRadius: HeritageCurves.card,
         boxShadow: HeritageShadows.card,
       ),
       child: ListTile(
+        shape: RoundedRectangleBorder(
+          borderRadius: HeritageCurves.card,
+        ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
         leading: Container(
-          width: 46,
-          height: 46,
+          width: 44,
+          height: 44,
           decoration: const BoxDecoration(
-            gradient: HeritageGradients.avatarPill,
+            color: AppColors.lightSage,
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, color: HeritageColors.charcoal, size: 22),
+          child: Icon(icon, color: AppColors.primary, size: 22),
         ),
         title: Text(title, style: HeritageTypography.titleSmall),
         subtitle: Text(subtitle, style: HeritageTypography.bodySmall),
-        trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: HeritageColors.charcoalMuted),
+        trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: AppColors.textSecondary),
         onTap: onTap,
       ),
     );

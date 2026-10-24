@@ -24,6 +24,11 @@ class SupabaseService {
   Future<void> initialize() async {
     if (_isInitialized) return;
 
+    if (!SupabaseConfig.isConfigured) {
+      _isInitialized = false;
+      return;
+    }
+
     try {
       await Supabase.initialize(
         url: SupabaseConfig.supabaseUrl,

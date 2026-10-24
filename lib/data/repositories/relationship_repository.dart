@@ -15,11 +15,11 @@ class RelationshipRepository {
     String familyId,
     FamilyMembership? membership,
   ) async {
-    SecurityGuards.assertCanRead(membership);
-
     if (!_supabase.isInitialized) {
       return List.unmodifiable(_memoryStore.where((r) => r.familyId == familyId));
     }
+
+    SecurityGuards.assertCanRead(membership);
 
     try {
       final res = await _supabase.client

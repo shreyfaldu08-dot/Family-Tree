@@ -90,22 +90,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   child: Container(
                     width: 74,
                     height: 74,
-                    decoration: BoxDecoration(
-                      color: HeritageColors.softBlueAccent,
+                    decoration: const BoxDecoration(
+                      color: AppColors.lightSage,
                       shape: BoxShape.circle,
-                      border: Border.all(color: HeritageColors.blueHighlight, width: 1.5),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: HeritageColors.subtleShadow,
-                          blurRadius: 10,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
                     ),
                     child: const Icon(
                       Icons.auto_stories_rounded,
-                      color: HeritageColors.charcoal,
-                      size: 36,
+                      color: AppColors.primary,
+                      size: 34,
                     ),
                   ),
                 ),
@@ -115,13 +107,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 Text(
                   'Vansora',
                   textAlign: TextAlign.center,
-                  style: HeritageTypography.displayLarge.copyWith(fontSize: 34),
+                  style: HeritageTypography.displayLarge.copyWith(
+                    fontSize: 34,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   'Preserving living family heritage across ten generations',
                   textAlign: TextAlign.center,
-                  style: HeritageTypography.bodyMedium.copyWith(color: HeritageColors.charcoalMuted),
+                  style: HeritageTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
                 ),
 
                 const SizedBox(height: 36),
@@ -130,7 +125,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 Container(
                   padding: const EdgeInsets.all(28),
                   decoration: BoxDecoration(
-                    gradient: HeritageGradients.premiumCard,
+                    color: AppColors.surface,
                     borderRadius: HeritageCurves.cardLarge,
                     boxShadow: HeritageShadows.card,
                   ),

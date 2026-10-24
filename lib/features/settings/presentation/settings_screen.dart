@@ -18,7 +18,7 @@ class SettingsScreen extends ConsumerWidget {
     final isAdmin = membership?.canWriteFamilyData ?? false;
 
     return Scaffold(
-      backgroundColor: HeritageColors.warmIvory,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text('Account & Privacy', style: HeritageTypography.displaySmall),
       ),
@@ -29,7 +29,7 @@ class SettingsScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(22),
             decoration: BoxDecoration(
-              gradient: HeritageGradients.premiumCard,
+              color: AppColors.surface,
               borderRadius: HeritageCurves.cardLarge,
               boxShadow: HeritageShadows.card,
             ),
@@ -39,8 +39,8 @@ class SettingsScreen extends ConsumerWidget {
                   width: 60,
                   height: 60,
                   decoration: const BoxDecoration(
-                    gradient: HeritageGradients.avatarPill,
                     shape: BoxShape.circle,
+                    color: AppColors.lightSage,
                   ),
                   child: Center(
                     child: Text(
@@ -48,7 +48,7 @@ class SettingsScreen extends ConsumerWidget {
                           ? profileAsync.valueOrNull!.displayName![0].toUpperCase()
                           : 'A',
                       style: HeritageTypography.displaySmall.copyWith(
-                        color: HeritageColors.charcoal,
+                        color: AppColors.primary,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -61,34 +61,26 @@ class SettingsScreen extends ConsumerWidget {
                     children: [
                       Text(
                         profileAsync.valueOrNull?.presentationName ?? 'Archon Kensington',
-                        style: HeritageTypography.titleSmall.copyWith(fontSize: 16),
+                        style: HeritageTypography.titleSmall.copyWith(fontSize: 16, color: AppColors.textPrimary),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         profileAsync.valueOrNull?.email ?? 'heritage.archon@familylegacy.org',
-                        style: HeritageTypography.bodySmall,
+                        style: HeritageTypography.bodySmall.copyWith(color: AppColors.textSecondary),
                       ),
                       const SizedBox(height: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
                         decoration: BoxDecoration(
-                          gradient: isAdmin
-                              ? HeritageGradients.accentPill
-                              : null,
-                          color: isAdmin
-                              ? null
-                              : HeritageColors.surfaceSecondary,
+                          color: isAdmin ? AppColors.paleSage : AppColors.lightSage,
                           borderRadius: HeritageCurves.pill,
-                          boxShadow: isAdmin
-                              ? HeritageShadows.activePill
-                              : null,
                         ),
                         child: Text(
                           isAdmin
                               ? 'Role: Primary Admin (Write Authorization)'
                               : 'Role: Approved Member (Strict Read-Only)',
                           style: HeritageTypography.labelSmall.copyWith(
-                            color: HeritageColors.charcoal,
+                            color: isAdmin ? AppColors.textPrimary : AppColors.textSecondary,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -108,18 +100,18 @@ class SettingsScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              gradient: HeritageGradients.premiumCard,
+              color: AppColors.surface,
               borderRadius: HeritageCurves.card,
               boxShadow: HeritageShadows.card,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Experience Simulator', style: HeritageTypography.titleSmall),
+                Text('Experience Simulator', style: HeritageTypography.titleSmall.copyWith(color: AppColors.textPrimary)),
                 const SizedBox(height: 4),
                 Text(
                   'Switch between Primary Admin and Read-Only Viewer mode to verify that viewers cannot create, edit, or modify canonical records.',
-                  style: HeritageTypography.bodySmall,
+                  style: HeritageTypography.bodySmall.copyWith(color: AppColors.textSecondary),
                 ),
                 const SizedBox(height: 14),
                 Row(
@@ -152,15 +144,13 @@ class SettingsScreen extends ConsumerWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Switched to Read-Only Viewer mode!'),
-                              backgroundColor: HeritageColors.forestGreen,
+                              backgroundColor: AppColors.primary,
                             ),
                           );
                         },
                         style: OutlinedButton.styleFrom(
-                          side: BorderSide(
-                            color: !isAdmin ? HeritageColors.forestGreen : HeritageColors.stoneDark,
-                            width: !isAdmin ? 2 : 1,
-                          ),
+                          backgroundColor: !isAdmin ? AppColors.paleSage : AppColors.lightSage,
+                          side: BorderSide.none,
                         ),
                         child: const Text('Viewer Mode'),
                       ),
@@ -194,7 +184,7 @@ class SettingsScreen extends ConsumerWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Switched to Primary Admin mode!'),
-                              backgroundColor: HeritageColors.forestGreen,
+                              backgroundColor: AppColors.primary,
                             ),
                           );
                         },
@@ -220,7 +210,7 @@ class SettingsScreen extends ConsumerWidget {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: HeritageColors.statusError,
+              backgroundColor: AppColors.statusError,
               foregroundColor: Colors.white,
             ),
             icon: const Icon(Icons.logout_rounded, size: 18),

@@ -66,8 +66,8 @@ class _InvitationManagerScreenState extends ConsumerState<InvitationManagerScree
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              gradient: HeritageGradients.premiumCard,
-              borderRadius: HeritageCurves.card,
+              color: AppColors.surface,
+              borderRadius: HeritageCurves.cardLarge,
               boxShadow: HeritageShadows.card,
             ),
             child: Column(
@@ -122,27 +122,24 @@ class _InvitationManagerScreenState extends ConsumerState<InvitationManagerScree
             Container(
               padding: const EdgeInsets.all(22),
               decoration: BoxDecoration(
-                color: HeritageColors.forestGreen,
-                borderRadius: BorderRadius.circular(22),
-                boxShadow: const [
-                  BoxShadow(
-                    color: HeritageColors.subtleShadow,
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
-                  ),
-                ],
+                gradient: AppColors.signatureGradient,
+                borderRadius: HeritageCurves.cardLarge,
+                boxShadow: HeritageShadows.card,
               ),
               child: Column(
                 children: [
                   Text(
                     'Active Invitation Code',
-                    style: HeritageTypography.labelSmall.copyWith(color: HeritageColors.mutedBrassLight),
+                    style: HeritageTypography.labelSmall.copyWith(
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(height: 10),
                   SelectableText(
                     _generatedCode!,
                     style: HeritageTypography.displayMedium.copyWith(
-                      color: HeritageColors.warmIvoryLight,
+                      color: AppColors.textPrimary,
                       letterSpacing: 3,
                       fontWeight: FontWeight.w700,
                     ),
@@ -150,8 +147,8 @@ class _InvitationManagerScreenState extends ConsumerState<InvitationManagerScree
                   const SizedBox(height: 14),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: HeritageColors.mutedBrass,
-                      foregroundColor: Colors.white,
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.surface,
                     ),
                     icon: const Icon(Icons.copy, size: 16),
                     label: const Text('Copy to Clipboard'),

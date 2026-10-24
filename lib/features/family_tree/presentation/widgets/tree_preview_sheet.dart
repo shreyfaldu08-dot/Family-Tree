@@ -27,7 +27,7 @@ class TreePreviewSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
       decoration: const BoxDecoration(
-        color: HeritageColors.warmIvoryLight,
+        color: AppColors.surface,
         borderRadius: HeritageCurves.sheet,
       ),
       child: Column(
@@ -40,7 +40,7 @@ class TreePreviewSheet extends StatelessWidget {
               width: 44,
               height: 5,
               decoration: BoxDecoration(
-                color: HeritageColors.borderSubtle,
+                color: AppColors.border,
                 borderRadius: HeritageCurves.pill,
               ),
             ),
@@ -55,13 +55,13 @@ class TreePreviewSheet extends StatelessWidget {
                 height: 68,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: HeritageGradients.avatarPill,
+                  color: AppColors.lightSage,
                 ),
                 child: Center(
                   child: Text(
                     person.initials,
                     style: HeritageTypography.displaySmall.copyWith(
-                      color: HeritageColors.charcoal,
+                      color: AppColors.textPrimary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -77,12 +77,16 @@ class TreePreviewSheet extends StatelessWidget {
                       style: HeritageTypography.displaySmall.copyWith(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 3),
                     Text(
                       person.lifeDateSpan,
-                      style: HeritageTypography.lifeDates.copyWith(fontSize: 13),
+                      style: HeritageTypography.lifeDates.copyWith(
+                        fontSize: 13,
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                     if (person.birthPlace != null && person.birthPlace!.isNotEmpty) ...[
                       const SizedBox(height: 2),
@@ -91,7 +95,7 @@ class TreePreviewSheet extends StatelessWidget {
                           const Icon(
                             Icons.location_on_outlined,
                             size: 13,
-                            color: HeritageColors.charcoalMuted,
+                            color: AppColors.textSecondary,
                           ),
                           const SizedBox(width: 3),
                           Expanded(
@@ -99,7 +103,9 @@ class TreePreviewSheet extends StatelessWidget {
                               person.birthPlace!,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: HeritageTypography.bodySmall,
+                              style: HeritageTypography.bodySmall.copyWith(
+                                color: AppColors.textSecondary,
+                              ),
                             ),
                           ),
                         ],
@@ -116,9 +122,8 @@ class TreePreviewSheet extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                gradient: HeritageGradients.premiumCard,
-                borderRadius: BorderRadius.circular(22),
-                boxShadow: HeritageShadows.card,
+                color: AppColors.lightSage,
+                borderRadius: HeritageCurves.card,
               ),
               child: Text(
                 person.bio!,
@@ -126,7 +131,7 @@ class TreePreviewSheet extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: HeritageTypography.bodySmall.copyWith(
                   fontStyle: FontStyle.italic,
-                  color: HeritageColors.charcoal,
+                  color: AppColors.textPrimary,
                 ),
               ),
             ),
@@ -168,7 +173,7 @@ class TreePreviewSheet extends StatelessWidget {
               icon: const Icon(Icons.person_add_alt_1, size: 18),
               label: const Text('Add Relative Connection (Admin)'),
               style: TextButton.styleFrom(
-                foregroundColor: HeritageColors.charcoal,
+                foregroundColor: AppColors.primary,
               ),
             ),
           ],

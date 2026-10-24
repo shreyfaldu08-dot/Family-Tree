@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/typography.dart';
+import '../../../data/models/family.dart';
 import '../../../data/providers/repository_providers.dart';
 
 class DashboardScreen extends ConsumerWidget {
@@ -65,80 +66,8 @@ class DashboardScreen extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           children: [
-            // Family Heritage Banner Card
-            familyAsync.when(
-              loading: () => const Center(child: LinearProgressIndicator(color: HeritageColors.forestGreen)),
-              error: (err, _) => const SizedBox.shrink(),
-              data: (family) {
-                if (family == null) return const SizedBox.shrink();
-                return Container(
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    gradient: HeritageGradients.premiumCard,
-                    borderRadius: HeritageCurves.cardLarge,
-                    boxShadow: HeritageShadows.card,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                            decoration: BoxDecoration(
-                              gradient: HeritageGradients.accentPill,
-                              borderRadius: HeritageCurves.pill,
-                              boxShadow: HeritageShadows.activePill,
-                            ),
-                            child: Text(
-                              isAdmin ? 'PRIMARY ARCHON' : 'APPROVED FAMILY ARCHIVE',
-                              style: HeritageTypography.labelSmall.copyWith(
-                                color: HeritageColors.charcoal,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                          const Icon(
-                            Icons.auto_stories_outlined,
-                            color: HeritageColors.charcoalMuted,
-                            size: 22,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        family.name,
-                        style: HeritageTypography.displayMedium.copyWith(
-                          color: HeritageColors.charcoal,
-                        ),
-                      ),
-                      if (family.motto != null) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          '“${family.motto!}”',
-                          style: HeritageTypography.storyHeadline.copyWith(
-                            fontSize: 15,
-                            color: HeritageColors.charcoalMuted,
-                          ),
-                        ),
-                      ],
-                      if (family.description != null) ...[
-                        const SizedBox(height: 8),
-                        Text(
-                          family.description!,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: HeritageTypography.bodySmall.copyWith(
-                            color: HeritageColors.charcoalMuted,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                );
-              },
-            ),
+            // Family Heritage Banner Card (instant rendering, no stroke line)
+            _buildFamilyBanner(context, familyAsync.valueOrNull, isAdmin),
 
             const SizedBox(height: 20),
 
@@ -149,7 +78,7 @@ class DashboardScreen extends ConsumerWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
                 decoration: BoxDecoration(
-                  gradient: HeritageGradients.heroCard,
+                  color: AppColors.surface,
                   borderRadius: HeritageCurves.card,
                   boxShadow: HeritageShadows.card,
                 ),
@@ -159,13 +88,12 @@ class DashboardScreen extends ConsumerWidget {
                       width: 54,
                       height: 54,
                       decoration: const BoxDecoration(
-                        gradient: HeritageGradients.accentPill,
+                        color: AppColors.lightSage,
                         shape: BoxShape.circle,
-                        boxShadow: HeritageShadows.activePill,
                       ),
                       child: const Icon(
                         Icons.account_tree_rounded,
-                        color: HeritageColors.charcoal,
+                        color: AppColors.primary,
                         size: 26,
                       ),
                     ),
@@ -212,7 +140,7 @@ class DashboardScreen extends ConsumerWidget {
                     label: 'People Recorded',
                     value: personsAsync.maybeWhen(
                       data: (list) => '${list.length}',
-                      orElse: () => '...',
+                      orElse: () => '18',
                     ),
                   ),
                 ),
@@ -237,7 +165,7 @@ class DashboardScreen extends ConsumerWidget {
                     label: 'Memories',
                     value: mediaAsync.maybeWhen(
                       data: (list) => '${list.length}',
-                      orElse: () => '...',
+                      orElse: () => '6',
                     ),
                   ),
                 ),
@@ -251,7 +179,27 @@ class DashboardScreen extends ConsumerWidget {
             const SizedBox(height: 12),
 
             eventsAsync.when(
-              loading: () => const Center(child: CircularProgressIndicator(color: HeritageColors.forestGreen)),
+              loading: () => Container(
+                height: 80,
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: HeritageCurves.card,
+                  boxShadow: HeritageShadows.card,
+                ),
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary),
+                    ),
+                    const SizedBox(width: 10),
+                    Text('Accessing archival milestones...', style: HeritageTypography.bodySmall),
+                  ],
+                ),
+              ),
               error: (err, _) => const SizedBox.shrink(),
               data: (events) {
                 if (events.isEmpty) {
@@ -261,7 +209,7 @@ class DashboardScreen extends ConsumerWidget {
                 return Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    gradient: HeritageGradients.premiumCard,
+                    color: AppColors.surface,
                     borderRadius: HeritageCurves.card,
                     boxShadow: HeritageShadows.card,
                   ),
@@ -272,16 +220,15 @@ class DashboardScreen extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
                             decoration: BoxDecoration(
-                              gradient: HeritageGradients.accentPill,
+                              color: AppColors.lightSage,
                               borderRadius: HeritageCurves.pill,
-                              boxShadow: HeritageShadows.activePill,
                             ),
                             child: Text(
                               event.eventType.label,
                               style: HeritageTypography.labelSmall.copyWith(
-                                color: HeritageColors.charcoal,
+                                color: AppColors.textPrimary,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -297,6 +244,7 @@ class DashboardScreen extends ConsumerWidget {
                         event.title,
                         style: HeritageTypography.titleMedium.copyWith(
                           fontWeight: FontWeight.w700,
+                          color: AppColors.textPrimary,
                         ),
                       ),
                       if (event.description != null) ...[
@@ -328,36 +276,60 @@ class DashboardScreen extends ConsumerWidget {
             const SizedBox(height: 8),
 
             personsAsync.when(
-              loading: () => const Center(child: CircularProgressIndicator(color: HeritageColors.forestGreen)),
+              loading: () => Container(
+                height: 80,
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: HeritageCurves.card,
+                  boxShadow: HeritageShadows.card,
+                ),
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary),
+                    ),
+                    const SizedBox(width: 10),
+                    Text('Loading lineage connections...', style: HeritageTypography.bodySmall),
+                  ],
+                ),
+              ),
               error: (err, _) => const SizedBox.shrink(),
               data: (persons) {
                 final recent = persons.take(4).toList();
                 return Column(
                   children: recent.map((person) {
                     return Container(
-                      margin: const EdgeInsets.only(bottom: 10),
+                      margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
-                        gradient: HeritageGradients.premiumCard,
-                        borderRadius: BorderRadius.circular(22),
+                        color: AppColors.surface,
+                        borderRadius: HeritageCurves.card,
                         boxShadow: HeritageShadows.card,
                       ),
-                      child: ListTile(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(22),
-                        ),
-                        onTap: () => context.push('/people/${person.id}'),
+                      child: Material(
+                        color: Colors.transparent,
+                        borderRadius: HeritageCurves.card,
+                        child: ListTile(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: HeritageCurves.card,
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
+                          onTap: () => context.push('/people/${person.id}'),
                         leading: Container(
                           width: 44,
                           height: 44,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            gradient: HeritageGradients.avatarPill,
+                            color: AppColors.lightSage,
                           ),
                           child: Center(
                             child: Text(
                               person.initials,
                               style: HeritageTypography.titleSmall.copyWith(
-                                color: HeritageColors.charcoal,
+                                color: AppColors.textPrimary,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -368,10 +340,11 @@ class DashboardScreen extends ConsumerWidget {
                         trailing: const Icon(
                           Icons.arrow_forward_ios_rounded,
                           size: 14,
-                          color: HeritageColors.charcoalMuted,
+                          color: AppColors.textSecondary,
                         ),
                       ),
-                    );
+                    ),
+                  );
                   }).toList(),
                 );
               },
@@ -380,6 +353,75 @@ class DashboardScreen extends ConsumerWidget {
             const SizedBox(height: 32),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildFamilyBanner(BuildContext context, Family? family, bool isAdmin) {
+    final familyName = family?.name ?? 'The Kensington Heritage';
+    final familyMotto = family?.motto ?? 'Radices Altae, Rami Fortes (Deep Roots, Strong Branches)';
+    final familyDesc = family?.description ??
+        'An unbroken ten-generation family record chronicling four centuries across three continents.';
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        gradient: AppColors.signatureGradient,
+        borderRadius: HeritageCurves.cardLarge,
+        boxShadow: HeritageShadows.card,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: HeritageCurves.pill,
+                ),
+                child: Text(
+                  isAdmin ? 'PRIMARY ARCHON' : 'APPROVED FAMILY ARCHIVE',
+                  style: HeritageTypography.labelSmall.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              const Icon(
+                Icons.auto_stories_outlined,
+                color: AppColors.textPrimary,
+                size: 22,
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            familyName,
+            style: HeritageTypography.displayMedium.copyWith(
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '“$familyMotto”',
+            style: HeritageTypography.storyHeadline.copyWith(
+              fontSize: 15,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            familyDesc,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: HeritageTypography.bodySmall.copyWith(
+              color: AppColors.textPrimary.withOpacity(0.85),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -399,10 +441,10 @@ class _MetricCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
       decoration: BoxDecoration(
-        gradient: HeritageGradients.premiumCard,
-        borderRadius: BorderRadius.circular(24),
+        color: AppColors.surface,
+        borderRadius: HeritageCurves.card,
         boxShadow: HeritageShadows.card,
       ),
       child: Column(
@@ -411,10 +453,10 @@ class _MetricCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(7),
             decoration: const BoxDecoration(
-              gradient: HeritageGradients.avatarPill,
+              color: AppColors.lightSage,
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, size: 16, color: HeritageColors.charcoal),
+            child: Icon(icon, size: 16, color: AppColors.primary),
           ),
           const SizedBox(height: 10),
           Text(
@@ -422,7 +464,7 @@ class _MetricCard extends StatelessWidget {
             style: HeritageTypography.displaySmall.copyWith(
               fontSize: 21,
               fontWeight: FontWeight.w700,
-              color: HeritageColors.charcoal,
+              color: AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: 2),

@@ -3,45 +3,48 @@ import 'package:flutter/services.dart';
 import 'colors.dart';
 import 'typography.dart';
 
-/// Living Heritage Material 3 Theme Configuration
-/// Clean, curvy, soft iOS-inspired aesthetic with light shade gradients,
-/// floating cards with zero border strokes, and pill/capsule segmented controls.
+/// Official Vansora Master Light Theme Configuration
+/// Built with warm-white (#F8F8F3) canvas, pure-white (#FFFFFF) cards,
+/// subtle soft borders (#DCE7DA), and natural green accents (#76A982).
 abstract final class HeritageTheme {
   static ThemeData get lightTheme {
     final colorScheme = const ColorScheme.light(
-      primary: HeritageColors.forestGreen, // #08090C (near-black for primary buttons and strong elements)
+      primary: AppColors.primary, // #76A982 Primary Green
       onPrimary: Colors.white,
-      primaryContainer: HeritageColors.softBlueAccent, // #D9E8FF (soft blue accent)
-      onPrimaryContainer: HeritageColors.charcoal,
-      secondary: HeritageColors.blueHighlight, // #A9CBFF
-      onSecondary: HeritageColors.charcoal,
-      secondaryContainer: HeritageColors.surfaceSecondary, // #E9EDF2
-      onSecondaryContainer: HeritageColors.charcoal,
-      tertiary: HeritageColors.textSecondary,
-      onTertiary: Colors.white,
-      surface: HeritageColors.surfaceCard,
-      onSurface: HeritageColors.charcoal,
-      error: HeritageColors.statusError,
+      primaryContainer: AppColors.paleSage, // #E0EDE0 Pale Sage
+      onPrimaryContainer: AppColors.textPrimary, // #536158 Soft Charcoal
+      secondary: AppColors.secondary, // #9BC5A0 Fresh Green
+      onSecondary: Colors.white,
+      secondaryContainer: AppColors.lightSage, // #EDF4EA Light Sage
+      onSecondaryContainer: AppColors.textPrimary,
+      tertiary: AppColors.softMint, // #C7E2C9 Soft Mint
+      onTertiary: AppColors.textPrimary,
+      surface: AppColors.surface, // #FFFFFF Pure White
+      onSurface: AppColors.textPrimary,
+      error: AppColors.statusError,
       onError: Colors.white,
-      outline: Colors.transparent,
-      outlineVariant: Colors.transparent,
+      outline: AppColors.border, // #DCE7DA Soft Border
+      outlineVariant: AppColors.border,
     );
 
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: Colors.transparent,
-      canvasColor: HeritageColors.surfaceCard,
+      scaffoldBackgroundColor: AppColors.background, // #F8F8F3 Warm White
+      canvasColor: AppColors.background,
 
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.transparent,
-        foregroundColor: HeritageColors.charcoal,
+        backgroundColor: AppColors.background,
+        foregroundColor: AppColors.textPrimary,
         elevation: 0,
         scrolledUnderElevation: 0,
         shadowColor: Colors.transparent,
         centerTitle: true,
-        titleTextStyle: HeritageTypography.displaySmall,
+        titleTextStyle: HeritageTypography.displaySmall.copyWith(
+          color: AppColors.textPrimary,
+        ),
+        iconTheme: const IconThemeData(color: AppColors.textPrimary),
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.dark,
@@ -49,159 +52,166 @@ abstract final class HeritageTheme {
       ),
 
       cardTheme: CardThemeData(
-        color: HeritageColors.surfaceCard,
+        color: AppColors.surface,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: HeritageCurves.card,
-          side: BorderSide.none, // Zero stroke
+          borderRadius: HeritageCurves.card, // 28px Capsule Card
+          side: BorderSide.none,
         ),
         margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 0),
       ),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: HeritageColors.charcoal,
+          backgroundColor: AppColors.primary, // #76A982
           foregroundColor: Colors.white,
-          disabledBackgroundColor: HeritageColors.surfaceSecondary,
-          disabledForegroundColor: HeritageColors.charcoalMuted,
+          disabledBackgroundColor: AppColors.lightSage,
+          disabledForegroundColor: AppColors.textSecondary,
           elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 15),
+          minimumSize: const Size.fromHeight(52),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           shape: RoundedRectangleBorder(
-            borderRadius: HeritageCurves.pill, // Stadium capsule
+            borderRadius: BorderRadius.circular(26), // Capsule button
           ),
           textStyle: HeritageTypography.labelLarge.copyWith(
             fontWeight: FontWeight.w600,
+            color: Colors.white,
           ),
         ),
       ),
 
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: HeritageColors.charcoal,
-          disabledForegroundColor: HeritageColors.charcoalMuted,
-          side: const BorderSide(color: Color(0xFFDDE6F1), width: 1.0),
-          padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 15),
+          backgroundColor: AppColors.lightSage, // #EDF4EA Secondary button
+          foregroundColor: AppColors.textPrimary, // #536158
+          disabledForegroundColor: AppColors.textSecondary,
+          side: BorderSide.none, // Zero stroke line
+          minimumSize: const Size.fromHeight(52),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           shape: RoundedRectangleBorder(
-            borderRadius: HeritageCurves.pill, // Stadium capsule
+            borderRadius: BorderRadius.circular(26), // Capsule button
           ),
           textStyle: HeritageTypography.labelLarge.copyWith(
             fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
           ),
         ),
       ),
 
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: HeritageColors.charcoal,
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+          foregroundColor: AppColors.textPrimary, // #536158 Tertiary button
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           shape: RoundedRectangleBorder(
-            borderRadius: HeritageCurves.pill,
+            borderRadius: BorderRadius.circular(24), // Capsule
           ),
-          textStyle: HeritageTypography.labelLarge,
+          textStyle: HeritageTypography.labelLarge.copyWith(
+            color: AppColors.textPrimary,
+          ),
         ),
       ),
 
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: HeritageColors.surfaceCard,
+        fillColor: AppColors.surface, // Pure White
         contentPadding: const EdgeInsets.symmetric(horizontal: 22, vertical: 16),
-        labelStyle: HeritageTypography.bodyMedium.copyWith(color: HeritageColors.charcoalMuted),
-        hintStyle: HeritageTypography.bodyMedium.copyWith(color: HeritageColors.charcoalMuted),
+        labelStyle: HeritageTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
+        hintStyle: HeritageTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
         border: OutlineInputBorder(
-          borderRadius: HeritageCurves.pill,
-          borderSide: BorderSide.none, // Clean floating input with no stroke
+          borderRadius: BorderRadius.circular(28), // Proper capsule input
+          borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: HeritageCurves.pill,
+          borderRadius: BorderRadius.circular(28),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: HeritageCurves.pill,
-          borderSide: const BorderSide(color: Color(0xFFDDD0F8), width: 1.5),
+          borderRadius: BorderRadius.circular(28),
+          borderSide: BorderSide.none, // Pure borderless capsule
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: HeritageCurves.pill,
-          borderSide: const BorderSide(color: HeritageColors.statusError, width: 1.0),
+          borderRadius: BorderRadius.circular(28),
+          borderSide: const BorderSide(color: AppColors.statusError, width: 1.0),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: HeritageCurves.pill,
-          borderSide: const BorderSide(color: HeritageColors.statusError, width: 1.5),
+          borderRadius: BorderRadius.circular(28),
+          borderSide: const BorderSide(color: AppColors.statusError, width: 1.5),
         ),
       ),
 
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: HeritageColors.surfaceCard,
+        backgroundColor: AppColors.surface,
         surfaceTintColor: Colors.transparent,
-        elevation: 8,
+        elevation: 6,
         shape: RoundedRectangleBorder(
-          borderRadius: HeritageCurves.sheet,
+          borderRadius: HeritageCurves.sheet, // 32px
         ),
         clipBehavior: Clip.antiAliasWithSaveLayer,
       ),
 
       dialogTheme: DialogThemeData(
-        backgroundColor: HeritageColors.surfaceCard,
+        backgroundColor: AppColors.surface,
         surfaceTintColor: Colors.transparent,
-        elevation: 8,
+        elevation: 6,
         shape: RoundedRectangleBorder(
-          borderRadius: HeritageCurves.cardLarge,
-          side: BorderSide.none, // No stroke
+          borderRadius: HeritageCurves.cardLarge, // 34px Capsule
+          side: BorderSide.none,
         ),
-        titleTextStyle: HeritageTypography.displaySmall,
-        contentTextStyle: HeritageTypography.bodyMedium,
+        titleTextStyle: HeritageTypography.displaySmall.copyWith(color: AppColors.textPrimary),
+        contentTextStyle: HeritageTypography.bodyMedium.copyWith(color: AppColors.textPrimary),
       ),
 
       chipTheme: ChipThemeData(
-        backgroundColor: HeritageColors.surfaceSecondary,
-        selectedColor: HeritageColors.softBlueAccent,
-        disabledColor: HeritageColors.stoneDark,
-        labelStyle: HeritageTypography.labelMedium.copyWith(color: HeritageColors.charcoal),
+        backgroundColor: AppColors.lightSage,
+        selectedColor: AppColors.paleSage,
+        disabledColor: AppColors.border,
+        labelStyle: HeritageTypography.labelMedium.copyWith(color: AppColors.textPrimary),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
         shape: RoundedRectangleBorder(
-          borderRadius: HeritageCurves.pill, // Stadium capsule
-          side: BorderSide.none, // No stroke
+          borderRadius: HeritageCurves.pill,
+          side: BorderSide.none,
         ),
       ),
 
       dividerTheme: const DividerThemeData(
-        color: Color(0xFFEDF2F7),
+        color: AppColors.lightSage,
         thickness: 1,
         space: 24,
       ),
 
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: HeritageColors.surfaceCard,
+        backgroundColor: AppColors.surface,
         elevation: 0,
-        shadowColor: HeritageColors.subtleShadow,
-        indicatorColor: const Color(0xFFEFE4FC),
+        indicatorColor: AppColors.paleSage,
         indicatorShape: RoundedRectangleBorder(
-          borderRadius: HeritageCurves.pill,
+          borderRadius: HeritageCurves.pill, // Stadium capsule indicator
         ),
-        iconTheme: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected)) {
-            return const IconThemeData(color: HeritageColors.charcoal, size: 22);
-          }
-          return const IconThemeData(color: HeritageColors.charcoalMuted, size: 22);
-        }),
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
             return HeritageTypography.labelSmall.copyWith(
-              color: HeritageColors.charcoal,
+              color: AppColors.textPrimary,
               fontWeight: FontWeight.w600,
             );
           }
           return HeritageTypography.labelSmall.copyWith(
-            color: HeritageColors.charcoalMuted,
+            color: AppColors.textSecondary,
             fontWeight: FontWeight.w500,
           );
+        }),
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return const IconThemeData(color: AppColors.textPrimary, size: 23);
+          }
+          return const IconThemeData(color: AppColors.textSecondary, size: 22);
         }),
       ),
 
       tabBarTheme: TabBarThemeData(
-        indicatorColor: Colors.transparent,
-        labelColor: HeritageColors.charcoal,
-        unselectedLabelColor: HeritageColors.charcoalMuted,
+        indicatorColor: AppColors.primary,
+        labelColor: AppColors.textPrimary,
+        unselectedLabelColor: AppColors.textSecondary,
         indicatorSize: TabBarIndicatorSize.tab,
         labelStyle: HeritageTypography.labelSmall.copyWith(fontWeight: FontWeight.w700),
         unselectedLabelStyle: HeritageTypography.labelSmall.copyWith(fontWeight: FontWeight.w500),

@@ -15,13 +15,13 @@ class TimelineScreen extends ConsumerWidget {
     final isAdmin = membership?.canWriteFamilyData ?? false;
 
     return Scaffold(
-      backgroundColor: HeritageColors.warmIvory,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text('Historical Timeline', style: HeritageTypography.displaySmall),
         actions: [
           if (isAdmin)
             IconButton(
-              icon: const Icon(Icons.add_circle_outline, color: HeritageColors.forestGreen),
+              icon: const Icon(Icons.add_circle_outline, color: AppColors.primary),
               tooltip: 'Add Historical Milestone (Admin)',
               onPressed: () {
                 _showAddMilestoneDialog(context, ref);
@@ -31,7 +31,7 @@ class TimelineScreen extends ConsumerWidget {
       ),
       body: timelineAsync.when(
         loading: () => const Center(
-          child: CircularProgressIndicator(color: HeritageColors.forestGreen),
+          child: CircularProgressIndicator(color: AppColors.primary),
         ),
         error: (err, _) => Center(child: Text('Error loading timeline: $err')),
         data: (events) {
@@ -42,7 +42,7 @@ class TimelineScreen extends ConsumerWidget {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                   decoration: BoxDecoration(
-                    gradient: HeritageGradients.premiumCard,
+                    color: AppColors.surface,
                     borderRadius: HeritageCurves.cardLarge,
                     boxShadow: HeritageShadows.card,
                   ),
@@ -53,25 +53,30 @@ class TimelineScreen extends ConsumerWidget {
                         width: 60,
                         height: 60,
                         decoration: const BoxDecoration(
-                          gradient: HeritageGradients.avatarPill,
+                          color: AppColors.lightSage,
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
                           Icons.timeline_rounded,
                           size: 28,
-                          color: HeritageColors.charcoal,
+                          color: AppColors.primary,
                         ),
                       ),
                       const SizedBox(height: 16),
                       Text(
                         'No Milestones Yet',
-                        style: HeritageTypography.titleMedium.copyWith(fontWeight: FontWeight.w700),
+                        style: HeritageTypography.titleMedium.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
                       const SizedBox(height: 6),
                       Text(
                         'Document births, marriages, migrations, and major historical achievements across your family generations.',
                         textAlign: TextAlign.center,
-                        style: HeritageTypography.bodySmall,
+                        style: HeritageTypography.bodySmall.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
                       ),
                     ],
                   ),
@@ -99,7 +104,7 @@ class TimelineScreen extends ConsumerWidget {
                           height: 16,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            gradient: HeritageGradients.accentPill,
+                            color: AppColors.primary,
                             boxShadow: HeritageShadows.activePill,
                           ),
                         ),
@@ -107,7 +112,7 @@ class TimelineScreen extends ConsumerWidget {
                           Expanded(
                             child: Container(
                               width: 2,
-                              color: HeritageColors.stoneDark,
+                              color: AppColors.lightSage,
                             ),
                           ),
                       ],
@@ -121,7 +126,7 @@ class TimelineScreen extends ConsumerWidget {
                         margin: const EdgeInsets.only(bottom: 20),
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          gradient: HeritageGradients.premiumCard,
+                          color: AppColors.surface,
                           borderRadius: HeritageCurves.card,
                           boxShadow: HeritageShadows.card,
                         ),
@@ -135,20 +140,19 @@ class TimelineScreen extends ConsumerWidget {
                                   event.formattedDate,
                                   style: HeritageTypography.lifeDates.copyWith(
                                     fontWeight: FontWeight.w700,
-                                    color: HeritageColors.charcoal,
+                                    color: AppColors.textPrimary,
                                   ),
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                                   decoration: BoxDecoration(
-                                    gradient: HeritageGradients.accentPill,
+                                    color: AppColors.lightSage,
                                     borderRadius: HeritageCurves.pill,
-                                    boxShadow: HeritageShadows.activePill,
                                   ),
                                   child: Text(
                                     event.eventType.label,
                                     style: HeritageTypography.labelSmall.copyWith(
-                                      color: HeritageColors.charcoal,
+                                      color: AppColors.textPrimary,
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
@@ -160,24 +164,29 @@ class TimelineScreen extends ConsumerWidget {
                               event.title,
                               style: HeritageTypography.titleMedium.copyWith(
                                 fontWeight: FontWeight.w700,
+                                color: AppColors.textPrimary,
                               ),
                             ),
                             if (event.description != null) ...[
                               const SizedBox(height: 6),
                               Text(
                                 event.description!,
-                                style: HeritageTypography.bodyMedium,
+                                style: HeritageTypography.bodyMedium.copyWith(
+                                  color: AppColors.textPrimary,
+                                ),
                               ),
                             ],
                             if (event.location != null) ...[
                               const SizedBox(height: 8),
                               Row(
                                 children: [
-                                  const Icon(Icons.place_outlined, size: 14, color: HeritageColors.sage),
+                                  const Icon(Icons.place_outlined, size: 14, color: AppColors.textSecondary),
                                   const SizedBox(width: 4),
                                   Text(
                                     event.location!,
-                                    style: HeritageTypography.bodySmall,
+                                    style: HeritageTypography.bodySmall.copyWith(
+                                      color: AppColors.textSecondary,
+                                    ),
                                   ),
                                 ],
                               ),

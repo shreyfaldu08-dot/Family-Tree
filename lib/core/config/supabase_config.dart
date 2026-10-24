@@ -18,5 +18,6 @@ abstract final class SupabaseConfig {
   static bool get isConfigured =>
       supabaseUrl.isNotEmpty &&
       supabaseAnonKey.isNotEmpty &&
-      !supabaseUrl.contains('example');
+      !supabaseUrl.contains('example') &&
+      !supabaseAnonKey.contains('demo_anon_key');
 }

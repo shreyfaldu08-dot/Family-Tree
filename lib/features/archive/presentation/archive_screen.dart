@@ -22,13 +22,13 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
     final isAdmin = membership?.canWriteFamilyData ?? false;
 
     return Scaffold(
-      backgroundColor: HeritageColors.warmIvory,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text('Family Archive', style: HeritageTypography.displaySmall),
         actions: [
           if (isAdmin)
             IconButton(
-              icon: const Icon(Icons.add_photo_alternate_outlined, color: HeritageColors.charcoal),
+              icon: const Icon(Icons.add_photo_alternate_outlined, color: AppColors.textPrimary),
               tooltip: 'Upload Private Media (Admin)',
               onPressed: () {
                 _showUploadMockDialog(context);
@@ -62,7 +62,7 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
           Expanded(
             child: mediaAsync.when(
               loading: () => const Center(
-                child: CircularProgressIndicator(color: HeritageColors.forestGreen),
+                child: CircularProgressIndicator(color: AppColors.primary),
               ),
               error: (err, _) => Center(child: Text('Error loading archive: $err')),
               data: (allMedia) {
@@ -78,7 +78,7 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                         decoration: BoxDecoration(
-                          gradient: HeritageGradients.premiumCard,
+                          color: AppColors.surface,
                           borderRadius: HeritageCurves.cardLarge,
                           boxShadow: HeritageShadows.card,
                         ),
@@ -89,25 +89,30 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
                               width: 64,
                               height: 64,
                               decoration: const BoxDecoration(
-                                gradient: HeritageGradients.avatarPill,
+                                color: AppColors.lightSage,
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
                                 Icons.auto_stories_rounded,
                                 size: 28,
-                                color: HeritageColors.charcoal,
+                                color: AppColors.primary,
                               ),
                             ),
                             const SizedBox(height: 16),
                             Text(
                               'Preserve Your First Memory',
-                              style: HeritageTypography.titleMedium.copyWith(fontWeight: FontWeight.w700),
+                              style: HeritageTypography.titleMedium.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.textPrimary,
+                              ),
                             ),
                             const SizedBox(height: 6),
                             Text(
                               'Upload vintage family photographs, letters, or audio recordings to safely preserve them in your encrypted family archive.',
                               textAlign: TextAlign.center,
-                              style: HeritageTypography.bodySmall,
+                              style: HeritageTypography.bodySmall.copyWith(
+                                color: AppColors.textSecondary,
+                              ),
                             ),
                           ],
                         ),
@@ -124,28 +129,34 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
-                        gradient: HeritageGradients.premiumCard,
-                        borderRadius: BorderRadius.circular(24),
+                        color: AppColors.surface,
+                        borderRadius: HeritageCurves.card,
                         boxShadow: HeritageShadows.card,
                       ),
                       child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: HeritageCurves.card,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
                         leading: Container(
                           width: 48,
                           height: 48,
                           decoration: BoxDecoration(
-                            gradient: HeritageGradients.avatarPill,
-                            borderRadius: BorderRadius.circular(16),
+                            color: AppColors.lightSage,
+                            borderRadius: BorderRadius.circular(18),
                           ),
                           child: Icon(
                             _getIconForType(asset.mediaType),
-                            color: HeritageColors.forestGreen,
+                            color: AppColors.primary,
                             size: 24,
                           ),
                         ),
                         title: Text(
                           asset.title,
-                          style: HeritageTypography.titleSmall.copyWith(fontSize: 15),
+                          style: HeritageTypography.titleSmall.copyWith(
+                            fontSize: 15,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,7 +167,9 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
                                 asset.description!,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: HeritageTypography.bodySmall,
+                                style: HeritageTypography.bodySmall.copyWith(
+                                  color: AppColors.textSecondary,
+                                ),
                               ),
                             ],
                             const SizedBox(height: 4),
@@ -166,20 +179,23 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
                                   asset.capturedDate != null
                                       ? 'Dated: ${asset.capturedDate!.year}'
                                       : 'Archival Record',
-                                  style: HeritageTypography.lifeDates.copyWith(fontSize: 11),
+                                  style: HeritageTypography.lifeDates.copyWith(
+                                    fontSize: 11,
+                                    color: AppColors.textSecondary,
+                                  ),
                                 ),
                                 const SizedBox(width: 8),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                                   decoration: BoxDecoration(
-                                    color: HeritageColors.stone,
-                                    borderRadius: BorderRadius.circular(8),
+                                    color: AppColors.lightSage,
+                                    borderRadius: HeritageCurves.pill,
                                   ),
                                   child: Text(
                                     'Private Bucket',
                                     style: HeritageTypography.labelSmall.copyWith(
                                       fontSize: 9,
-                                      color: HeritageColors.forestGreen,
+                                      color: AppColors.textSecondary,
                                     ),
                                   ),
                                 ),
@@ -188,13 +204,13 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
                           ],
                         ),
                         trailing: IconButton(
-                          icon: const Icon(Icons.download_rounded, color: HeritageColors.forestGreen),
+                          icon: const Icon(Icons.download_rounded, color: AppColors.primary),
                           tooltip: 'Signed Private Download',
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('Generating short-lived signed URL for "${asset.title}"...'),
-                                backgroundColor: HeritageColors.forestGreen,
+                                backgroundColor: AppColors.primary,
                               ),
                             );
                           },
@@ -237,21 +253,14 @@ class _ArchiveScreenState extends ConsumerState<ArchiveScreen> {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
         decoration: BoxDecoration(
-          gradient: isSelected
-              ? HeritageGradients.accentPill
-              : null,
-          color: isSelected
-              ? null
-              : HeritageColors.surfaceSecondary,
+          color: isSelected ? AppColors.paleSage : AppColors.lightSage,
           borderRadius: HeritageCurves.pill,
-          boxShadow: isSelected
-              ? HeritageShadows.activePill
-              : null,
+          boxShadow: isSelected ? HeritageShadows.activePill : null,
         ),
         child: Text(
           label,
           style: HeritageTypography.labelSmall.copyWith(
-            color: isSelected ? HeritageColors.charcoal : HeritageColors.charcoalMuted,
+            color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
           ),
         ),

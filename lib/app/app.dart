@@ -15,10 +15,8 @@ class FamilyLegacyApp extends ConsumerWidget {
       theme: HeritageTheme.lightTheme,
       routerConfig: appRouter,
       builder: (context, child) {
-        return DecoratedBox(
-          decoration: const BoxDecoration(
-            gradient: HeritageGradients.canvasBackground,
-          ),
+        return Container(
+          color: AppColors.background,
           child: child ?? const SizedBox.shrink(),
         );
       },

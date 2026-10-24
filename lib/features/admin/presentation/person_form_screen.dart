@@ -190,8 +190,7 @@ class _PersonFormScreenState extends ConsumerState<PersonFormScreen> {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: HeritageColors.statusWarning.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: HeritageColors.statusWarning, width: 1.5),
+                  borderRadius: HeritageCurves.card,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

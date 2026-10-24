@@ -39,11 +39,11 @@ class AuditLogsScreen extends ConsumerWidget {
             itemBuilder: (ctx, i) {
               final log = logs[i];
               return Container(
-                margin: const EdgeInsets.only(bottom: 10),
-                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 decoration: BoxDecoration(
-                  gradient: HeritageGradients.premiumCard,
-                  borderRadius: BorderRadius.circular(22),
+                  color: AppColors.surface,
+                  borderRadius: HeritageCurves.card,
                   boxShadow: HeritageShadows.card,
                 ),
                 child: Column(

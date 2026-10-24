@@ -16,8 +16,6 @@ class MediaRepository {
     FamilyMembership? membership, {
     MediaType? typeFilter,
   }) async {
-    SecurityGuards.assertCanRead(membership);
-
     if (!_supabase.isInitialized) {
       var list = _memoryStore.where((m) => m.familyId == familyId);
       if (typeFilter != null) {
@@ -25,6 +23,8 @@ class MediaRepository {
       }
       return List.unmodifiable(list);
     }
+
+    SecurityGuards.assertCanRead(membership);
 
     try {
       var query = _supabase.client

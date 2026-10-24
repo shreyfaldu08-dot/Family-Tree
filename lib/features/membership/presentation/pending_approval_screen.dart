@@ -22,15 +22,14 @@ class PendingApprovalScreen extends ConsumerWidget {
                 Container(
                   width: 80,
                   height: 80,
-                  decoration: BoxDecoration(
-                    color: HeritageColors.mutedBrass.withOpacity(0.15),
+                  decoration: const BoxDecoration(
+                    color: AppColors.paleSage,
                     shape: BoxShape.circle,
-                    border: Border.all(color: HeritageColors.mutedBrass, width: 2),
                   ),
                   child: const Icon(
                     Icons.hourglass_top_rounded,
-                    color: HeritageColors.mutedBrassDark,
-                    size: 40,
+                    color: AppColors.primary,
+                    size: 38,
                   ),
                 ),
                 const SizedBox(height: 24),
