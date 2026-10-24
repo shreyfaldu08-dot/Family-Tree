@@ -54,29 +54,40 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
             color: AppColors.background,
             child: Column(
               children: [
-                // Search field (Pure White background, Soft Border, Focus Primary Green)
-                TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Search by full, maiden, or alternate name...',
-                    prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
-                    suffixIcon: _searchQuery.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(Icons.clear, size: 18),
-                            onPressed: () {
-                              setState(() {
-                                _searchController.clear();
-                                _searchQuery = '';
-                              });
-                            },
-                          )
-                        : null,
+                // Search field (Unified borderless capsule pill)
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: HeritageCurves.pill,
+                    boxShadow: HeritageShadows.card,
                   ),
-                  onChanged: (val) {
-                    setState(() {
-                      _searchQuery = val.trim();
-                    });
-                  },
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Search by full, maiden, or alternate name...',
+                      prefixIcon: const Icon(Icons.search_rounded, color: AppColors.primary),
+                      suffixIcon: _searchQuery.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(Icons.clear_rounded, size: 18, color: AppColors.textSecondary),
+                              onPressed: () {
+                                setState(() {
+                                  _searchController.clear();
+                                  _searchQuery = '';
+                                });
+                              },
+                            )
+                          : null,
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 22, vertical: 15),
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        _searchQuery = val.trim();
+                      });
+                    },
+                  ),
                 ),
 
                 const SizedBox(height: 10),

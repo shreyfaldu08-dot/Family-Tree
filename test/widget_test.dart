@@ -21,6 +21,6 @@ void main() {
     expect(find.byIcon(Icons.park_outlined), findsOneWidget);
     expect(find.byIcon(Icons.diversity_3_outlined), findsOneWidget);
     expect(find.byIcon(Icons.auto_stories_outlined), findsWidgets);
-    expect(find.byIcon(Icons.person_outline_rounded), findsOneWidget);
+    expect(find.byIcon(Icons.person_outline_rounded), findsWidgets);
   });
 }

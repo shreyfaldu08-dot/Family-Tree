@@ -43,6 +43,17 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
   }
 
   @override
+  void didUpdateWidget(FamilyTreeScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialPersonId != null &&
+        widget.initialPersonId != oldWidget.initialPersonId) {
+      setState(() {
+        _focusedPersonId = widget.initialPersonId;
+      });
+    }
+  }
+
+  @override
   void dispose() {
     _transformController.dispose();
     _searchController.dispose();

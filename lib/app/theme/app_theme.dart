@@ -115,27 +115,27 @@ abstract final class HeritageTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.surface, // Pure White
-        contentPadding: const EdgeInsets.symmetric(horizontal: 22, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         labelStyle: HeritageTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
         hintStyle: HeritageTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28), // Proper capsule input
+          borderRadius: HeritageCurves.pill, // Unified capsule pill input
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
+          borderRadius: HeritageCurves.pill,
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
+          borderRadius: HeritageCurves.pill,
           borderSide: BorderSide.none, // Pure borderless capsule
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
+          borderRadius: HeritageCurves.pill,
           borderSide: const BorderSide(color: AppColors.statusError, width: 1.0),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
+          borderRadius: HeritageCurves.pill,
           borderSide: const BorderSide(color: AppColors.statusError, width: 1.5),
         ),
       ),
