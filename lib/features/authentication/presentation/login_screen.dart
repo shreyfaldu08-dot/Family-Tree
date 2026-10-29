@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/typography.dart';
+import '../../../data/models/membership.dart';
 import '../../../data/providers/repository_providers.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -33,11 +34,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         password: _passwordCtrl.text.trim(),
       );
 
+      // Normal login authenticates as view-only family member
+      ref.read(currentUserRoleProvider.notifier).setRole(MemberRole.viewer);
+
       ref.invalidate(currentProfileProvider);
       ref.invalidate(currentMembershipProvider);
 
       if (mounted) {
-        context.go('/');
+        context.go('/home');
       }
     } catch (e) {
       if (mounted) {
@@ -201,6 +205,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                 const SizedBox(height: 24),
 
+                // Connect to Family Tree with Unique ID button
+                Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  child: OutlinedButton.icon(
+                    onPressed: () => context.push('/lineage-bridge'),
+                    icon: const Icon(Icons.account_tree_outlined, size: 18, color: AppColors.primary),
+                    label: const Text('Join with Unique Family Tree ID', style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.primary)),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: AppColors.primary, width: 1.5),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: HeritageCurves.pill),
+                    ),
+                  ),
+                ),
+
                 // Invitation code redemption button
                 TextButton.icon(
                   onPressed: () => context.push('/redeem-invitation'),
@@ -216,10 +235,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   children: [
                     Text("Don't have an account?", style: HeritageTypography.bodySmall),
                     TextButton(
-                      onPressed: () => context.push('/register'),
-                      child: const Text('Create Archive Account'),
+                      onPressed: () => context.push('/signup'),
+                      child: const Text('Sign Up'),
                     ),
                   ],
+                ),
+
+                const SizedBox(height: 12),
+
+                // Dedicated Admin login link
+                Center(
+                  child: TextButton.icon(
+                    onPressed: () => context.push('/admin/login'),
+                    icon: const Icon(Icons.admin_panel_settings_outlined, size: 16),
+                    label: const Text('Admin Authority Portal (/admin/login)'),
+                  ),
                 ),
               ],
             ),

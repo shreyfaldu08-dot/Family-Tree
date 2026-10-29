@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../app/theme/colors.dart';
 import '../../../app/theme/typography.dart';
+import '../../../data/models/membership.dart';
 import '../../../data/providers/repository_providers.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -45,11 +46,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         displayName: _nameCtrl.text.trim(),
       );
 
+      // Regular user registration sets view-only role
+      ref.read(currentUserRoleProvider.notifier).setRole(MemberRole.viewer);
+
       ref.invalidate(currentProfileProvider);
       ref.invalidate(currentMembershipProvider);
 
       if (mounted) {
-        context.go('/');
+        context.go('/home');
       }
     } catch (e) {
       if (mounted) {
@@ -65,7 +69,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: HeritageColors.warmIvory,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text('Create Account', style: HeritageTypography.displaySmall),
       ),
@@ -75,7 +79,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           child: Container(
             padding: const EdgeInsets.all(28),
             decoration: BoxDecoration(
-              gradient: HeritageGradients.premiumCard,
+              color: AppColors.surface,
               borderRadius: HeritageCurves.cardLarge,
               boxShadow: HeritageShadows.card,
             ),
@@ -88,19 +92,19 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Register your profile to access or create a private family history vault.',
+                  'Register your profile to explore the living digital family tree and heritage vault.',
                   style: HeritageTypography.bodySmall,
                 ),
                 const SizedBox(height: 24),
                 TextField(
                   controller: _nameCtrl,
-                  decoration: const InputDecoration(labelText: 'Your Full Name'),
+                  decoration: const InputDecoration(labelText: 'Full Name'),
                 ),
                 const SizedBox(height: 14),
                 TextField(
                   controller: _emailCtrl,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(labelText: 'Email Address'),
+                  decoration: const InputDecoration(labelText: 'Email Address or Phone Number'),
                 ),
                 const SizedBox(height: 14),
                 TextField(
@@ -113,7 +117,25 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   onPressed: _isLoading ? null : _handleRegister,
                   child: _isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('Create Account'),
+                      : const Text('Create User Account'),
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: () => context.push('/lineage-bridge'),
+                  icon: const Icon(Icons.account_tree_outlined, size: 18, color: AppColors.primary),
+                  label: const Text('Join with Unique Family Tree ID', style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.primary)),
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: AppColors.primary, width: 1.5),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(borderRadius: HeritageCurves.pill),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Center(
+                  child: TextButton(
+                    onPressed: () => context.push('/login'),
+                    child: const Text('Already have an account? Sign in'),
+                  ),
                 ),
               ],
             ),

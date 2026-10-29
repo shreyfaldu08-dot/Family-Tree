@@ -490,6 +490,42 @@ class PersonRepository {
       isLiving: true,
       birthPlace: 'Lyon, France',
       bio: 'Concert cellist and acoustic music researcher.',
+      portraitUrl: 'assets/images/vintage_lady_portrait.jpg',
+      isVerified: true,
+      generationHint: 9,
+      createdAt: now,
+      updatedAt: now,
+    );
+
+    final gen9Viewer = Person(
+      id: 'p_gen9_sara',
+      familyId: famId,
+      firstName: 'Sara',
+      lastName: 'Wilson',
+      maidenName: 'Kensington',
+      gender: Gender.female,
+      birthDate: DateTime(1998, 6, 18),
+      isLiving: true,
+      birthPlace: 'Seattle, USA',
+      bio: 'Family heritage archivist, researcher, and active viewer of the Kensington archives.',
+      portraitUrl: 'assets/images/user_sara_portrait.jpg',
+      isVerified: true,
+      generationHint: 9,
+      createdAt: now,
+      updatedAt: now,
+    );
+
+    final gen9Brother = Person(
+      id: 'p_gen9_james',
+      familyId: famId,
+      firstName: 'James',
+      lastName: 'Kensington',
+      gender: Gender.male,
+      birthDate: DateTime(2002, 9, 28),
+      isLiving: true,
+      birthPlace: 'Seattle, USA',
+      bio: 'Biochemical engineering researcher and student.',
+      portraitUrl: 'assets/images/modern_young_man.jpg',
       isVerified: true,
       generationHint: 9,
       createdAt: now,
@@ -506,6 +542,24 @@ class PersonRepository {
       isLiving: true,
       birthPlace: 'Seattle, USA',
       bio: 'Tenth generation child of the Kensington heritage line.',
+      portraitUrl: 'assets/images/child_portrait.jpg',
+      isVerified: true,
+      generationHint: 10,
+      createdAt: now,
+      updatedAt: now,
+    );
+
+    final gen10Son = Person(
+      id: 'p_gen10_liam',
+      familyId: famId,
+      firstName: 'Liam',
+      lastName: 'Wilson',
+      gender: Gender.male,
+      birthDate: DateTime(2026, 3, 10),
+      isLiving: true,
+      birthPlace: 'Seattle, USA',
+      bio: 'Tenth generation newborn son.',
+      portraitUrl: 'assets/images/child_portrait.jpg',
       isVerified: true,
       generationHint: 10,
       createdAt: now,
@@ -522,7 +576,10 @@ class PersonRepository {
       gen7Father, gen7Mother,
       gen8Father, gen8Mother,
       gen9Father, gen9Mother,
+      gen9Viewer,
+      gen9Brother,
       gen10Child,
+      gen10Son,
     ]);
   }
 }

@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../app/theme/colors.dart';
-import '../../../app/theme/typography.dart';
 import '../../../data/models/person.dart';
 import '../../../data/providers/repository_providers.dart';
 
-class PersonProfileScreen extends ConsumerWidget {
+class PersonProfileScreen extends ConsumerStatefulWidget {
   final String personId;
 
   const PersonProfileScreen({super.key, required this.personId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PersonProfileScreen> createState() => _PersonProfileScreenState();
+}
+
+class _PersonProfileScreenState extends ConsumerState<PersonProfileScreen> {
+  bool _isFavorite = false;
+
+  @override
+  Widget build(BuildContext context) {
     final personsAsync = ref.watch(familyPersonsProvider);
     final relationshipsAsync = ref.watch(familyRelationshipsProvider);
-    final mediaAsync = ref.watch(familyMediaProvider);
-    final timelineAsync = ref.watch(familyTimelineProvider);
-    final membership = ref.watch(currentMembershipProvider).valueOrNull;
-    final isAdmin = membership?.canWriteFamilyData ?? false;
+    final isAdmin = ref.watch(isCurrentAdminProvider);
 
     return personsAsync.when(
       loading: () => const Scaffold(
@@ -30,7 +34,7 @@ class PersonProfileScreen extends ConsumerWidget {
         body: Center(child: Text('Error: $err')),
       ),
       data: (allPersons) {
-        final person = allPersons.where((p) => p.id == personId).firstOrNull;
+        final person = allPersons.where((p) => p.id == widget.personId).firstOrNull;
         if (person == null) {
           return const Scaffold(
             backgroundColor: AppColors.background,
@@ -39,8 +43,6 @@ class PersonProfileScreen extends ConsumerWidget {
         }
 
         final allRels = relationshipsAsync.valueOrNull ?? const [];
-        final allMedia = mediaAsync.valueOrNull ?? const [];
-        final allEvents = timelineAsync.valueOrNull ?? const [];
 
         // Linked relatives
         final parentIds = allRels
@@ -64,456 +66,418 @@ class PersonProfileScreen extends ConsumerWidget {
         final children = allPersons.where((p) => childIds.contains(p.id)).toList();
         final spouses = allPersons.where((p) => spouseIds.contains(p.id)).toList();
 
-        // Linked timeline events
-        final personEvents = allEvents.where((e) => e.linkedPersonIds.contains(person.id)).toList();
+        final canEdit = ref.watch(canEditPersonProvider(person.id));
 
-        return DefaultTabController(
-          length: 6,
-          child: Scaffold(
-            backgroundColor: AppColors.background,
-            appBar: AppBar(
-              title: Text(person.displayName, style: HeritageTypography.displaySmall),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.account_tree_outlined),
-                  tooltip: 'Focus in Family Tree',
-                  onPressed: () => context.push('/tree?personId=${person.id}'),
-                ),
-                if (isAdmin)
-                  IconButton(
-                    icon: const Icon(Icons.edit_outlined, color: AppColors.textPrimary),
-                    tooltip: 'Edit Record (Admin)',
-                    onPressed: () => context.push('/admin/persons/edit/${person.id}'),
-                  ),
-              ],
-              bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(56),
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: HeritageCurves.pill,
-                    boxShadow: HeritageShadows.card,
-                  ),
-                  child: TabBar(
-                    isScrollable: true,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    dividerColor: Colors.transparent,
-                    indicator: BoxDecoration(
-                      color: AppColors.paleSage,
-                      borderRadius: HeritageCurves.pill,
+        return Scaffold(
+          backgroundColor: AppColors.background,
+          body: Stack(
+            children: [
+              // Scrollable Content
+              CustomScrollView(
+                slivers: [
+                  // =========================================================
+                  // 1. TOP HERO PHOTOGRAPHY (Screen 3 Reference)
+                  // =========================================================
+                  SliverAppBar(
+                    expandedHeight: 330,
+                    pinned: true,
+                    backgroundColor: AppColors.background,
+                    elevation: 0,
+                    leading: Padding(
+                      padding: const EdgeInsets.only(left: 16),
+                      child: Center(
+                        child: InkWell(
+                          onTap: () => context.pop(),
+                          borderRadius: BorderRadius.circular(999),
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.9),
+                              shape: BoxShape.circle,
+                              boxShadow: HeritageShadows.card,
+                            ),
+                            child: const Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              size: 16,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                    labelColor: AppColors.textPrimary,
-                    unselectedLabelColor: AppColors.textSecondary,
-                    labelStyle: HeritageTypography.labelSmall.copyWith(fontWeight: FontWeight.w700),
-                    tabs: const [
-                      Tab(text: 'Overview'),
-                      Tab(text: 'Connections'),
-                      Tab(text: 'Life Story'),
-                      Tab(text: 'Memories'),
-                      Tab(text: 'Documents'),
-                      Tab(text: 'Timeline'),
+                    actions: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 16),
+                        child: Center(
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                _isFavorite = !_isFavorite;
+                              });
+                            },
+                            borderRadius: BorderRadius.circular(999),
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.9),
+                                shape: BoxShape.circle,
+                                boxShadow: HeritageShadows.card,
+                              ),
+                              child: Icon(
+                                _isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                                size: 20,
+                                color: _isFavorite ? AppColors.statusError : AppColors.textPrimary,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: Hero(
+                        tag: 'person_portrait_${person.id}',
+                        child: Image.asset(
+                          person.effectivePortraitAsset,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Container(
+                            color: AppColors.softBlueGrey,
+                            child: const Center(
+                              child: Icon(Icons.person, size: 64, color: AppColors.primary),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // =========================================================
+                  // 2. OVERLAPPING WHITE PROFILE CARD (Screen 3 Reference)
+                  // =========================================================
+                  SliverToBoxAdapter(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+                      ),
+                      padding: const EdgeInsets.fromLTRB(22, 24, 22, 110),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Title Row + Favorite Indicator
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      person.displayName,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.textPrimary,
+                                        letterSpacing: -0.5,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 3),
+                                    Text(
+                                      'Generation ${person.generation} • ${person.gender == Gender.female ? 'Matriarchal Line' : 'Patriarchal Line'}',
+                                      style: GoogleFonts.inter(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.textSecondary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              if (isAdmin || canEdit)
+                                IconButton(
+                                  icon: const Icon(Icons.edit_outlined, color: AppColors.primary),
+                                  tooltip: 'Edit Record',
+                                  onPressed: () => context.push('/admin/person/${person.id}/edit'),
+                                ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          // Rating / Verification Row
+                          Row(
+                            children: [
+                              const Icon(Icons.star_rounded, size: 18, color: Color(0xFFEAB308)),
+                              const SizedBox(width: 4),
+                              Text(
+                                '4.9',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 13.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.textPrimary,
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                '(${person.isVerified ? 'Archival Verified' : 'Documented'} • ${person.lifeDateSpan})',
+                                style: GoogleFonts.inter(
+                                  fontSize: 12.5,
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 22),
+
+                          // 4 Circular Specification Pills (Screen 3 Feature Grid)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _buildSpecPill(
+                                icon: Icons.favorite_border_rounded,
+                                title: 'Lineage',
+                                subtitle: 'Root Heritage',
+                              ),
+                              _buildSpecPill(
+                                icon: Icons.people_outline_rounded,
+                                title: 'Children',
+                                subtitle: '${children.length} Direct',
+                              ),
+                              _buildSpecPill(
+                                icon: Icons.account_tree_outlined,
+                                title: 'Generation',
+                                subtitle: 'Gen ${person.generation}',
+                              ),
+                              _buildSpecPill(
+                                icon: Icons.verified_user_outlined,
+                                title: 'Archive',
+                                subtitle: person.isLiving ? 'Living' : 'Preserved',
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 26),
+
+                          // Lineage Overview / Biography Heading
+                          Text(
+                            'Lineage Overview',
+                            style: GoogleFonts.poppins(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            person.bio != null && person.bio!.trim().isNotEmpty
+                                ? person.bio!
+                                : '${person.displayName} is documented in the Vansora Heritage Sanctuary under Generation ${person.generation}. Recorded events and direct relationships preserve the historical continuity of the family branch.',
+                            style: GoogleFonts.inter(
+                              fontSize: 13.5,
+                              height: 1.6,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+
+                          const SizedBox(height: 24),
+
+                          // Family Connections Section (with real portrait avatar photos!)
+                          Text(
+                            'Immediate Connections',
+                            style: GoogleFonts.poppins(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+
+                          if (parents.isEmpty && spouses.isEmpty && children.isEmpty)
+                            Text(
+                              'No direct parents or children recorded yet.',
+                              style: GoogleFonts.inter(fontSize: 13, color: AppColors.textSecondary),
+                            )
+                          else
+                            Column(
+                              children: [
+                                ...parents.map((p) => _buildRelativeCard(context, p, 'Parent')),
+                                ...spouses.map((p) => _buildRelativeCard(context, p, 'Spouse')),
+                                ...children.map((p) => _buildRelativeCard(context, p, 'Child')),
+                              ],
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              // =============================================================
+              // 3. FIXED BOTTOM NAVY CTA BAR (Screen 3: "Book Consultation" style)
+              // =============================================================
+              Positioned(
+                bottom: 20,
+                left: 20,
+                right: 20,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary, // #101D38 Deep Navy
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withOpacity(0.35),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Focus in Living Tree',
+                            style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            'Branch: Kensington / Vansora',
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: AppColors.textOnDarkSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      // Circular white arrow action button
+                      InkWell(
+                        onTap: () => context.push('/tree?personId=${person.id}'),
+                        borderRadius: BorderRadius.circular(999),
+                        child: Container(
+                          width: 44,
+                          height: 44,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.arrow_forward_rounded,
+                            color: AppColors.primary,
+                            size: 20,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-            ),
-            body: TabBarView(
-              children: [
-                // 1. Overview Tab
-                _buildOverviewTab(person),
-
-                // 2. Family Connections Tab
-                _buildConnectionsTab(context, parents, spouses, children, isAdmin, person.id),
-
-                // 3. Life Story Tab
-                _buildStoryTab(person),
-
-                // 4. Memories Tab
-                _buildMemoriesTab(allMedia),
-
-                // 5. Documents Tab
-                _buildDocumentsTab(allMedia),
-
-                // 6. Timeline Tab
-                _buildTimelineTab(personEvents),
-              ],
-            ),
+            ],
           ),
         );
       },
     );
   }
 
-  Widget _buildOverviewTab(Person person) {
-    return ListView(
-      padding: const EdgeInsets.all(20),
-      children: [
-        // Portrait & Core Identity Card
-        Container(
-          padding: const EdgeInsets.all(22),
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: HeritageCurves.cardLarge,
-            boxShadow: HeritageShadows.card,
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 76,
-                height: 76,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.lightSage,
-                ),
-                child: Center(
-                  child: Text(
-                    person.initials,
-                    style: HeritageTypography.displayMedium.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 18),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(person.displayName, style: HeritageTypography.displaySmall),
-                    if (person.maidenName != null) ...[
-                      const SizedBox(height: 2),
-                      Text('née ${person.maidenName}', style: HeritageTypography.bodySmall),
-                    ],
-                    const SizedBox(height: 4),
-                    Text(person.lifeDateSpan, style: HeritageTypography.lifeDates),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                          decoration: BoxDecoration(
-                            color: AppColors.lightSage,
-                            borderRadius: HeritageCurves.pill,
-                          ),
-                          child: Text(
-                            person.isLiving ? 'Living' : 'Deceased',
-                            style: HeritageTypography.labelSmall.copyWith(
-                              color: person.isLiving ? AppColors.primary : AppColors.textSecondary,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        if (person.isVerified) ...[
-                          const SizedBox(width: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                            decoration: BoxDecoration(
-                              color: AppColors.paleSage,
-                              borderRadius: HeritageCurves.pill,
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(Icons.check_circle_rounded, size: 13, color: AppColors.primary),
-                                const SizedBox(width: 4),
-                                Text(
-                                  'Archival Verified',
-                                  style: HeritageTypography.labelSmall.copyWith(
-                                    color: AppColors.textPrimary,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        const SizedBox(height: 20),
-
-        // Vital Life Events summary
-        _detailRow('Birth Place', person.birthPlace ?? 'Unrecorded in archive'),
-        if (!person.isLiving)
-          _detailRow('Death Place', person.deathPlace ?? 'Unrecorded in archive'),
-        if (person.alternateNames.isNotEmpty)
-          _detailRow('Alternate Names', person.alternateNames.join(', ')),
-
-        const SizedBox(height: 16),
-
-        if (person.bio != null) ...[
-          Text('Biographical Summary', style: HeritageTypography.titleMedium),
-          const SizedBox(height: 8),
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: AppColors.lightSage,
-              borderRadius: HeritageCurves.card,
-            ),
-            child: Text(
-              person.bio!,
-              style: HeritageTypography.bodyMedium.copyWith(
-                height: 1.5,
-                color: AppColors.textPrimary,
-              ),
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-
-  Widget _buildConnectionsTab(
-    BuildContext context,
-    List<Person> parents,
-    List<Person> spouses,
-    List<Person> children,
-    bool isAdmin,
-    String currentPersonId,
-  ) {
-    return ListView(
-      padding: const EdgeInsets.all(20),
-      children: [
-        _connectionSection(context, 'Parents', parents),
-        const SizedBox(height: 16),
-        _connectionSection(context, 'Spouse / Partner', spouses),
-        const SizedBox(height: 16),
-        _connectionSection(context, 'Children', children),
-        if (isAdmin) ...[
-          const SizedBox(height: 24),
-          OutlinedButton.icon(
-            onPressed: () => context.push('/admin/relationships/new?sourcePersonId=$currentPersonId'),
-            icon: const Icon(Icons.add_link),
-            label: const Text('Add Relationship Connection (Admin)'),
-          ),
-        ],
-      ],
-    );
-  }
-
-  Widget _connectionSection(BuildContext context, String title, List<Person> people) {
+  // ---------------------------------------------------------------------------
+  // 4 Feature Pills in Screen 3
+  // ---------------------------------------------------------------------------
+  Widget _buildSpecPill({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+  }) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: HeritageTypography.titleMedium),
-        const SizedBox(height: 8),
-        if (people.isEmpty)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: HeritageCurves.card,
-              boxShadow: HeritageShadows.card,
-            ),
-            child: Text('No $title recorded yet.', style: HeritageTypography.bodySmall),
-          )
-        else
-          ...people.map((p) => Container(
-                margin: const EdgeInsets.only(bottom: 8),
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: HeritageCurves.card,
-                  boxShadow: HeritageShadows.card,
-                ),
-                child: ListTile(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: HeritageCurves.card,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
-                  onTap: () => context.push('/people/${p.id}'),
-                  title: Text(p.displayName, style: HeritageTypography.titleSmall),
-                  subtitle: Text(p.lifeDateSpan, style: HeritageTypography.lifeDates),
-                  trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14),
-                ),
-              )),
-      ],
-    );
-  }
-
-  Widget _buildStoryTab(Person person) {
-    final story = person.lifeStory ?? person.bio ?? 'No narrative story recorded yet for this family member.';
-    return ListView(
-      padding: const EdgeInsets.all(24),
-      children: [
-        Text('Life Chronicle', style: HeritageTypography.displaySmall),
-        const SizedBox(height: 14),
         Container(
-          padding: const EdgeInsets.all(22),
+          width: 50,
+          height: 50,
           decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: HeritageCurves.cardLarge,
-            boxShadow: HeritageShadows.card,
+            color: AppColors.paleBlue,
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFFD4E3FA), width: 1.0),
           ),
-          child: Text(
-            story,
-            style: HeritageTypography.storyBody.copyWith(
-              color: AppColors.textPrimary,
-            ),
+          child: Icon(icon, size: 22, color: AppColors.primary),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          title,
+          style: GoogleFonts.inter(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        Text(
+          subtitle,
+          style: GoogleFonts.inter(
+            fontSize: 10.5,
+            color: AppColors.textSecondary,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildMemoriesTab(List<dynamic> media) {
-    final photos = media.where((m) => m.mediaType.dbValue == 'photo').toList();
-    return ListView(
-      padding: const EdgeInsets.all(20),
-      children: [
-        Text('Preserved Photographs', style: HeritageTypography.titleMedium),
-        const SizedBox(height: 12),
-        if (photos.isEmpty)
-          const Text('No photographs cataloged in archive.')
-        else
-          ...photos.map((m) => Container(
-                margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: HeritageCurves.card,
-                  boxShadow: HeritageShadows.card,
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 44,
-                      height: 44,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.lightSage,
-                      ),
-                      child: const Icon(Icons.photo_outlined, color: AppColors.primary, size: 22),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(m.title, style: HeritageTypography.titleSmall),
-                          if (m.description != null)
-                            Text(m.description!, style: HeritageTypography.bodySmall),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )),
-      ],
-    );
-  }
-
-  Widget _buildDocumentsTab(List<dynamic> media) {
-    final docs = media.where((m) => m.mediaType.dbValue == 'document').toList();
-    return ListView(
-      padding: const EdgeInsets.all(20),
-      children: [
-        Text('Archival Documents & Certifications', style: HeritageTypography.titleMedium),
-        const SizedBox(height: 12),
-        if (docs.isEmpty)
-          const Text('No historical documents attached.')
-        else
-          ...docs.map((d) => Container(
-                margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: HeritageCurves.card,
-                  boxShadow: HeritageShadows.card,
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 44,
-                      height: 44,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.lightSage,
-                      ),
-                      child: const Icon(Icons.description_outlined, color: AppColors.primary, size: 22),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(d.title, style: HeritageTypography.titleSmall),
-                          if (d.description != null)
-                            Text(d.description!, style: HeritageTypography.bodySmall),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )),
-      ],
-    );
-  }
-
-  Widget _buildTimelineTab(List<dynamic> events) {
-    return ListView(
-      padding: const EdgeInsets.all(20),
-      children: [
-        Text('Individual Timeline', style: HeritageTypography.titleMedium),
-        const SizedBox(height: 12),
-        if (events.isEmpty)
-          const Text('No linked historical events recorded.')
-        else
-          ...events.map((e) => Container(
-                margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: HeritageCurves.card,
-                  boxShadow: HeritageShadows.card,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(e.formattedDate, style: HeritageTypography.lifeDates),
-                    const SizedBox(height: 4),
-                    Text(e.title, style: HeritageTypography.titleSmall),
-                    if (e.description != null) ...[
-                      const SizedBox(height: 4),
-                      Text(e.description!, style: HeritageTypography.bodySmall),
-                    ],
-                  ],
-                ),
-              )),
-      ],
-    );
-  }
-
-  Widget _detailRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 120,
-            child: Text(
-              label,
-              style: HeritageTypography.labelMedium.copyWith(color: AppColors.textSecondary),
+  // ---------------------------------------------------------------------------
+  // Relative Card with portrait photograph placeholder
+  // ---------------------------------------------------------------------------
+  Widget _buildRelativeCard(BuildContext context, Person relative, String relationship) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: AppColors.background,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.border, width: 0.8),
+      ),
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        onTap: () => context.push('/people/${relative.id}'),
+        leading: Container(
+          width: 44,
+          height: 44,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: Image.asset(
+              relative.effectivePortraitAsset,
+              fit: BoxFit.cover,
             ),
           ),
-          Expanded(
-            child: Text(
-              value,
-              style: HeritageTypography.bodyMedium.copyWith(
-                fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
-              ),
-            ),
+        ),
+        title: Text(
+          relative.displayName,
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
           ),
-        ],
+        ),
+        subtitle: Text(
+          '$relationship • ${relative.lifeDateSpan}',
+          style: GoogleFonts.inter(
+            fontSize: 11.5,
+            color: AppColors.textSecondary,
+          ),
+        ),
+        trailing: const Icon(
+          Icons.arrow_forward_ios_rounded,
+          size: 14,
+          color: AppColors.textSecondary,
+        ),
       ),
     );
   }

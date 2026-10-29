@@ -10,8 +10,10 @@ class AdminDashboardScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final membership = ref.watch(currentMembershipProvider).valueOrNull;
-    final isAdmin = membership?.canWriteFamilyData ?? false;
+    final isAdmin = ref.watch(isCurrentAdminProvider);
+    final personsAsync = ref.watch(familyPersonsProvider);
+    final users = ref.watch(userManagementProvider);
+    final requests = ref.watch(correctionRequestsProvider);
 
     if (!isAdmin) {
       return Scaffold(
@@ -29,15 +31,20 @@ class AdminDashboardScreen extends ConsumerWidget {
       );
     }
 
+    final persons = personsAsync.valueOrNull ?? [];
+    final branchRequests = ref.watch(branchJoinRequestsProvider);
+    final pendingRequests = requests.where((r) => r.status == 'pending').length;
+    final pendingBridges = branchRequests.where((r) => r.isPending).length;
+
     return Scaffold(
-      backgroundColor: HeritageColors.warmIvory,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text('Admin Workspace', style: HeritageTypography.displaySmall),
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         children: [
-          // Admin notice
+          // Metrics Hero Card
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -45,39 +52,40 @@ class AdminDashboardScreen extends ConsumerWidget {
               borderRadius: HeritageCurves.cardLarge,
               boxShadow: HeritageShadows.card,
             ),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 46,
-                  height: 46,
-                  decoration: const BoxDecoration(
-                    color: AppColors.paleSage,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.shield_outlined, color: AppColors.textPrimary, size: 22),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Living Heritage Archive', style: HeritageTypography.titleSmall.copyWith(fontWeight: FontWeight.w700)),
+                        Text('The Kensington Lineage (VANS-8842)', style: HeritageTypography.bodySmall.copyWith(color: AppColors.textSecondary)),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: HeritageCurves.pill,
+                      ),
+                      child: const Text('👑 Admin', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w700)),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Primary Archon Authorization',
-                        style: HeritageTypography.titleSmall.copyWith(
-                          color: HeritageColors.charcoal,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        'Canonical writes and membership management are cryptographically secured by PostgreSQL Row Level Security.',
-                        style: HeritageTypography.bodySmall.copyWith(
-                          color: HeritageColors.charcoalMuted,
-                          fontSize: 11.5,
-                        ),
-                      ),
-                    ],
-                  ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    _buildStatPill('People', '${persons.length}', Icons.people_outline_rounded),
+                    const SizedBox(width: 6),
+                    _buildStatPill('Users', '${users.length}', Icons.badge_outlined),
+                    const SizedBox(width: 6),
+                    _buildStatPill('Bridges', '$pendingBridges', Icons.alt_route_rounded),
+                    const SizedBox(width: 6),
+                    _buildStatPill('Notes', '$pendingRequests', Icons.mark_email_unread_outlined),
+                  ],
                 ),
               ],
             ),
@@ -85,85 +93,115 @@ class AdminDashboardScreen extends ConsumerWidget {
 
           const SizedBox(height: 20),
 
-          Text('Lineage Management', style: HeritageTypography.displaySmall),
-          const SizedBox(height: 12),
+          Text('People & Lineage', style: HeritageTypography.titleSmall.copyWith(fontWeight: FontWeight.w800)),
+          const SizedBox(height: 10),
 
           _adminActionTile(
             context,
             icon: Icons.person_add_outlined,
-            title: 'Add Family Member Record',
-            subtitle: 'Record birth, death, names, biography, and life story',
-            onTap: () => context.push('/admin/persons/new'),
+            title: 'Add New Person (7-Step Form)',
+            subtitle: 'Multi-step form: basic, birth, family links, life details, death, media & review',
+            onTap: () => context.push('/admin/person/new'),
           ),
 
           _adminActionTile(
             context,
             icon: Icons.hub_outlined,
-            title: 'Relationship Builder & Graph Edges',
-            subtitle: 'Connect parents, children, and spouses with cycle prevention',
-            onTap: () => context.push('/admin/relationships'),
+            title: 'Relationship Manager',
+            subtitle: 'Connect parent, spouse, child, and sibling with cycle prevention',
+            onTap: () => context.push('/admin/relations'),
           ),
 
           _adminActionTile(
             context,
-            icon: Icons.warning_amber_rounded,
-            title: 'Incomplete & Unverified Records',
-            subtitle: 'Audit missing birth dates, birthplaces, or parent connections',
-            onTap: () => context.push('/admin/incomplete'),
-          ),
-
-          const SizedBox(height: 24),
-
-          Text('Access & Membership', style: HeritageTypography.displaySmall),
-          const SizedBox(height: 12),
-
-          _adminActionTile(
-            context,
-            icon: Icons.mark_email_read_outlined,
-            title: 'Membership Requests',
-            subtitle: 'Review, approve, or reject family member access requests',
+            icon: Icons.alt_route_rounded,
+            badge: pendingBridges > 0 ? '$pendingBridges' : null,
+            title: 'Lineage Bridges & Branch Approvals',
+            subtitle: 'Review brother/descendant join requests and connect branches to tree',
             onTap: () => context.push('/admin/requests'),
           ),
 
           _adminActionTile(
             context,
-            icon: Icons.vpn_key_outlined,
-            title: 'Generate Single-Use Invitation',
-            subtitle: 'Create random, expiring token hashes for family members',
-            onTap: () => context.push('/admin/invitations'),
+            icon: Icons.perm_media_outlined,
+            title: 'Manage Media & Scans',
+            subtitle: 'Upload and organise photos, certificates, and historical documents',
+            onTap: () => context.push('/admin/media'),
+          ),
+
+          const SizedBox(height: 20),
+
+          Text('Members & Requests', style: HeritageTypography.titleSmall.copyWith(fontWeight: FontWeight.w800)),
+          const SizedBox(height: 10),
+
+          _adminActionTile(
+            context,
+            icon: Icons.rate_review_outlined,
+            badge: pendingRequests > 0 ? '$pendingRequests' : null,
+            title: 'Correction Requests',
+            subtitle: 'Review suggestions submitted by family members',
+            onTap: () => context.push('/admin/requests'),
           ),
 
           _adminActionTile(
             context,
-            icon: Icons.group_remove_outlined,
-            title: 'Member Access & Revocation',
-            subtitle: 'View active family members and revoke access when necessary',
-            onTap: () => context.push('/admin/members'),
+            icon: Icons.manage_accounts_outlined,
+            title: 'Manage Users',
+            subtitle: 'List, search, block/unblock, delete users, and add admin accounts',
+            onTap: () => context.push('/admin/users'),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
 
-          Text('Governance & Preservation', style: HeritageTypography.displaySmall),
-          const SizedBox(height: 12),
+          Text('System, Audit & Settings', style: HeritageTypography.titleSmall.copyWith(fontWeight: FontWeight.w800)),
+          const SizedBox(height: 10),
 
           _adminActionTile(
             context,
-            icon: Icons.history_edu_outlined,
-            title: 'Archival Audit Logs',
-            subtitle: 'View historical trail of records created and permissions modified',
-            onTap: () => context.push('/admin/audit'),
+            icon: Icons.history_toggle_off_rounded,
+            title: 'Activity & Audit Log (with Undo)',
+            subtitle: 'Chronological timeline of who modified what, with one-tap undo',
+            onTap: () => context.push('/admin/logs'),
           ),
 
           _adminActionTile(
             context,
-            icon: Icons.download_for_offline_outlined,
-            title: 'Export Archive & Recovery',
-            subtitle: 'Generate a full JSON backup of all family persons, media, and graphs',
+            icon: Icons.tune_rounded,
+            title: 'Admin Settings & Privacy',
+            subtitle: 'Privacy rules, living persons protection, downloads, languages, backups',
+            onTap: () => context.push('/admin/settings'),
+          ),
+
+          _adminActionTile(
+            context,
+            icon: Icons.download_rounded,
+            title: 'Lineage Export & PDF Chart',
+            subtitle: 'Download complete JSON database backup or generate PDF pedigree book',
             onTap: () => context.push('/admin/export'),
           ),
 
-          const SizedBox(height: 28),
+          const SizedBox(height: 30),
         ],
+      ),
+    );
+  }
+
+  Widget _buildStatPill(String label, String value, IconData icon) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: HeritageCurves.card,
+        ),
+        child: Column(
+          children: [
+            Icon(icon, size: 18, color: AppColors.primary),
+            const SizedBox(height: 4),
+            Text(value, style: HeritageTypography.titleSmall.copyWith(fontWeight: FontWeight.w800)),
+            Text(label, style: HeritageTypography.bodySmall.copyWith(fontSize: 10, color: AppColors.textSecondary)),
+          ],
+        ),
       ),
     );
   }
@@ -174,6 +212,7 @@ class AdminDashboardScreen extends ConsumerWidget {
     required String title,
     required String subtitle,
     required VoidCallback onTap,
+    String? badge,
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -183,10 +222,6 @@ class AdminDashboardScreen extends ConsumerWidget {
         boxShadow: HeritageShadows.card,
       ),
       child: ListTile(
-        shape: RoundedRectangleBorder(
-          borderRadius: HeritageCurves.card,
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
         leading: Container(
           width: 44,
           height: 44,
@@ -196,9 +231,28 @@ class AdminDashboardScreen extends ConsumerWidget {
           ),
           child: Icon(icon, color: AppColors.primary, size: 22),
         ),
-        title: Text(title, style: HeritageTypography.titleSmall),
-        subtitle: Text(subtitle, style: HeritageTypography.bodySmall),
-        trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: AppColors.textSecondary),
+        title: Text(title, style: HeritageTypography.titleSmall.copyWith(fontWeight: FontWeight.w700)),
+        subtitle: Text(
+          subtitle,
+          style: HeritageTypography.bodySmall.copyWith(fontSize: 11, color: AppColors.textSecondary),
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (badge != null) ...[
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: const BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: Text(badge, style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700)),
+              ),
+              const SizedBox(width: 6),
+            ],
+            const Icon(Icons.chevron_right_rounded, color: AppColors.paleSage),
+          ],
+        ),
         onTap: onTap,
       ),
     );

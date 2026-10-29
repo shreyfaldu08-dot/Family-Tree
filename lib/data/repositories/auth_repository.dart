@@ -277,6 +277,22 @@ class AuthRepository {
     }
   }
 
+  void setRole(MemberRole role) {
+    if (_mockMembership != null) {
+      _mockMembership = FamilyMembership(
+        id: _mockMembership!.id,
+        familyId: _mockMembership!.familyId,
+        userId: _mockMembership!.userId,
+        role: role,
+        status: _mockMembership!.status,
+        joinedAt: _mockMembership!.joinedAt,
+        updatedAt: DateTime.now(),
+        userEmail: _mockProfile?.email,
+        userDisplayName: _mockProfile?.displayName,
+      );
+    }
+  }
+
   void setMockSession({
     required UserProfile profile,
     required FamilyMembership membership,
@@ -285,3 +301,4 @@ class AuthRepository {
     _mockMembership = membership;
   }
 }
+

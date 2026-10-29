@@ -128,6 +128,7 @@ class TimelineScreen extends ConsumerWidget {
                         decoration: BoxDecoration(
                           color: AppColors.surface,
                           borderRadius: HeritageCurves.card,
+                          border: Border.all(color: AppColors.border, width: 0.8),
                           boxShadow: HeritageShadows.card,
                         ),
                         child: Column(

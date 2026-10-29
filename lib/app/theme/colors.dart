@@ -3,75 +3,75 @@ import 'app_colors.dart';
 
 export 'app_colors.dart';
 
-/// Vansora Theme Bridges & System Constants
-/// Maps the official Vansora Master Light Theme tokens into shared constants.
+/// Vansora Heritage Theme Bridges & System Constants
+/// Maps the official Reference-Inspired tokens into shared constants.
 abstract final class HeritageColors {
-  // Main app background (Warm White #F8F8F3)
+  // Main app background (Soft, cool, light neutral canvas #F4F5F7)
   static const Color background = AppColors.background;
   static const Color canvasSolid = AppColors.background;
   static const Color warmIvory = AppColors.background;
   static const Color warmIvoryLight = AppColors.surface;
-  static const Color warmIvoryDark = AppColors.lightSage;
+  static const Color warmIvoryDark = AppColors.softBlueGrey;
 
   // Primary content surfaces & panels
   static const Color surfaceCard = AppColors.surface;
-  static const Color surfaceSecondary = AppColors.lightSage;
+  static const Color surfaceSecondary = AppColors.softBlueGrey;
   static const Color stone = AppColors.border;
-  static const Color stoneLight = AppColors.lightSage;
+  static const Color stoneLight = AppColors.softBlueGrey;
   static const Color stoneDark = AppColors.border;
   static const Color borderSubtle = AppColors.border;
 
   // Typography tokens
-  static const Color textPrimary = AppColors.textPrimary; // #536158 Soft Charcoal
-  static const Color textSecondary = AppColors.textSecondary; // #718777 Muted Green
+  static const Color textPrimary = AppColors.textPrimary; // #172033
+  static const Color textSecondary = AppColors.textSecondary; // #687184
   static const Color charcoal = AppColors.textPrimary;
   static const Color charcoalLight = AppColors.textPrimary;
   static const Color charcoalMuted = AppColors.textSecondary;
+  static const Color textMuted = AppColors.textMuted; // #9299A7
 
-  // Brand Greens
-  static const Color forestGreen = AppColors.primary; // #76A982 Primary Green
-  static const Color forestGreenLight = AppColors.secondary; // #9BC5A0 Fresh Green
+  // Navy Accents
+  static const Color forestGreen = AppColors.primary; // #101D38 Primary Navy
+  static const Color forestGreenLight = AppColors.secondaryNavy; // #243754
   static const Color forestGreenDark = AppColors.primary;
 
-  // Soft Accents & Highlights
-  static const Color softBlueAccent = AppColors.paleSage; // #E0EDE0 Pale Sage
-  static const Color blueHighlight = AppColors.softMint; // #C7E2C9 Soft Mint
-  static const Color mutedBrass = AppColors.secondary;
-  static const Color mutedBrassLight = AppColors.paleSage;
+  // Pale Blue Surfaces & Accents
+  static const Color softBlueAccent = AppColors.paleBlue; // #E7EEFC Pale Blue
+  static const Color blueHighlight = AppColors.softMint;
+  static const Color mutedBrass = AppColors.secondaryNavy;
+  static const Color mutedBrassLight = AppColors.paleBlue;
   static const Color mutedBrassDark = AppColors.primary;
   static const Color sage = AppColors.textSecondary;
-  static const Color sageLight = AppColors.paleSage;
+  static const Color sageLight = AppColors.paleBlue;
   static const Color sageDark = AppColors.primary;
 
   // Status & Validation
   static const Color statusSuccess = AppColors.statusSuccess;
-  static const Color statusSuccessBackground = AppColors.lightSage;
-  static const Color statusSuccessLight = AppColors.paleSage;
+  static const Color statusSuccessBackground = AppColors.softBlueGrey;
+  static const Color statusSuccessLight = AppColors.paleBlue;
   static const Color statusWarning = AppColors.statusWarning;
   static const Color statusError = AppColors.statusError;
   static const Color statusInfo = AppColors.statusInfo;
 
   // Ambient depth
-  static const Color overlayDim = Color(0x28536158);
-  static const Color subtleShadow = Color(0x0A536158);
+  static const Color overlayDim = Color(0x33101D38);
+  static const Color subtleShadow = Color(0x0A101D38);
 }
 
 /// Restrained & Cohesive Gradients for Vansora
 abstract final class HeritageGradients {
-  /// Signature Vansora 110° Linear Gradient
-  /// Apply selectively: Featured family cards, milestone highlights, welcome panel
+  /// Signature Deep Navy Gradient
   static const LinearGradient signature = AppColors.signatureGradient;
 
   /// Signature Featured Card Gradient
   static const LinearGradient heroCard = AppColors.signatureGradient;
 
-  /// Standard content card gradient (subtle pure white to whisper of light sage)
+  /// Standard content card gradient (pure white to whisper of pale blue)
   static const LinearGradient premiumCard = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
       AppColors.surface,
-      Color(0xFFFCFDFB),
+      Color(0xFFF9FAFD),
     ],
   );
 
@@ -80,8 +80,8 @@ abstract final class HeritageGradients {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      AppColors.paleSage,
-      AppColors.softMint,
+      AppColors.primary,
+      AppColors.secondaryNavy,
     ],
   );
 
@@ -90,18 +90,18 @@ abstract final class HeritageGradients {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      AppColors.lightSage,
-      Color(0xFFE4ECE2),
+      AppColors.softBlueGrey,
+      Color(0xFFE2E8F0),
     ],
   );
 
-  /// Avatar circle light green gradient
+  /// Avatar circle pale blue gradient
   static const LinearGradient avatarPill = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      AppColors.lightSage,
-      AppColors.paleSage,
+      AppColors.softBlueGrey,
+      AppColors.paleBlue,
     ],
   );
 
@@ -110,12 +110,12 @@ abstract final class HeritageGradients {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      AppColors.paleSage,
-      AppColors.softMint,
+      AppColors.paleBlue,
+      Color(0xFFD0E1FD),
     ],
   );
 
-  /// Canvas background (solid warm white #F8F8F3)
+  /// Canvas background (solid cool light #F4F5F7)
   static const LinearGradient canvasBackground = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
@@ -126,32 +126,36 @@ abstract final class HeritageGradients {
   );
 }
 
-/// Official Vansora Capsule Curves
-/// - Proper capsule structure with generous curvature and zero stroke lines
+/// Reference-Inspired Geometric Curves
+/// Follows Section 11 of the Master Redesign Specification:
+/// - Compact card radius: 12–16 px (14 px)
+/// - Standard card radius: 16–20 px (18 px)
+/// - Featured card radius: 20–26 px (24 px)
+/// - Pill: 999 px
 abstract final class HeritageCurves {
-  /// Small controls, pills & badges: 20 px
-  static final BorderRadius small = BorderRadius.circular(20);
+  /// Small controls, pills & compact badges: 14 px
+  static final BorderRadius small = BorderRadius.circular(14);
 
-  /// Standard capsule cards & panels: 28 px
-  static final BorderRadius card = BorderRadius.circular(28);
+  /// Standard cards & panels: 18 px
+  static final BorderRadius card = BorderRadius.circular(18);
 
-  /// Featured panels, dialogs & hero capsule cards: 34 px
-  static final BorderRadius cardLarge = BorderRadius.circular(34);
+  /// Featured panels, hero cards & major dialogs: 24 px
+  static final BorderRadius cardLarge = BorderRadius.circular(24);
 
   /// Full stadium capsule pills: 999 px
   static final BorderRadius pill = BorderRadius.circular(999);
 
-  /// Sheet top radius: 32 px
-  static const BorderRadius sheet = BorderRadius.vertical(top: Radius.circular(32));
+  /// Sheet top radius: 24 px
+  static const BorderRadius sheet = BorderRadius.vertical(top: Radius.circular(24));
 }
 
-/// Soft Ambient Shadows for borderless capsule cards
+/// Subtle Ambient Shadows for Clean Separation
 abstract final class HeritageShadows {
-  /// Soft capsule card shadow
+  /// Subtle ambient card shadow for clean floating separation
   static const List<BoxShadow> card = [
     BoxShadow(
-      color: Color(0x0C536158),
-      blurRadius: 14,
+      color: Color(0x0811233B),
+      blurRadius: 18,
       offset: Offset(0, 4),
       spreadRadius: 0,
     ),
@@ -160,18 +164,18 @@ abstract final class HeritageShadows {
   /// Active filter or pill shadow
   static const List<BoxShadow> activePill = [
     BoxShadow(
-      color: Color(0x0E76A982),
-      blurRadius: 6,
-      offset: Offset(0, 2),
+      color: Color(0x1426538D),
+      blurRadius: 10,
+      offset: Offset(0, 3),
     ),
   ];
 
   /// Navigation or floating bar shadow
   static const List<BoxShadow> pill = [
     BoxShadow(
-      color: Color(0x0A536158),
-      blurRadius: 12,
-      offset: Offset(0, 3),
+      color: Color(0x0C11233B),
+      blurRadius: 20,
+      offset: Offset(0, 4),
     ),
   ];
 }

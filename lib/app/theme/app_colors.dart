@@ -1,76 +1,97 @@
 import 'package:flutter/material.dart';
 
-/// Official Vansora Light Theme Design Tokens
-/// Based on the Vansora Master Light Theme Color Specification
+/// Official Vansora Minimal & Premium Design Tokens
+/// Refined implementation of Dusk Blue (#26538D) and Azure Mist (#F0FFFF / #F7FAFB):
+/// - Primary Accent: Dusk Blue (#26538D, RGB: 38, 83, 141)
+/// - Canvas: Serene Azure Mist Canvas (#F7FAFB)
+/// - Surfaces: Pristine White (#FFFFFF) with ultra-thin hairline borders (#E1EFF2)
+/// - Accents & Chips: Soft Azure Mist tint (#EAF5F7)
+/// - Typography: Deep Dusk Slate (#11233B) and Refined Slate (#56718E)
 abstract final class AppColors {
-  // --- Primary Brand Colors ---
-  /// Primary Green (#76A982) - Primary buttons, active navigation & important actions
-  static const Color primary = Color(0xFF76A982);
+  // --- Canvas and Surface Colors ---
+  /// Azure Mist Canvas (#F7FAFB) - Ultra-serene, clean, modern gallery background
+  static const Color background = Color(0xFFF7FAFB);
 
-  /// Fresh Green (#9BC5A0) - Secondary actions, supporting icons & decorative emphasis
-  static const Color secondary = Color(0xFF9BC5A0);
-
-  /// Soft Mint (#C7E2C9) - Selected tree nodes, selected controls & soft highlights
-  static const Color softMint = Color(0xFFC7E2C9);
-
-  /// Pale Sage (#E0EDE0) - Selected tabs, active filters & highlighted surfaces
-  static const Color paleSage = Color(0xFFE0EDE0);
-
-  /// Light Sage (#EDF4EA) - Secondary cards, grouped content & subtle panels
-  static const Color lightSage = Color(0xFFEDF4EA);
-
-  // --- Background and Neutral Colors ---
-  /// Warm White (#F8F8F3) - Main app background (soft & natural, never stark)
-  static const Color background = Color(0xFFF8F8F3);
-
-  /// Pure White (#FFFFFF) - Cards, forms, dialogs & bottom sheets
+  /// Primary card surface (#FFFFFF) - Pure white clean cards
   static const Color surface = Color(0xFFFFFFFF);
 
-  /// Soft Border (#DCE7DA) - Card borders, dividers, input borders & subtle outlines
-  static const Color border = Color(0xFFDCE7DA);
+  /// Soft Azure Mist tint (#EAF5F7) - Subtle chips, metric highlights, gentle active fills
+  static const Color paleBlue = Color(0xFFEAF5F7);
+  static const Color paleSage = Color(0xFFEAF5F7);
+  static const Color softMint = Color(0xFFDFF0F3);
+
+  /// Secondary soft surface (#F1F8FA)
+  static const Color softBlueGrey = Color(0xFFF1F8FA);
+  static const Color lightSage = Color(0xFFF1F8FA);
+
+  // --- High-Emphasis Dusk Blue Accents ---
+  /// Primary Dusk Blue (#26538D) - Refined brand accent, CTA buttons, active tabs
+  static const Color primary = Color(0xFF26538D);
+
+  /// Deep Dusk Blue (#1C3F6D) - Selected states, dark nuances
+  static const Color secondaryNavy = Color(0xFF1C3F6D);
+  static const Color secondary = Color(0xFF1C3F6D);
+
+  // --- Borders and Dividers ---
+  /// Hairline subtle border (#E1EFF2) - Crisp, minimal separation
+  static const Color border = Color(0xFFE1EFF2);
+  static const Color borderSubtle = Color(0xFFEDF6F8);
 
   // --- Typography Colors ---
-  /// Soft Charcoal (#536158) - Headings, body text, important labels & readable content
-  static const Color textPrimary = Color(0xFF536158);
+  /// Primary text (#11233B) - Deep dusk slate, optimal contrast and elegance
+  static const Color textPrimary = Color(0xFF11233B);
 
-  /// Muted Green Text (#718777) - Secondary labels, captions, dates & metadata
-  static const Color textSecondary = Color(0xFF718777);
+  /// Secondary text (#56718E) - Balanced slate for descriptions & metadata
+  static const Color textSecondary = Color(0xFF56718E);
+
+  /// Muted labels (#8FA7BF) - Captions, tags, timestamps
+  static const Color textMuted = Color(0xFF8FA7BF);
+
+  /// Text on dark (#FFFFFF)
+  static const Color textOnDark = Color(0xFFFFFFFF);
+
+  /// Secondary text on dark (#D5E5F5)
+  static const Color textOnDarkSecondary = Color(0xFFD5E5F5);
 
   // --- Semantic & Status Colors ---
-  static const Color statusSuccess = Color(0xFF76A982);
+  static const Color statusSuccess = Color(0xFF1B8A5A);
   static const Color statusWarning = Color(0xFFD97706);
   static const Color statusError = Color(0xFFDC2626);
-  static const Color statusInfo = Color(0xFF536158);
+  static const Color statusInfo = Color(0xFF26538D);
 
   // --- Family Tree Specific Tokens ---
-  static const Color treeCanvasBackground = Color(0xFFF8F8F3);
-  static const Color treeNormalLine = Color(0xFFDCE7DA);
-  static const Color treeEmphasizedLine = Color(0xFF9BC5A0);
-  static const Color treeSelectedPath = Color(0xFF76A982);
-  static const Color treeUnverifiedLine = Color(0xFFDCE7DA);
+  static const Color treeCanvasBackground = Color(0xFFF7FAFB);
+  static const Color treeNormalLine = Color(0xFFD8EBF0);
+  static const Color treeEmphasizedLine = Color(0xFF26538D);
+  static const Color treeSelectedPath = Color(0xFF26538D);
+  static const Color treeUnverifiedLine = Color(0xFFE5F2F5);
 
   static const Color treeNodeNormalBackground = Color(0xFFFFFFFF);
-  static const Color treeNodeNormalBorder = Color(0xFFDCE7DA);
-  static const Color treeNodeSelectedBackground = Color(0xFFC7E2C9);
-  static const Color treeNodeSelectedBorder = Color(0xFF76A982);
-  static const Color treeNodeAncestorBackground = Color(0xFFEDF4EA);
-  static const Color treeNodeAncestorBorder = Color(0xFFDCE7DA);
-  static const Color treeCollapsedIndicator = Color(0xFFE0EDE0);
+  static const Color treeNodeNormalBorder = Color(0xFFE1EFF2);
+  static const Color treeNodeSelectedBackground = Color(0xFFEAF5F7);
+  static const Color treeNodeSelectedBorder = Color(0xFF26538D);
+  static const Color treeNodeAncestorBackground = Color(0xFFF1F8FA);
+  static const Color treeNodeAncestorBorder = Color(0xFFE1EFF2);
+  static const Color treeCollapsedIndicator = Color(0xFFEAF5F7);
 
-  // --- Signature Green Gradient Tokens ---
-  static const Color gradientStart = Color(0xFFDDEEDD);
-  static const Color gradientMiddle = Color(0xFFBFE0C3);
-  static const Color gradientEnd = Color(0xFF9BC5A0);
-
-  /// Signature Vansora 110° Linear Gradient
+  // --- Gradients ---
   static const LinearGradient signatureGradient = LinearGradient(
     begin: Alignment(-0.8, -0.6),
     end: Alignment(0.8, 0.6),
     colors: [
-      gradientStart,
-      gradientMiddle,
-      gradientEnd,
+      Color(0xFF26538D), // Dusk Blue
+      Color(0xFF1F487B),
+      Color(0xFF173861),
     ],
     stops: [0.0, 0.5, 1.0],
+  );
+
+  static const LinearGradient paleBlueGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      Color(0xFFFFFFFF),
+      Color(0xFFEAF5F7),
+    ],
   );
 }

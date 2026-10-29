@@ -220,4 +220,37 @@ class Person {
     if (birthPlace != null && birthPlace!.toLowerCase().contains(q)) return true;
     return false;
   }
+
+  int get generation => generationHint ?? 1;
+  String get lifespanDisplay => lifeDateSpan;
+
+  String get effectivePortraitAsset {
+    if (portraitUrl != null && portraitUrl!.trim().isNotEmpty) {
+      return portraitUrl!.trim();
+    }
+    final gen = generationHint ?? 1;
+    if (gender == Gender.female) {
+      if (gen >= 10) {
+        return 'assets/images/child_portrait.jpg';
+      } else if (gen >= 8) {
+        return 'assets/images/user_sara_portrait.jpg';
+      } else if (gen >= 4) {
+        return 'assets/images/vintage_lady_portrait.jpg';
+      } else {
+        return 'assets/images/matriarch_portrait.jpg';
+      }
+    } else {
+      if (gen >= 9) {
+        return 'assets/images/modern_young_man.jpg';
+      } else if (gen >= 7) {
+        return 'assets/images/modern_father.jpg';
+      } else if (gen >= 4) {
+        return 'assets/images/midcentury_father.jpg';
+      } else if (gen >= 2) {
+        return 'assets/images/vintage_elder_father.jpg';
+      } else {
+        return 'assets/images/archibald_portrait.jpg';
+      }
+    }
+  }
 }
