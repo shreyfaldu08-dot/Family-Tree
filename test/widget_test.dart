@@ -13,14 +13,14 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    // Verify main brand heading renders
-    expect(find.text('Vansora'), findsWidgets);
+    // Verify user greeting renders
+    expect(find.text('Sara Wilson'), findsWidgets);
 
     // Verify bottom navigation icon destinations render cleanly
     expect(find.byIcon(Icons.cottage_rounded), findsOneWidget);
-    expect(find.byIcon(Icons.park_outlined), findsOneWidget);
-    expect(find.byIcon(Icons.diversity_3_outlined), findsOneWidget);
-    expect(find.byIcon(Icons.auto_stories_outlined), findsWidgets);
+    expect(find.byIcon(Icons.account_tree_outlined), findsWidgets);
+    expect(find.byIcon(Icons.calendar_today_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.people_outline_rounded), findsWidgets);
     expect(find.byIcon(Icons.person_outline_rounded), findsWidgets);
   });
 }

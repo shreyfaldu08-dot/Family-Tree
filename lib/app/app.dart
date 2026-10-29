@@ -1,8 +1,21 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'theme/app_theme.dart';
 import 'theme/colors.dart';
 import 'router.dart';
+
+class AppScrollBehavior extends MaterialScrollBehavior {
+  const AppScrollBehavior();
+
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.trackpad,
+        PointerDeviceKind.stylus,
+      };
+}
 
 class FamilyLegacyApp extends ConsumerWidget {
   const FamilyLegacyApp({super.key});
@@ -13,6 +26,7 @@ class FamilyLegacyApp extends ConsumerWidget {
       title: 'Vansora',
       debugShowCheckedModeBanner: false,
       theme: HeritageTheme.lightTheme,
+      scrollBehavior: const AppScrollBehavior(),
       routerConfig: appRouter,
       builder: (context, child) {
         return Container(

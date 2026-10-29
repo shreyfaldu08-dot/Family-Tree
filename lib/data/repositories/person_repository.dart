@@ -532,6 +532,76 @@ class PersonRepository {
       updatedAt: now,
     );
 
+    final gen7GreatUncleWilliam = Person(
+      id: 'p_gen7_william',
+      familyId: famId,
+      firstName: 'William',
+      lastName: 'Kensington',
+      gender: Gender.male,
+      birthDate: DateTime(1932, 5, 14),
+      deathDate: DateTime(2018, 9, 27),
+      isLiving: false,
+      birthPlace: 'London, UK',
+      deathPlace: 'Edinburgh, Scotland',
+      bio: "Grandfather Julian's younger brother. Master founder of the Edinburgh Architectural Foundry.",
+      portraitUrl: 'assets/images/vintage_elder_father.jpg',
+      isVerified: true,
+      generationHint: 7,
+      createdAt: now,
+      updatedAt: now,
+    );
+
+    final gen8UncleRichard = Person(
+      id: 'p_gen8_richard',
+      familyId: famId,
+      firstName: 'Richard',
+      lastName: 'Kensington',
+      gender: Gender.male,
+      birthDate: DateTime(1964, 11, 20),
+      isLiving: true,
+      birthPlace: 'Edinburgh, Scotland',
+      bio: "William's son and keeper of the Edinburgh branch records. Senior conservation architect.",
+      portraitUrl: 'assets/images/modern_father.jpg',
+      isVerified: true,
+      generationHint: 8,
+      createdAt: now,
+      updatedAt: now,
+    );
+
+    final gen9BrotherOliver = Person(
+      id: 'p_gen9_oliver',
+      familyId: famId,
+      firstName: 'Oliver',
+      lastName: 'Kensington',
+      gender: Gender.male,
+      birthDate: DateTime(2004, 11, 14),
+      isLiving: true,
+      birthPlace: 'Seattle, USA',
+      bio: 'Computer science and digital design student.',
+      portraitUrl: 'assets/images/modern_young_man.jpg',
+      isVerified: true,
+      generationHint: 9,
+      createdAt: now,
+      updatedAt: now,
+    );
+
+    final gen9SisterClara = Person(
+      id: 'p_gen9_clara',
+      familyId: famId,
+      firstName: 'Clara',
+      lastName: 'Kensington',
+      gender: Gender.female,
+      birthDate: DateTime(2006, 5, 22),
+      isLiving: true,
+      birthPlace: 'Seattle, USA',
+      bio: 'High school scholar and junior heritage documentarian.',
+      portraitUrl: 'assets/images/vintage_lady_portrait.jpg',
+      isVerified: true,
+      generationHint: 9,
+      createdAt: now,
+      updatedAt: now,
+    );
+
     final gen10Child = Person(
       id: 'p_gen10_maya',
       familyId: famId,
@@ -574,10 +644,14 @@ class PersonRepository {
       gen5Father, gen5Mother,
       gen6Father, gen6Mother,
       gen7Father, gen7Mother,
+      gen7GreatUncleWilliam,
+      gen8UncleRichard,
       gen8Father, gen8Mother,
       gen9Father, gen9Mother,
       gen9Viewer,
       gen9Brother,
+      gen9BrotherOliver,
+      gen9SisterClara,
       gen10Child,
       gen10Son,
     ]);

@@ -23,8 +23,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   int _siblingPageIndex = 0;
   bool _hasSpouse = false;
   bool _isGenerationsExpanded = false;
-
-  @override
+@override
   void dispose() {
     _searchController.dispose();
     _scrollController.dispose();
@@ -115,76 +114,88 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            // User Avatar with delicate double-ring border
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: AppColors.border, width: 1.5),
-                boxShadow: HeritageShadows.card,
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(999),
-                child: Image.asset(
-                  'assets/images/user_sara_portrait.jpg',
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    color: AppColors.paleBlue,
-                    child: const Icon(Icons.person, color: AppColors.primary),
+        Expanded(
+          child: Row(
+            children: [
+              // User Avatar with delicate double-ring border
+              Container(
+                width: 46,
+                height: 46,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: AppColors.border, width: 1.5),
+                  boxShadow: HeritageShadows.card,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(999),
+                  child: Image.asset(
+                    'assets/images/user_sara_portrait.jpg',
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: AppColors.paleBlue,
+                      child: const Icon(Icons.person, color: AppColors.primary),
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(width: 14),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      'Welcome Back,',
-                      style: GoogleFonts.inter(
-                        fontSize: 12,
-                        color: AppColors.textSecondary,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: AppColors.paleBlue,
-                        borderRadius: HeritageCurves.pill,
-                      ),
-                      child: Text(
-                        'ID: VANS-8842',
-                        style: GoogleFonts.inter(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primary,
-                          letterSpacing: 0.3,
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            'Welcome Back,',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: AppColors.textSecondary,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
                         ),
+                        const SizedBox(width: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: AppColors.paleBlue,
+                            borderRadius: HeritageCurves.pill,
+                          ),
+                          child: Text(
+                            'ID: VANS-8842',
+                            style: GoogleFonts.inter(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primary,
+                              letterSpacing: 0.3,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Sara Wilson',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.poppins(
+                        fontSize: 19,
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.4,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  'Sara Wilson',
-                  style: GoogleFonts.poppins(
-                    fontSize: 20,
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.4,
-                  ),
-                ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
+        const SizedBox(width: 8),
 
         // Action Button: Notification Bell
         InkWell(
@@ -312,40 +323,45 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     );
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 13),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(22),
         border: Border.all(color: AppColors.border, width: 0.9),
         boxShadow: HeritageShadows.card,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildCompactMetricItem(
-            label: 'Relatives',
-            value: memberCount,
-            icon: Icons.people_outline_rounded,
+          Expanded(
+            child: _buildCompactMetricItem(
+              label: 'Relatives',
+              value: memberCount,
+              icon: Icons.people_outline_rounded,
+            ),
           ),
           Container(
-            height: 28,
+            height: 26,
             width: 1,
-            color: AppColors.border,
+            color: AppColors.border.withOpacity(0.7),
           ),
-          _buildCompactMetricItem(
-            label: 'Generations',
-            value: '$genCount/10',
-            icon: Icons.account_tree_outlined,
+          Expanded(
+            child: _buildCompactMetricItem(
+              label: 'Generations',
+              value: '$genCount/10',
+              icon: Icons.account_tree_outlined,
+            ),
           ),
           Container(
-            height: 28,
+            height: 26,
             width: 1,
-            color: AppColors.border,
+            color: AppColors.border.withOpacity(0.7),
           ),
-          _buildCompactMetricItem(
-            label: 'Vault Media',
-            value: mediaCount,
-            icon: Icons.photo_library_outlined,
+          Expanded(
+            child: _buildCompactMetricItem(
+              label: 'Vault Media',
+              value: mediaCount,
+              icon: Icons.photo_library_outlined,
+            ),
           ),
         ],
       ),
@@ -358,42 +374,48 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     required IconData icon,
   }) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: 34,
-          height: 34,
+          width: 30,
+          height: 30,
           decoration: const BoxDecoration(
             color: AppColors.paleBlue,
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, size: 16, color: AppColors.primary),
+          child: Icon(icon, size: 14.5, color: AppColors.primary),
         ),
-        const SizedBox(width: 10),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              value,
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: AppColors.primary,
-                letterSpacing: -0.3,
-                height: 1.1,
+        const SizedBox(width: 7),
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                value,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.poppins(
+                  fontSize: 14.5,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primary,
+                  letterSpacing: -0.3,
+                  height: 1.1,
+                ),
               ),
-            ),
-            const SizedBox(height: 1),
-            Text(
-              label,
-              style: GoogleFonts.inter(
-                fontSize: 11,
-                fontWeight: FontWeight.w500,
-                color: AppColors.textSecondary,
+              const SizedBox(height: 1),
+              Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.inter(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.textSecondary,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
@@ -445,28 +467,33 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'My Lineage Hierarchy',
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                    letterSpacing: -0.3,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'My Lineage Hierarchy',
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                      letterSpacing: -0.3,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 1),
-                Text(
-                  'Direct ancestral lineage & immediate family branch',
-                  style: GoogleFonts.inter(
-                    fontSize: 11.5,
-                    color: AppColors.textSecondary,
+                  const SizedBox(height: 1),
+                  Text(
+                    'Direct ancestral lineage & immediate family branch',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.inter(
+                      fontSize: 11.5,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+            const SizedBox(width: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
               decoration: BoxDecoration(
@@ -535,11 +562,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }) {
     return InkWell(
       onTap: () => context.push('/people/${viewer.id}'),
-      borderRadius: BorderRadius.circular(22),
+      borderRadius: BorderRadius.circular(26),
       child: Container(
         height: 205,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(26),
           boxShadow: [
             BoxShadow(
               color: AppColors.primary.withOpacity(0.18),
@@ -554,7 +581,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           children: [
             // 1. Full cover portrait of Sara Wilson
             ClipRRect(
-              borderRadius: BorderRadius.circular(22),
+              borderRadius: BorderRadius.circular(26),
               child: Image.asset(
                 viewer.effectivePortraitAsset,
                 fit: BoxFit.cover,
@@ -573,7 +600,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             // 2. Cinematic Dual Gradient for Luxury Depth & Text Legibility
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(22),
+                borderRadius: BorderRadius.circular(26),
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -591,16 +618,59 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             // 3. Inset Hairline Border for Premium Finish
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(22),
-                border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.0),
+                borderRadius: BorderRadius.circular(26),
+                border: Border.all(color: Colors.white.withOpacity(0.22), width: 0.9),
               ),
             ),
 
-            // 4. Card Text Content (Bottom Left)
+            // 4. Frosted Glass Status Badge (Top Left)
+            Positioned(
+              top: 14,
+              left: 14,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.22),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.white.withOpacity(0.28), width: 0.7),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 6,
+                          height: 6,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          'YOU • ARCHIVIST',
+                          style: GoogleFonts.inter(
+                            fontSize: 9.5,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                            letterSpacing: 0.6,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            // 5. Card Text Content (Bottom Left)
             Positioned(
               left: 18,
               bottom: 18,
-              right: 70,
+              right: 64,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -608,7 +678,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   Text(
                     viewer.displayName,
                     style: GoogleFonts.poppins(
-                      fontSize: 20,
+                      fontSize: 21,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                       letterSpacing: -0.3,
@@ -629,25 +699,25 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
             // 6. Floating White Round Arrow Button (Bottom Right)
             Positioned(
-              right: 18,
-              bottom: 18,
+              right: 16,
+              bottom: 16,
               child: Container(
-                width: 40,
-                height: 40,
+                width: 36,
+                height: 36,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.white.withOpacity(0.95),
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.25),
-                      blurRadius: 10,
+                      color: Colors.black.withOpacity(0.22),
+                      blurRadius: 8,
                       offset: const Offset(0, 3),
                     ),
                   ],
                 ),
                 child: const Icon(
                   Icons.arrow_forward_rounded,
-                  size: 19,
+                  size: 17,
                   color: AppColors.primary,
                 ),
               ),
@@ -826,17 +896,17 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(22),
       child: Container(
         width: width,
         height: height,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(22),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.14),
+              color: AppColors.primary.withOpacity(0.12),
               blurRadius: 14,
-              offset: const Offset(0, 5),
+              offset: const Offset(0, 4),
             ),
           ],
           color: AppColors.primary,
@@ -846,7 +916,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           children: [
             // Background Image
             ClipRRect(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(22),
               child: Image.asset(
                 imageAsset,
                 fit: BoxFit.cover,
@@ -862,10 +932,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               ),
             ),
 
-            // Smooth dark gradient overlay
+            // Smooth dark gradient overlay for deep contrast & readability
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(22),
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -873,7 +943,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   colors: [
                     Colors.black.withOpacity(0.25),
                     Colors.transparent,
-                    const Color(0xFF0B192C).withOpacity(0.9),
+                    const Color(0xFF0B192C).withOpacity(0.92),
                   ],
                 ),
               ),
@@ -882,100 +952,96 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             // Inset hairline border
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.white.withOpacity(0.18), width: 0.9),
+                borderRadius: BorderRadius.circular(22),
+                border: Border.all(color: Colors.white.withOpacity(0.18), width: 0.8),
               ),
             ),
 
-            // Optional top trailing widget (e.g. remove spouse button)
-            if (topTrailingWidget != null)
-              Positioned(
-                top: 10,
-                right: 10,
-                child: topTrailingWidget,
-              ),
-
-            // Text Content (Bottom Left)
+            // 1. Role Pill Badge (Top Left)
             Positioned(
-              left: 9,
-              bottom: 9,
-              right: 34,
+              top: 8,
+              left: 8,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.5),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.24),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.white.withOpacity(0.28), width: 0.6),
+                    ),
+                    child: Text(
+                      rolePill,
+                      style: GoogleFonts.inter(
+                        fontSize: 8,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            // 2. Top Trailing Action: Frosted Translucent Minimal Glass Icon
+            Positioned(
+              top: 8,
+              right: 8,
+              child: topTrailingWidget ??
+                  Container(
+                    width: 22,
+                    height: 22,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.24),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white.withOpacity(0.35), width: 0.7),
+                    ),
+                    child: const Icon(
+                      Icons.arrow_forward_rounded,
+                      size: 11,
+                      color: Colors.white,
+                    ),
+                  ),
+            ),
+
+            // 3. Text Content: Single Line Fitted (Never cut, never pushed below)
+            Positioned(
+              left: 8,
+              bottom: 8,
+              right: 8,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 5.5, vertical: 1.8),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.22),
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(color: Colors.white.withOpacity(0.25), width: 0.6),
-                        ),
-                        child: Text(
-                          rolePill,
-                          style: GoogleFonts.inter(
-                            fontSize: 7.8,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      name,
+                      maxLines: 1,
+                      style: GoogleFonts.poppins(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                        letterSpacing: -0.2,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 3.5),
-                  Text(
-                    name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                      height: 1.15,
-                    ),
-                  ),
-                  const SizedBox(height: 1.5),
+                  const SizedBox(height: 2),
                   Text(
                     subtitle,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.inter(
-                      fontSize: 9.2,
+                      fontSize: 9.0,
+                      fontWeight: FontWeight.w500,
                       color: Colors.white.withOpacity(0.88),
                     ),
                   ),
                 ],
-              ),
-            ),
-
-            // Round White Arrow Button (Bottom Right)
-            Positioned(
-              right: 7,
-              bottom: 7,
-              child: Container(
-                width: 25,
-                height: 25,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.18),
-                      blurRadius: 4,
-                      offset: const Offset(0, 1),
-                    ),
-                  ],
-                ),
-                child: const Icon(
-                  Icons.arrow_forward_rounded,
-                  size: 13,
-                  color: AppColors.primary,
-                ),
               ),
             ),
           ],
@@ -1001,37 +1067,44 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Text(
-                  'My Siblings',
-                  style: GoogleFonts.poppins(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                    letterSpacing: -0.2,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: AppColors.paleBlue,
-                    borderRadius: HeritageCurves.pill,
-                    border: Border.all(color: AppColors.border, width: 0.8),
-                  ),
-                  child: Text(
-                    'BROTHERS & SISTERS • GEN 9',
-                    style: GoogleFonts.inter(
-                      fontSize: 9.5,
+            Expanded(
+              child: Row(
+                children: [
+                  Text(
+                    'My Siblings',
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.primary,
-                      letterSpacing: 0.4,
+                      color: AppColors.textPrimary,
+                      letterSpacing: -0.2,
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: AppColors.paleBlue,
+                        borderRadius: HeritageCurves.pill,
+                        border: Border.all(color: AppColors.border, width: 0.8),
+                      ),
+                      child: Text(
+                        'BROTHERS & SISTERS • GEN 9',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.inter(
+                          fontSize: 9.5,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primary,
+                          letterSpacing: 0.4,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
+            const SizedBox(width: 8),
             Text(
               '${siblings.length} ${siblings.length == 1 ? "Sibling" : "Siblings"}',
               style: GoogleFonts.inter(
@@ -1108,22 +1181,85 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              // Dots below so user can see another page properly
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(pages.length, (idx) {
-                  final isCurrent = idx == _siblingPageIndex;
-                  return AnimatedContainer(
-                    duration: const Duration(milliseconds: 250),
-                    margin: const EdgeInsets.symmetric(horizontal: 3),
-                    width: isCurrent ? 16 : 6,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: isCurrent ? AppColors.primary : AppColors.border,
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  );
-                }),
+              // Sleek Floating Capsule Pagination Control
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: HeritageCurves.pill,
+                    border: Border.all(color: AppColors.border, width: 0.8),
+                    boxShadow: HeritageShadows.card,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (_siblingPageIndex > 0)
+                        InkWell(
+                          onTap: () {
+                            _siblingPageController.previousPage(
+                              duration: const Duration(milliseconds: 280),
+                              curve: Curves.easeOutCubic,
+                            );
+                          },
+                          borderRadius: BorderRadius.circular(10),
+                          child: const Padding(
+                            padding: EdgeInsets.all(2),
+                            child: Icon(
+                              Icons.chevron_left_rounded,
+                              size: 16,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
+                      const SizedBox(width: 2),
+                      ...List.generate(pages.length, (idx) {
+                        final isCurrent = idx == _siblingPageIndex;
+                        return InkWell(
+                          onTap: () {
+                            _siblingPageController.animateToPage(
+                              idx,
+                              duration: const Duration(milliseconds: 280),
+                              curve: Curves.easeOutCubic,
+                            );
+                          },
+                          borderRadius: BorderRadius.circular(3),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2.5, vertical: 3),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 250),
+                              width: isCurrent ? 16 : 5,
+                              height: 5,
+                              decoration: BoxDecoration(
+                                color: isCurrent ? AppColors.primary : AppColors.border,
+                                borderRadius: BorderRadius.circular(3),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                      const SizedBox(width: 2),
+                      if (_siblingPageIndex < pages.length - 1)
+                        InkWell(
+                          onTap: () {
+                            _siblingPageController.nextPage(
+                              duration: const Duration(milliseconds: 280),
+                              curve: Curves.easeOutCubic,
+                            );
+                          },
+                          borderRadius: BorderRadius.circular(10),
+                          child: const Padding(
+                            padding: EdgeInsets.all(2),
+                            child: Icon(
+                              Icons.chevron_right_rounded,
+                              size: 16,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
@@ -1369,28 +1505,33 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Family Connection & Engagement',
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                    letterSpacing: -0.3,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Family Connection & Engagement',
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                      letterSpacing: -0.3,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 1),
-                Text(
-                  'Milestones, annual reunions & shared vault memories',
-                  style: GoogleFonts.inter(
-                    fontSize: 11.5,
-                    color: AppColors.textSecondary,
+                  const SizedBox(height: 1),
+                  Text(
+                    'Milestones, annual reunions & shared vault memories',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.inter(
+                      fontSize: 11.5,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+            const SizedBox(width: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
               decoration: BoxDecoration(
@@ -1436,8 +1577,13 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
         const SizedBox(height: 14),
 
-        // Subsection 3: Recent Shared Vault Feed
-        _buildSharedVaultFeed(context),
+        // Subsection 3: Grandfather's Brother & Extended Cousins Branch (Card 1)
+        _buildGrandfatherBrothersAndCousinsCard(context),
+
+        const SizedBox(height: 14),
+
+        // Subsection 4: Ancestral Origins & 246-Year Migration Journey (Card 2)
+        _buildAncestralOriginsAndMigrationCard(context),
       ],
     );
   }
@@ -1533,7 +1679,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(22),
         border: Border.all(color: AppColors.border, width: 0.9),
         boxShadow: HeritageShadows.card,
       ),
@@ -1641,23 +1787,23 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   // ---------------------------------------------------------------------------
   Widget _buildAnnualGatheringCard(BuildContext context) {
     return Container(
-      height: 164,
+      height: 196,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(26),
         boxShadow: [
           BoxShadow(
             color: AppColors.primary.withOpacity(0.18),
-            blurRadius: 18,
-            offset: const Offset(0, 6),
+            blurRadius: 20,
+            offset: const Offset(0, 7),
           ),
         ],
       ),
       child: Stack(
         fit: StackFit.expand,
         children: [
-          // Background photo
+          // 1. Background photo
           ClipRRect(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(26),
             child: Image.asset(
               'assets/images/family_gathering.jpg',
               fit: BoxFit.cover,
@@ -1671,52 +1817,51 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             ),
           ),
 
-          // Gradient overlay
+          // 2. Cinematic Gradient overlay for depth & readability
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(26),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                stops: const [0.0, 0.45, 1.0],
+                stops: const [0.0, 0.40, 1.0],
                 colors: [
                   Colors.black.withOpacity(0.35),
-                  const Color(0xFF0F223D).withOpacity(0.55),
-                  const Color(0xFF0B192C).withOpacity(0.92),
+                  const Color(0xFF0F223D).withOpacity(0.60),
+                  const Color(0xFF0A1728).withOpacity(0.95),
                 ],
               ),
             ),
           ),
 
-          // Inset hairline border
+          // 3. Inset hairline border for premium finish
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.0),
+              borderRadius: BorderRadius.circular(26),
+              border: Border.all(color: Colors.white.withOpacity(0.22), width: 0.9),
             ),
           ),
 
-          // Content
+          // 4. Content
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // Top Tag & Days Countdown
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(8),
                       child: BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: Colors.white.withOpacity(0.25), width: 0.6),
+                            color: Colors.white.withOpacity(0.22),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.white.withOpacity(0.28), width: 0.6),
                           ),
                           child: Text(
                             'ANNUAL REUNION • SUMMER 2026',
@@ -1731,10 +1876,17 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3.5),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: HeritageCurves.pill,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.12),
+                            blurRadius: 4,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
                       ),
                       child: Text(
                         'IN 82 DAYS',
@@ -1749,73 +1901,65 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   ],
                 ),
 
-                // Bottom Content Row
+                const Spacer(),
+
+                // Middle: Title & Subtitle (Full width, no horizontal squeeze)
+                Text(
+                  'Kensington Family Gathering',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.poppins(
+                    fontSize: 17.5,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                    letterSpacing: -0.3,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'July 18 – 20, 2026 • Lakeview Estate Grounds, WA',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.inter(
+                    fontSize: 11,
+                    color: Colors.white.withOpacity(0.88),
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                // Bottom Row: Avatars on Left, RSVP Pill Button on Right
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Kensington Family Gathering 2026',
-                            style: GoogleFonts.poppins(
-                              fontSize: 16.5,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              letterSpacing: -0.2,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            'July 18 – 20 • Lakeview Estate Grounds, WA',
-                            style: GoogleFonts.inter(
-                              fontSize: 11,
-                              color: Colors.white.withOpacity(0.88),
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          Row(
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: 58,
+                          height: 24,
+                          child: Stack(
                             children: [
-                              _buildMiniAvatar('assets/images/user_sara_portrait.jpg'),
-                              Transform.translate(
-                                offset: const Offset(-6, 0),
-                                child: _buildMiniAvatar('assets/images/modern_father.jpg'),
-                              ),
-                              Transform.translate(
-                                offset: const Offset(-12, 0),
-                                child: _buildMiniAvatar('assets/images/vintage_lady_portrait.jpg'),
-                              ),
-                              Transform.translate(
-                                offset: const Offset(-18, 0),
-                                child: _buildMiniAvatar('assets/images/modern_young_man.jpg'),
-                              ),
-                              Transform.translate(
-                                offset: const Offset(-12, 0),
-                                child: Text(
-                                  '+14 attending',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 10.5,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white.withOpacity(0.9),
-                                  ),
-                                ),
-                              ),
+                              Positioned(left: 0, child: _buildMiniAvatar('assets/images/user_sara_portrait.jpg')),
+                              Positioned(left: 14, child: _buildMiniAvatar('assets/images/modern_father.jpg')),
+                              Positioned(left: 28, child: _buildMiniAvatar('assets/images/modern_young_man.jpg')),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          '+14 attending',
+                          style: GoogleFonts.inter(
+                            fontSize: 10.5,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white.withOpacity(0.92),
+                          ),
+                        ),
+                      ],
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: AppColors.primary,
-                        elevation: 0,
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                        shape: RoundedRectangleBorder(borderRadius: HeritageCurves.pill),
-                      ),
-                      onPressed: () {
+                    InkWell(
+                      onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Reunion RSVP: You are registered as attending!'),
@@ -1823,20 +1967,36 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                           ),
                         );
                       },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'RSVP',
-                            style: GoogleFonts.inter(
-                              fontSize: 11.5,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(999),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(999),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.18),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
                             ),
-                          ),
-                          const SizedBox(width: 4),
-                          const Icon(Icons.arrow_forward_rounded, size: 13, color: AppColors.primary),
-                        ],
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'RSVP',
+                              style: GoogleFonts.inter(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.primary,
+                                letterSpacing: 0.3,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            const Icon(Icons.arrow_forward_rounded, size: 12, color: AppColors.primary),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -1865,164 +2025,577 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   // ---------------------------------------------------------------------------
-  // Shared Heritage Vault Activity (Voice Memories & Restored Media)
+  // Card 1: Grandfather's Brother & Extended Cousins Branch
+  // (2x2 Grid of Relatives styled after modern boutique reference cards with Arc Rings)
   // ---------------------------------------------------------------------------
-  Widget _buildSharedVaultFeed(BuildContext context) {
+  Widget _buildGrandfatherBrothersAndCousinsCard(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(26),
         border: Border.all(color: AppColors.border, width: 0.9),
         boxShadow: HeritageShadows.card,
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Item 1: Audio Note
+          // Header Row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Grandfather's Brother & Cousins Branch",
+                      style: GoogleFonts.poppins(
+                        fontSize: 15.5,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                        letterSpacing: -0.3,
+                      ),
+                    ),
+                    const SizedBox(height: 1),
+                    Text(
+                      "Great-Uncle William's lineage & living cousins in Gen 9",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
+                decoration: BoxDecoration(
+                  color: AppColors.paleBlue,
+                  borderRadius: HeritageCurves.pill,
+                  border: Border.all(color: AppColors.border, width: 0.8),
+                ),
+                child: Text(
+                  '6 RELATIVES',
+                  style: GoogleFonts.inter(
+                    fontSize: 9.5,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primary,
+                    letterSpacing: 0.4,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+
+          // 2x2 Grid of Relatives (Explicit Cousins & Extended Branch with Live Navigation)
+          Row(
+            children: [
+              // Top-Left: Cousin Brother (Oliver)
+              Expanded(
+                child: _buildReferenceStyleRelativeCard(
+                  context: context,
+                  title: 'Cousin Brother',
+                  personName: 'Oliver Kensington',
+                  rolePill: 'COUSIN',
+                  imageAsset: 'assets/images/modern_young_man.jpg',
+                  ringColor: const Color(0xFF8B5CF6),
+                  pillBgColor: const Color(0xFFF5F3FF),
+                  sweepAngle: 5.0,
+                  onTap: () => context.push('/people/p_gen9_oliver'),
+                ),
+              ),
+              const SizedBox(width: 10),
+              // Top-Right: Cousin Sister (Clara)
+              Expanded(
+                child: _buildReferenceStyleRelativeCard(
+                  context: context,
+                  title: 'Cousin Sister',
+                  personName: 'Clara Kensington',
+                  rolePill: 'COUSIN',
+                  imageAsset: 'assets/images/child_portrait.jpg',
+                  ringColor: const Color(0xFFEC4899),
+                  pillBgColor: const Color(0xFFFDF2F8),
+                  sweepAngle: 4.2,
+                  onTap: () => context.push('/people/p_gen9_clara'),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              // Bottom-Left: Grandfather's Brother (William)
+              Expanded(
+                child: _buildReferenceStyleRelativeCard(
+                  context: context,
+                  title: "Grandfather's Brother",
+                  personName: 'William Kensington',
+                  rolePill: 'GREAT-UNCLE',
+                  imageAsset: 'assets/images/vintage_elder_father.jpg',
+                  ringColor: const Color(0xFF26538D),
+                  pillBgColor: const Color(0xFFEBF3FC),
+                  sweepAngle: 4.8,
+                  onTap: () => context.push('/people/p_gen7_william'),
+                ),
+              ),
+              const SizedBox(width: 10),
+              // Bottom-Right: Cousin's Father / Uncle (Richard)
+              Expanded(
+                child: _buildReferenceStyleRelativeCard(
+                  context: context,
+                  title: "Cousin's Father",
+                  personName: 'Richard Kensington',
+                  rolePill: 'UNCLE',
+                  imageAsset: 'assets/images/modern_father.jpg',
+                  ringColor: const Color(0xFF4F46E5),
+                  pillBgColor: const Color(0xFFEEF2FF),
+                  sweepAngle: 4.4,
+                  onTap: () => context.push('/people/p_gen8_richard'),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 14),
+          const Divider(height: 1, color: AppColors.border),
+          const SizedBox(height: 10),
+
+          // Action footer
+          InkWell(
+            onTap: () => context.push('/tree?personId=p_gen9_oliver'),
+            borderRadius: BorderRadius.circular(8),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Explore Collateral Cousins Branch in Tree',
+                    style: GoogleFonts.inter(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  const Icon(Icons.arrow_forward_rounded, size: 13, color: AppColors.primary),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Reference-Style Relative Card (Avatar + Colored Arc Ring + Title + Subtitle)
+  // ---------------------------------------------------------------------------
+  Widget _buildReferenceStyleRelativeCard({
+    required BuildContext context,
+    required String title,
+    required String personName,
+    required String rolePill,
+    required String imageAsset,
+    required Color ringColor,
+    required Color pillBgColor,
+    required double sweepAngle,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF8FAFC),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: AppColors.border.withOpacity(0.85), width: 0.8),
+          boxShadow: [
+            BoxShadow(
+              color: ringColor.withOpacity(0.06),
+              blurRadius: 10,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Top: Arc Ring Portrait Avatar & Role Pill Badge
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 48,
+                  height: 48,
+                  child: CustomPaint(
+                    painter: _HeritageArcRingPainter(
+                      color: ringColor,
+                      sweepAngle: sweepAngle,
+                      strokeWidth: 2.3,
+                    ),
+                    child: Center(
+                      child: Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 1.5),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.08),
+                              blurRadius: 4,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(999),
+                          child: Image.asset(
+                            imageAsset,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              color: AppColors.paleBlue,
+                              child: Icon(Icons.person, size: 20, color: ringColor),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5.5, vertical: 2.5),
+                  decoration: BoxDecoration(
+                    color: pillBgColor,
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: ringColor.withOpacity(0.25), width: 0.6),
+                  ),
+                  child: Text(
+                    rolePill,
+                    style: GoogleFonts.inter(
+                      fontSize: 7.5,
+                      fontWeight: FontWeight.w700,
+                      color: ringColor,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+
+            // Bold Title: e.g. "Cousin Brother", "Cousin Sister", "Grandfather's Brother"
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                title,
+                maxLines: 1,
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textPrimary,
+                  letterSpacing: -0.2,
+                ),
+              ),
+            ),
+            const SizedBox(height: 2),
+
+            // Subtitle: Person Name
+            Text(
+              personName,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.inter(
+                fontSize: 10.5,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 2),
+
+            // Action Affordance (Go inside)
+            Row(
+              children: [
+                Text(
+                  'View Profile',
+                  style: GoogleFonts.inter(
+                    fontSize: 9.5,
+                    fontWeight: FontWeight.w700,
+                    color: ringColor,
+                  ),
+                ),
+                const SizedBox(width: 3),
+                Icon(
+                  Icons.arrow_forward_rounded,
+                  size: 10,
+                  color: ringColor,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Card 2: Ancestral Origins & 246-Year Migration Journey
+  // (From 1780 Inverness/Edinburgh, Scotland -> 1862 Ohio -> Lakeview WA Seat)
+  // ---------------------------------------------------------------------------
+  Widget _buildAncestralOriginsAndMigrationCard(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(26),
+        border: Border.all(color: AppColors.border, width: 0.9),
+        boxShadow: HeritageShadows.card,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header Row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Ancestral Origins & Migration',
+                      style: GoogleFonts.poppins(
+                        fontSize: 15.5,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                        letterSpacing: -0.3,
+                      ),
+                    ),
+                    const SizedBox(height: 1),
+                    Text(
+                      '246-year transatlantic journey across 10 generations',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
+                decoration: BoxDecoration(
+                  color: AppColors.paleBlue,
+                  borderRadius: HeritageCurves.pill,
+                  border: Border.all(color: AppColors.border, width: 0.8),
+                ),
+                child: Text(
+                  '1780 — PRESENT',
+                  style: GoogleFonts.inter(
+                    fontSize: 9.5,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primary,
+                    letterSpacing: 0.4,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Migration Step 1: Edinburgh & Inverness, Scotland (1780)
+          _buildMigrationStopItem(
+            year: '1780',
+            location: 'Inverness & Edinburgh, Scotland',
+            generation: 'GEN 1 • ARCHIBALD KENSINGTON',
+            description: 'Stone masonry guild founder on Royal Mile; clan ancestral hearth.',
+            isFirst: true,
+            isLast: false,
+          ),
+
+          // Migration Step 2: Ohio Valley Homestead (1862)
+          _buildMigrationStopItem(
+            year: '1862',
+            location: 'Ohio Valley Homestead, OH',
+            generation: 'GEN 4 • ROBERT KENSINGTON',
+            description: 'Transatlantic voyage aboard SS Caledonia; settled timber farmland.',
+            isFirst: false,
+            isLast: false,
+          ),
+
+          // Migration Step 3: Lakeview Estate, Washington (1912 - Present)
+          _buildMigrationStopItem(
+            year: '1912',
+            location: 'Lakeview Estate, WA — Present',
+            generation: 'GEN 7 TO GEN 10 • CONTEMPORARY',
+            description: 'Pacific Northwest homeland; architectural studio & reunion grounds.',
+            isFirst: false,
+            isLast: true,
+          ),
+
+          const SizedBox(height: 8),
+          const Divider(height: 1, color: AppColors.border),
+          const SizedBox(height: 10),
+
+          // Footer Action
           InkWell(
             onTap: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Playing audio: "Loch Lomond Memories (1968)"'),
+                  content: Text('Interactive Historical Migration Map & Routes'),
                   backgroundColor: AppColors.primary,
                 ),
               );
             },
-            borderRadius: BorderRadius.circular(12),
-            child: Row(
-              children: [
-                Container(
-                  width: 38,
-                  height: 38,
-                  decoration: const BoxDecoration(
-                    color: AppColors.paleBlue,
-                    shape: BoxShape.circle,
+            borderRadius: BorderRadius.circular(8),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'View Interactive Migration Route Map',
+                    style: GoogleFonts.inter(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primary,
+                    ),
                   ),
-                  child: const Icon(
-                    Icons.graphic_eq_rounded,
-                    size: 19,
-                    color: AppColors.primary,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Voice Story: Loch Lomond (1968)',
-                        style: GoogleFonts.poppins(
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      Text(
-                        'Julian Kensington • 4m 12s voice clip transcribed',
-                        style: GoogleFonts.inter(
-                          fontSize: 11,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    color: AppColors.paleBlue,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.primary.withOpacity(0.2), width: 0.8),
-                  ),
-                  child: const Icon(
-                    Icons.play_arrow_rounded,
-                    size: 18,
-                    color: AppColors.primary,
-                  ),
-                ),
-              ],
+                  const Icon(Icons.map_outlined, size: 14, color: AppColors.primary),
+                ],
+              ),
             ),
           ),
+        ],
+      ),
+    );
+  }
 
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Divider(height: 1, color: AppColors.border),
-          ),
-
-          // Item 2: Restored Photograph
-          InkWell(
-            onTap: () => context.push('/media'),
-            borderRadius: BorderRadius.circular(12),
-            child: Row(
-              children: [
-                Container(
-                  width: 38,
-                  height: 38,
-                  decoration: const BoxDecoration(
-                    color: AppColors.paleBlue,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.photo_library_outlined,
-                    size: 19,
-                    color: AppColors.primary,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Restored Photo: 1945 Manor Grounds',
-                        style: GoogleFonts.poppins(
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      Text(
-                        'Added to Gen 7 Vault by David • 2 hours ago',
-                        style: GoogleFonts.inter(
-                          fontSize: 11,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Icon(
-                  Icons.arrow_forward_rounded,
-                  size: 16,
+  // Helper migration stop timeline step
+  Widget _buildMigrationStopItem({
+    required String year,
+    required String location,
+    required String generation,
+    required String description,
+    required bool isFirst,
+    required bool isLast,
+  }) {
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Year badge on left
+          SizedBox(
+            width: 44,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Text(
+                year,
+                style: GoogleFonts.poppins(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
                   color: AppColors.primary,
                 ),
-              ],
+              ),
             ),
           ),
 
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Divider(height: 1, color: AppColors.border),
-          ),
-
-          // Footer Vault Link
-          InkWell(
-            onTap: () => context.push('/media'),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+          // Timeline Node and Line
+          SizedBox(
+            width: 24,
+            child: Column(
               children: [
-                Text(
-                  'Explore All 24 Records in Vault',
-                  style: GoogleFonts.inter(
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primary,
+                Container(
+                  width: 12,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: isLast ? const Color(0xFF10B981) : AppColors.primary,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 2),
+                    boxShadow: [
+                      BoxShadow(
+                        color: (isLast ? const Color(0xFF10B981) : AppColors.primary).withOpacity(0.3),
+                        blurRadius: 4,
+                        offset: const Offset(0, 1),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 4),
-                const Icon(Icons.arrow_forward_rounded, size: 14, color: AppColors.primary),
+                if (!isLast)
+                  Expanded(
+                    child: Container(
+                      width: 1.5,
+                      color: AppColors.border,
+                    ),
+                  ),
               ],
+            ),
+          ),
+          const SizedBox(width: 8),
+
+          // Content
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: isLast ? 0 : 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          location,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.poppins(
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 2),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
+                    decoration: BoxDecoration(
+                      color: AppColors.paleBlue,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      generation,
+                      style: GoogleFonts.inter(
+                        fontSize: 8.5,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primary,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    description,
+                    style: GoogleFonts.inter(
+                      fontSize: 10.5,
+                      color: AppColors.textSecondary,
+                      height: 1.3,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -2036,7 +2609,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   Widget _buildExploreAncestorsCta(BuildContext context) {
     return InkWell(
       onTap: () => context.push('/tree'),
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(26),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         decoration: BoxDecoration(
@@ -2048,7 +2621,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               Color(0xFF1B3D6A),
             ],
           ),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(26),
           boxShadow: [
             BoxShadow(
               color: AppColors.primary.withOpacity(0.25),
@@ -2116,4 +2689,52 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       ),
     );
   }
+}
+
+
+// ---------------------------------------------------------------------------
+// Heritage Arc Ring Painter (Matches modern circular progress arc reference)
+// ---------------------------------------------------------------------------
+class _HeritageArcRingPainter extends CustomPainter {
+  final Color color;
+  final double sweepAngle;
+  final double strokeWidth;
+
+  const _HeritageArcRingPainter({
+    required this.color,
+    this.sweepAngle = 4.71239, // ~270 degrees
+    this.strokeWidth = 2.4,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = (size.width - strokeWidth) / 2;
+
+    // Subtle track circle behind
+    final trackPaint = Paint()
+      ..color = color.withOpacity(0.12)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth;
+    canvas.drawCircle(center, radius, trackPaint);
+
+    // Dynamic accent arc with rounded caps
+    final arcPaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = strokeWidth;
+
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius),
+      -1.5708, // Start at top (-90 degrees)
+      sweepAngle,
+      false,
+      arcPaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _HeritageArcRingPainter oldDelegate) =>
+      oldDelegate.color != color || oldDelegate.sweepAngle != sweepAngle;
 }

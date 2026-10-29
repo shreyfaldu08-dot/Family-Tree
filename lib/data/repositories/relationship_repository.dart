@@ -155,11 +155,14 @@ class RelationshipRepository {
     addSpouses('p_gen6_arthur', 'p_gen6_evelyn');
     addParentChild('p_gen6_arthur', 'p_gen7_julian');
     addParentChild('p_gen6_evelyn', 'p_gen7_julian');
+    addParentChild('p_gen6_arthur', 'p_gen7_william');
+    addParentChild('p_gen6_evelyn', 'p_gen7_william');
 
     // Gen 7 spouses & parents of Gen 8
     addSpouses('p_gen7_julian', 'p_gen7_helena');
     addParentChild('p_gen7_julian', 'p_gen8_david');
     addParentChild('p_gen7_helena', 'p_gen8_david');
+    addParentChild('p_gen7_william', 'p_gen8_richard');
 
     // Gen 8 spouses & parents of Gen 9
     addSpouses('p_gen8_david', 'p_gen8_sophia');
@@ -171,6 +174,8 @@ class RelationshipRepository {
     addParentChild('p_gen8_sophia', 'p_gen9_elena');
     addParentChild('p_gen8_david', 'p_gen9_james');
     addParentChild('p_gen8_sophia', 'p_gen9_james');
+    addParentChild('p_gen8_richard', 'p_gen9_oliver');
+    addParentChild('p_gen8_richard', 'p_gen9_clara');
 
     // Gen 9 spouses & parents of Gen 10
     addSpouses('p_gen9_lucas', 'p_gen9_elena');
