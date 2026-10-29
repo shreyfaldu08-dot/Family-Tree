@@ -92,12 +92,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               // =============================================================
               _buildFamilyConnectionSection(context, personsAsync.valueOrNull ?? []),
 
-              const SizedBox(height: 24),
 
-              // =============================================================
-              // 6. BIG CTA BUTTON: EXPLORE ALL ANCESTORS
-              // =============================================================
-              _buildExploreAncestorsCta(context),
 
               const SizedBox(height: 36),
             ],
@@ -1567,217 +1562,502 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         ),
         const SizedBox(height: 14),
 
-        // Subsection 1: Upcoming Celebrations & Milestones Strip
-        _buildUpcomingCelebrationsRibbon(context),
-
-        const SizedBox(height: 14),
-
-        // Subsection 2: Annual Kensington Family Gathering Banner
+        // Subsection 1: Annual Kensington Family Gathering Banner
         _buildAnnualGatheringCard(context),
 
         const SizedBox(height: 14),
 
-        // Subsection 3: Grandfather's Brother & Extended Cousins Branch (Card 1)
+        // Subsection 2: Grandfather's Brother & Extended Cousins Branch
         _buildGrandfatherBrothersAndCousinsCard(context),
 
         const SizedBox(height: 14),
 
-        // Subsection 4: Ancestral Origins & 246-Year Migration Journey (Card 2)
-        _buildAncestralOriginsAndMigrationCard(context),
+        // Subsection 3: Upcoming Birthdays & Anniversaries Calendar Card
+        _buildBirthdaysAndAnniversariesCalendarCard(context),
+
+
       ],
     );
   }
 
   // ---------------------------------------------------------------------------
-  // Upcoming Celebrations Ribbon
+  // Birthdays & Anniversaries Calendar Card (Consistent 2x2 Square Grid & Blue/Beige Palette)
   // ---------------------------------------------------------------------------
-  Widget _buildUpcomingCelebrationsRibbon(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Upcoming Celebrations',
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            Text(
-              '3 this season',
-              style: GoogleFonts.inter(
-                fontSize: 11,
-                color: AppColors.textSecondary,
-              ),
-            ),
+  Widget _buildBirthdaysAndAnniversariesCalendarCard(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF16325B), // Deep Dusk Blue
+            Color(0xFF0D1E36), // Rich Midnight Navy
           ],
         ),
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 108,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            children: [
-              _buildMilestoneCard(
-                context: context,
-                name: 'Lucas Kensington',
-                eventTitle: '31st Birthday',
-                badgeText: 'IN 4 DAYS • OCT 14',
-                relation: 'Brother • Gen 9',
-                imageAsset: 'assets/images/modern_young_man.jpg',
-                actionLabel: 'Send Wishes',
-                icon: Icons.cake_outlined,
-              ),
-              const SizedBox(width: 12),
-              _buildMilestoneCard(
-                context: context,
-                name: 'Sophia & David',
-                eventTitle: '38th Anniversary',
-                badgeText: 'MAY 20 • 38 YRS',
-                relation: 'Parents • Gen 8',
-                imageAsset: 'assets/images/vintage_lady_portrait.jpg',
-                actionLabel: 'Send Wishes',
-                icon: Icons.favorite_border_rounded,
-              ),
-              const SizedBox(width: 12),
-              _buildMilestoneCard(
-                context: context,
-                name: 'James Kensington',
-                eventTitle: '24th Birthday',
-                badgeText: 'SEP 28',
-                relation: 'Brother • Gen 9',
-                imageAsset: 'assets/images/modern_young_man.jpg',
-                actionLabel: 'Remind Me',
-                icon: Icons.notifications_none_rounded,
-              ),
-            ],
-          ),
+        borderRadius: BorderRadius.circular(26),
+        border: Border.all(
+          color: const Color(0xFFC7B198).withOpacity(0.35), // Warm Beige Hairline
+          width: 1.0,
         ),
-      ],
-    );
-  }
-
-  // ---------------------------------------------------------------------------
-  // Single Milestone Card (Compact & Minimal in Azure Mist / Dusk Blue)
-  // ---------------------------------------------------------------------------
-  Widget _buildMilestoneCard({
-    required BuildContext context,
-    required String name,
-    required String eventTitle,
-    required String badgeText,
-    required String relation,
-    required String imageAsset,
-    required String actionLabel,
-    required IconData icon,
-  }) {
-    return Container(
-      width: 236,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: AppColors.border, width: 0.9),
-        boxShadow: HeritageShadows.card,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Avatar
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: AppColors.border, width: 1.2),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(999),
-              child: Image.asset(
-                imageAsset,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  color: AppColors.paleBlue,
-                  child: const Icon(Icons.person, size: 22, color: AppColors.primary),
-                ),
-              ),
-            ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF0D1E36).withOpacity(0.25),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
           ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header Row (Cream & Beige Typography on Dusk Blue Gradient)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.5, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: AppColors.paleBlue,
-                        borderRadius: BorderRadius.circular(4),
+                    Text(
+                      'Birthdays & Anniversaries',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                        letterSpacing: -0.3,
                       ),
-                      child: Text(
-                        badgeText,
-                        style: GoogleFonts.inter(
-                          fontSize: 8.5,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primary,
-                          letterSpacing: 0.4,
-                        ),
+                    ),
+                    const SizedBox(height: 1),
+                    Text(
+                      'Upcoming celebrations, milestones & remembrance days',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        color: const Color(0xFFD6C8B4), // Warm Sand / Beige
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 3),
-                Text(
-                  eventTitle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.poppins(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                    height: 1.1,
+              ),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFD6C8B4).withOpacity(0.18),
+                  borderRadius: HeritageCurves.pill,
+                  border: Border.all(
+                    color: const Color(0xFFD6C8B4).withOpacity(0.35),
+                    width: 0.8,
                   ),
                 ),
-                const SizedBox(height: 1),
-                Text(
-                  relation,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.inter(
-                    fontSize: 10.5,
-                    color: AppColors.textSecondary,
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.calendar_today_rounded,
+                      size: 11,
+                      color: Color(0xFFEFE8DC),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '4 MILESTONES',
+                      style: GoogleFonts.inter(
+                        fontSize: 9.5,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFFEFE8DC),
+                        letterSpacing: 0.4,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+          const SizedBox(height: 14),
+
+          // 2x2 Square Grid of Milestones (Consistent with Cousins Branch layout)
+          Row(
+            children: [
+              // Top-Left: Oliver's 22nd Birthday
+              Expanded(
+                child: _buildSquareMilestoneCard(
+                  context: context,
+                  month: 'NOV',
+                  day: '14',
+                  title: "Oliver's 22nd",
+                  subtitle: 'Cousin Brother • Gen 9',
+                  badgeText: 'IN 16 DAYS',
+                  badgeColor: const Color(0xFF7C3AED),
+                  badgeBgColor: const Color(0xFFF5F3FF),
+                  imageAsset: 'assets/images/modern_young_man.jpg',
+                  actionLabel: 'Wish 🎂',
+                  actionIcon: Icons.cake_outlined,
+                  onAction: () => ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Birthday greeting scheduled for Oliver on Nov 14! 🎂"),
+                      backgroundColor: Color(0xFF16325B),
+                    ),
+                  ),
+                  onCardTap: () => context.push('/people/p_gen9_oliver'),
+                ),
+              ),
+              const SizedBox(width: 10),
+              // Top-Right: Parents David & Sophia's 34th Anniversary
+              Expanded(
+                child: _buildSquareMilestoneCard(
+                  context: context,
+                  month: 'DEC',
+                  day: '04',
+                  title: "Parents' 34th",
+                  subtitle: 'David & Sophia • Gen 8',
+                  badgeText: '34 YEARS',
+                  badgeColor: const Color(0xFFB45309),
+                  badgeBgColor: const Color(0xFFFEF3C7),
+                  imageAsset: 'assets/images/modern_father.jpg',
+                  secondaryImageAsset: 'assets/images/vintage_lady_portrait.jpg',
+                  actionLabel: 'Cheer 🥂',
+                  actionIcon: Icons.favorite_border_rounded,
+                  onAction: () => ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Anniversary celebration note saved for David & Sophia! 🥂"),
+                      backgroundColor: Color(0xFF16325B),
+                    ),
+                  ),
+                  onCardTap: () => context.push('/people/p_gen8_david'),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              // Bottom-Left: Grandfather Julian Kensington Memorial Day
+              Expanded(
+                child: _buildSquareMilestoneCard(
+                  context: context,
+                  month: 'JAN',
+                  day: '08',
+                  title: "Julian's Memorial",
+                  subtitle: 'Grandfather • 1930–2012',
+                  badgeText: 'MEMORIAL',
+                  badgeColor: const Color(0xFF475569),
+                  badgeBgColor: const Color(0xFFF1F5F9),
+                  imageAsset: 'assets/images/vintage_elder_father.jpg',
+                  actionLabel: 'Vault 📜',
+                  actionIcon: Icons.history_edu_rounded,
+                  onAction: () => context.push('/archive'),
+                  onCardTap: () => context.push('/people/p_gen7_julian'),
+                ),
+              ),
+              const SizedBox(width: 10),
+              // Bottom-Right: Baby Noah 1st Month Milestone (Generation 10)
+              Expanded(
+                child: _buildSquareMilestoneCard(
+                  context: context,
+                  month: 'FEB',
+                  day: '14',
+                  title: "Baby Noah",
+                  subtitle: 'Elena • Generation 10',
+                  badgeText: 'NEWBORN',
+                  badgeColor: const Color(0xFF059669),
+                  badgeBgColor: const Color(0xFFECFDF5),
+                  imageAsset: 'assets/images/child_portrait.jpg',
+                  actionLabel: 'Love ❤️',
+                  actionIcon: Icons.favorite_rounded,
+                  onAction: () => ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("You sent love to Baby Noah and Elena! ❤️"),
+                      backgroundColor: Color(0xFF16325B),
+                    ),
+                  ),
+                  onCardTap: () => context.push('/people/p_gen9_elena'),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 14),
+          Divider(height: 1, color: const Color(0xFFC7B198).withOpacity(0.22)),
+          const SizedBox(height: 10),
+
+          // Action footer in Warm Champagne
           InkWell(
             onTap: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('$actionLabel for $name'),
-                  backgroundColor: AppColors.primary,
-                  duration: const Duration(seconds: 1),
+                const SnackBar(
+                  content: Text('Viewing All Family Dates & Milestones for 2026'),
+                  backgroundColor: Color(0xFF16325B),
                 ),
               );
             },
             borderRadius: BorderRadius.circular(8),
-            child: Container(
-              padding: const EdgeInsets.all(7),
-              decoration: const BoxDecoration(
-                color: AppColors.paleBlue,
-                shape: BoxShape.circle,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'View Full 2026 Family Milestone Calendar',
+                    style: GoogleFonts.inter(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFFE5D9C8), // Champagne Beige
+                    ),
+                  ),
+                  const Icon(
+                    Icons.arrow_forward_rounded,
+                    size: 13,
+                    color: Color(0xFFE5D9C8),
+                  ),
+                ],
               ),
-              child: Icon(icon, size: 16, color: AppColors.primary),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Square Milestone Card Helper (Consistent Square Design in Linen & Navy)
+  // ---------------------------------------------------------------------------
+  Widget _buildSquareMilestoneCard({
+    required BuildContext context,
+    required String month,
+    required String day,
+    required String title,
+    required String subtitle,
+    required String badgeText,
+    required Color badgeColor,
+    required Color badgeBgColor,
+    required String imageAsset,
+    String? secondaryImageAsset,
+    required String actionLabel,
+    required IconData actionIcon,
+    required VoidCallback onAction,
+    required VoidCallback onCardTap,
+  }) {
+    return InkWell(
+      onTap: onCardTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFAF7F2), // Warm Linen / Beige Tile
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: const Color(0xFFE2D6C3), // Soft Sand Hairline Border
+            width: 0.9,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Top Row: Date Box & Portrait Avatar
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Calendar Date Badge
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1A3863), // Deep Navy
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: const Color(0xFFC7B198).withOpacity(0.4),
+                      width: 0.7,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        month,
+                        style: GoogleFonts.inter(
+                          fontSize: 9.0,
+                          fontWeight: FontWeight.w800,
+                          color: const Color(0xFFDFCEB5), // Champagne Gold
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                      const SizedBox(width: 3.5),
+                      Text(
+                        day,
+                        style: GoogleFonts.poppins(
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          height: 1.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Avatar or Stacked Avatars
+                if (secondaryImageAsset != null)
+                  SizedBox(
+                    width: 44,
+                    height: 30,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 0,
+                          child: Container(
+                            width: 28,
+                            height: 28,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: const Color(0xFFE2D6C3), width: 1.5),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(999),
+                              child: Image.asset(imageAsset, fit: BoxFit.cover),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 14,
+                          child: Container(
+                            width: 28,
+                            height: 28,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: const Color(0xFFE2D6C3), width: 1.5),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(999),
+                              child: Image.asset(secondaryImageAsset, fit: BoxFit.cover),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: const Color(0xFFE2D6C3), width: 1.5),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(999),
+                      child: Image.asset(
+                        imageAsset,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: const Color(0xFFEFE8DC),
+                          child: const Icon(Icons.person, size: 16, color: Color(0xFF16325B)),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 10),
+
+            // Bold Event Title
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                title,
+                maxLines: 1,
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF0F2447), // Deep Navy text
+                  letterSpacing: -0.2,
+                ),
+              ),
+            ),
+            const SizedBox(height: 2),
+
+            // Subtitle
+            Text(
+              subtitle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.inter(
+                fontSize: 10.5,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFF5A6B82),
+              ),
+            ),
+            const SizedBox(height: 8),
+
+            // Milestone Badge & Action Row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Status Pill
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: badgeBgColor,
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: badgeColor.withOpacity(0.2), width: 0.6),
+                  ),
+                  child: Text(
+                    badgeText,
+                    style: GoogleFonts.inter(
+                      fontSize: 7.5,
+                      fontWeight: FontWeight.w700,
+                      color: badgeColor,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                ),
+
+                // Interactive Pill Action
+                InkWell(
+                  onTap: onAction,
+                  borderRadius: BorderRadius.circular(999),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6.5, vertical: 2.5),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(
+                        color: const Color(0xFF16325B).withOpacity(0.25),
+                        width: 0.8,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(actionIcon, size: 9.5, color: const Color(0xFF16325B)),
+                        const SizedBox(width: 3),
+                        Text(
+                          actionLabel,
+                          style: GoogleFonts.inter(
+                            fontSize: 8.5,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF16325B),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -2347,348 +2627,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // Card 2: Ancestral Origins & 246-Year Migration Journey
-  // (From 1780 Inverness/Edinburgh, Scotland -> 1862 Ohio -> Lakeview WA Seat)
-  // ---------------------------------------------------------------------------
-  Widget _buildAncestralOriginsAndMigrationCard(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(26),
-        border: Border.all(color: AppColors.border, width: 0.9),
-        boxShadow: HeritageShadows.card,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header Row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Ancestral Origins & Migration',
-                      style: GoogleFonts.poppins(
-                        fontSize: 15.5,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
-                        letterSpacing: -0.3,
-                      ),
-                    ),
-                    const SizedBox(height: 1),
-                    Text(
-                      '246-year transatlantic journey across 10 generations',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.inter(
-                        fontSize: 11,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
-                decoration: BoxDecoration(
-                  color: AppColors.paleBlue,
-                  borderRadius: HeritageCurves.pill,
-                  border: Border.all(color: AppColors.border, width: 0.8),
-                ),
-                child: Text(
-                  '1780 — PRESENT',
-                  style: GoogleFonts.inter(
-                    fontSize: 9.5,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primary,
-                    letterSpacing: 0.4,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
 
-          // Migration Step 1: Edinburgh & Inverness, Scotland (1780)
-          _buildMigrationStopItem(
-            year: '1780',
-            location: 'Inverness & Edinburgh, Scotland',
-            generation: 'GEN 1 • ARCHIBALD KENSINGTON',
-            description: 'Stone masonry guild founder on Royal Mile; clan ancestral hearth.',
-            isFirst: true,
-            isLast: false,
-          ),
-
-          // Migration Step 2: Ohio Valley Homestead (1862)
-          _buildMigrationStopItem(
-            year: '1862',
-            location: 'Ohio Valley Homestead, OH',
-            generation: 'GEN 4 • ROBERT KENSINGTON',
-            description: 'Transatlantic voyage aboard SS Caledonia; settled timber farmland.',
-            isFirst: false,
-            isLast: false,
-          ),
-
-          // Migration Step 3: Lakeview Estate, Washington (1912 - Present)
-          _buildMigrationStopItem(
-            year: '1912',
-            location: 'Lakeview Estate, WA — Present',
-            generation: 'GEN 7 TO GEN 10 • CONTEMPORARY',
-            description: 'Pacific Northwest homeland; architectural studio & reunion grounds.',
-            isFirst: false,
-            isLast: true,
-          ),
-
-          const SizedBox(height: 8),
-          const Divider(height: 1, color: AppColors.border),
-          const SizedBox(height: 10),
-
-          // Footer Action
-          InkWell(
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Interactive Historical Migration Map & Routes'),
-                  backgroundColor: AppColors.primary,
-                ),
-              );
-            },
-            borderRadius: BorderRadius.circular(8),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'View Interactive Migration Route Map',
-                    style: GoogleFonts.inter(
-                      fontSize: 11.5,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                  const Icon(Icons.map_outlined, size: 14, color: AppColors.primary),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Helper migration stop timeline step
-  Widget _buildMigrationStopItem({
-    required String year,
-    required String location,
-    required String generation,
-    required String description,
-    required bool isFirst,
-    required bool isLast,
-  }) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Year badge on left
-          SizedBox(
-            width: 44,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 2),
-              child: Text(
-                year,
-                style: GoogleFonts.poppins(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primary,
-                ),
-              ),
-            ),
-          ),
-
-          // Timeline Node and Line
-          SizedBox(
-            width: 24,
-            child: Column(
-              children: [
-                Container(
-                  width: 12,
-                  height: 12,
-                  decoration: BoxDecoration(
-                    color: isLast ? const Color(0xFF10B981) : AppColors.primary,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 2),
-                    boxShadow: [
-                      BoxShadow(
-                        color: (isLast ? const Color(0xFF10B981) : AppColors.primary).withOpacity(0.3),
-                        blurRadius: 4,
-                        offset: const Offset(0, 1),
-                      ),
-                    ],
-                  ),
-                ),
-                if (!isLast)
-                  Expanded(
-                    child: Container(
-                      width: 1.5,
-                      color: AppColors.border,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-
-          // Content
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(bottom: isLast ? 0 : 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Flexible(
-                        child: Text(
-                          location,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.poppins(
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 2),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
-                    decoration: BoxDecoration(
-                      color: AppColors.paleBlue,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      generation,
-                      style: GoogleFonts.inter(
-                        fontSize: 8.5,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primary,
-                        letterSpacing: 0.3,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 3),
-                  Text(
-                    description,
-                    style: GoogleFonts.inter(
-                      fontSize: 10.5,
-                      color: AppColors.textSecondary,
-                      height: 1.3,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ---------------------------------------------------------------------------
-  // 6. Big CTA Button: Explore All Documented Ancestors (Luxury Dusk Blue Banner)
-  // ---------------------------------------------------------------------------
-  Widget _buildExploreAncestorsCta(BuildContext context) {
-    return InkWell(
-      onTap: () => context.push('/tree'),
-      borderRadius: BorderRadius.circular(26),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              AppColors.primary,
-              Color(0xFF1B3D6A),
-            ],
-          ),
-          borderRadius: BorderRadius.circular(26),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primary.withOpacity(0.25),
-              blurRadius: 18,
-              offset: const Offset(0, 6),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 46,
-              height: 46,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.14),
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white.withOpacity(0.25), width: 1.0),
-              ),
-              child: const Icon(
-                Icons.account_tree_rounded,
-                color: Colors.white,
-                size: 24,
-              ),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Explore Complete Family Tree',
-                    style: GoogleFonts.poppins(
-                      fontSize: 15.5,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                      letterSpacing: -0.2,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'Traverse all 10 generations and lineage records',
-                    style: GoogleFonts.inter(
-                      fontSize: 11.5,
-                      color: Colors.white.withOpacity(0.85),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: 34,
-              height: 34,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.arrow_forward_rounded,
-                size: 17,
-                color: AppColors.primary,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 
