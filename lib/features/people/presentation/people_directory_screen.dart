@@ -116,9 +116,10 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                         Expanded(
                           child: Container(
                             height: 48,
+                            clipBehavior: Clip.antiAlias,
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: HeritageCurves.pill,
+                              borderRadius: BorderRadius.circular(999),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.08),
@@ -129,7 +130,13 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                             ),
                             child: TextField(
                               controller: _searchController,
+                              style: GoogleFonts.inter(
+                                fontSize: 13,
+                                color: AppColors.textPrimary,
+                              ),
                               decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
                                 hintText: 'Search relatives, branches...',
                                 hintStyle: GoogleFonts.inter(
                                   fontSize: 13,
@@ -151,9 +158,18 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                                         },
                                       )
                                     : null,
-                                border: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(999),
+                                  borderSide: BorderSide.none,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(999),
+                                  borderSide: BorderSide.none,
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(999),
+                                  borderSide: BorderSide.none,
+                                ),
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                               ),
                               onChanged: (val) {
@@ -167,17 +183,31 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                         const SizedBox(width: 10),
 
                         // Round Filter Button
-                        Container(
-                          width: 48,
-                          height: 48,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.tune_rounded,
-                            size: 20,
-                            color: AppColors.primary,
+                        Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {},
+                            borderRadius: BorderRadius.circular(999),
+                            child: Container(
+                              width: 48,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.08),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: const Icon(
+                                Icons.tune_rounded,
+                                size: 20,
+                                color: AppColors.primary,
+                              ),
+                            ),
                           ),
                         ),
                       ],

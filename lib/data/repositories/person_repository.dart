@@ -515,6 +515,23 @@ class PersonRepository {
       updatedAt: now,
     );
 
+    final gen9SpouseThomas = Person(
+      id: 'p_gen9_thomas_wilson',
+      familyId: famId,
+      firstName: 'Thomas',
+      lastName: 'Wilson',
+      gender: Gender.male,
+      birthDate: DateTime(1996, 4, 12),
+      isLiving: true,
+      birthPlace: 'Portland, USA',
+      bio: 'Architectural engineer and loving husband of Sara Wilson.',
+      portraitUrl: 'assets/images/midcentury_father.jpg',
+      isVerified: true,
+      generationHint: 9,
+      createdAt: now,
+      updatedAt: now,
+    );
+
     final gen9Brother = Person(
       id: 'p_gen9_james',
       familyId: famId,
@@ -649,6 +666,7 @@ class PersonRepository {
       gen8Father, gen8Mother,
       gen9Father, gen9Mother,
       gen9Viewer,
+      gen9SpouseThomas,
       gen9Brother,
       gen9BrotherOliver,
       gen9SisterClara,

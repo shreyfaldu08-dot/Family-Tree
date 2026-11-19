@@ -430,7 +430,7 @@ final uniqueFamilyTreeIdProvider = NotifierProvider<UniqueFamilyTreeIdNotifier, 
 
 class BranchViewModeNotifier extends Notifier<BranchViewMode> {
   @override
-  BranchViewMode build() => BranchViewMode.myBranch;
+  BranchViewMode build() => BranchViewMode.fullTree;
   void toggle() => state = state == BranchViewMode.myBranch ? BranchViewMode.fullTree : BranchViewMode.myBranch;
   void setMode(BranchViewMode mode) => state = mode;
 }
@@ -439,7 +439,7 @@ final branchViewModeProvider = NotifierProvider<BranchViewModeNotifier, BranchVi
 
 class UserBranchPersonIdNotifier extends Notifier<String?> {
   @override
-  String? build() => 'per_hamish'; // Default active logged-in brother/branch head
+  String? build() => 'p_gen9_sara'; // Default active logged-in archivist (Sara Wilson)
   void setPersonId(String? id) => state = id;
 }
 

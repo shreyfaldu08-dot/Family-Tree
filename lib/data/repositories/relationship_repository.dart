@@ -178,10 +178,10 @@ class RelationshipRepository {
     addParentChild('p_gen8_richard', 'p_gen9_clara');
 
     // Gen 9 spouses & parents of Gen 10
-    addSpouses('p_gen9_lucas', 'p_gen9_elena');
-    addParentChild('p_gen9_lucas', 'p_gen10_maya');
-    addParentChild('p_gen9_elena', 'p_gen10_maya');
+    addSpouses('p_gen9_sara', 'p_gen9_thomas_wilson');
     addParentChild('p_gen9_sara', 'p_gen10_maya');
+    addParentChild('p_gen9_thomas_wilson', 'p_gen10_maya');
     addParentChild('p_gen9_sara', 'p_gen10_liam');
+    addParentChild('p_gen9_thomas_wilson', 'p_gen10_liam');
   }
 }

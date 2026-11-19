@@ -48,7 +48,7 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
   void initState() {
     super.initState();
     _transformController = TransformationController();
-    _focusedPersonId = widget.initialPersonId;
+    _focusedPersonId = widget.initialPersonId ?? 'p_gen9_sara';
 
     // Center view on canvas center (2500, 2500)
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -77,12 +77,12 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
   void _centerOnNode(Offset target) {
     if (!mounted) return;
     final size = MediaQuery.of(context).size;
+    const scale = 0.65;
+    final tx = size.width / 2 - target.dx * scale;
+    final ty = size.height / 2 - (target.dy - 60) * scale;
     final matrix = Matrix4.identity()
-      ..translate(
-        size.width / 2 - target.dx,
-        size.height / 2 - target.dy,
-      )
-      ..scale(0.95);
+      ..translate(tx, ty)
+      ..scale(scale);
     _transformController.value = matrix;
   }
 
@@ -327,8 +327,11 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
 
                     if (branchMode == BranchViewMode.myBranch && userBranchId != null) {
                       final branchIds = _getBranchPersonIds(userBranchId, persons, relationships);
-                      activePersons = persons.where((p) => branchIds.contains(p.id)).toList();
-                      activeRelationships = relationships.where((r) => branchIds.contains(r.personId) && branchIds.contains(r.relatedPersonId)).toList();
+                      final filteredPersons = persons.where((p) => branchIds.contains(p.id)).toList();
+                      if (filteredPersons.isNotEmpty) {
+                        activePersons = filteredPersons;
+                        activeRelationships = relationships.where((r) => branchIds.contains(r.personId) && branchIds.contains(r.relatedPersonId)).toList();
+                      }
                     }
 
                     // Render selected view style
@@ -364,7 +367,7 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                     }
 
                     // Default: Interactive Canvas Tree
-                    final focusId = _focusedPersonId ?? (activePersons.isNotEmpty ? activePersons.first.id : persons.first.id);
+                    final focusId = _focusedPersonId ?? (activePersons.any((p) => p.id == 'p_gen9_sara') ? 'p_gen9_sara' : (activePersons.isNotEmpty ? activePersons.first.id : persons.first.id));
 
                     final layoutResult = TreeLayoutEngine.computeLayout(
                       persons: activePersons,
@@ -376,34 +379,36 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
 
                     return Stack(
                       children: [
-                        // Panning and Zooming Canvas
-                        InteractiveViewer(
-                          transformationController: _transformController,
-                          boundaryMargin: const EdgeInsets.all(2500),
-                          minScale: 0.2,
-                          maxScale: 2.5,
-                          constrained: false,
-                          child: SizedBox(
-                            width: layoutResult.canvasSize.width,
-                            height: layoutResult.canvasSize.height,
-                            child: Stack(
-                              children: [
-                                // CustomPainter for curved branch lines
-                                Positioned.fill(
-                                  child: CustomPaint(
-                                    painter: LivingHeritageTreePainter(
-                                      nodes: layoutResult.nodes,
-                                      focusPersonId: focusId,
+                        // Panning and Zooming Canvas with Clean Light Surface
+                        Container(
+                          color: const Color(0xFFF8F9FA),
+                          child: InteractiveViewer(
+                            transformationController: _transformController,
+                            boundaryMargin: const EdgeInsets.all(2500),
+                            minScale: 0.2,
+                            maxScale: 2.5,
+                            constrained: false,
+                            child: SizedBox(
+                              width: layoutResult.canvasSize.width,
+                              height: layoutResult.canvasSize.height,
+                              child: Stack(
+                                children: [
+                                  // CustomPainter for clean orthogonal branch lines and dotted canvas grid
+                                  Positioned.fill(
+                                    child: CustomPaint(
+                                      painter: LivingHeritageTreePainter(
+                                        nodes: layoutResult.nodes,
+                                        focusPersonId: focusId,
+                                      ),
                                     ),
                                   ),
-                                ),
 
-                                // Interactive Person Node Widgets
-                                ...layoutResult.nodes.values.map((node) {
-                                  return Positioned(
-                                    left: node.position.dx - 87,
-                                    top: node.position.dy - 50,
-                                    child: PersonNodeWidget(
+                                  // Interactive Person Node Widgets
+                                  ...layoutResult.nodes.values.map((node) {
+                                    return Positioned(
+                                      left: node.position.dx - 86,
+                                      top: node.position.dy - 78,
+                                      child: PersonNodeWidget(
                                       node: node,
                                       isAdmin: isAdmin,
                                       onAddRelative: (relationType) {
@@ -428,6 +433,7 @@ class _FamilyTreeScreenState extends ConsumerState<FamilyTreeScreen> {
                             ),
                           ),
                         ),
+                      ),
 
                         // Bottom Generation Navigator Floating Pill
                         Positioned(

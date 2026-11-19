@@ -50,17 +50,31 @@ class _TreeListViewState extends State<TreeListView> {
           color: AppColors.background,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 14),
+            clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               color: AppColors.surface,
-              borderRadius: HeritageCurves.pill,
+              borderRadius: BorderRadius.circular(999),
               boxShadow: HeritageShadows.card,
             ),
             child: TextField(
               controller: _searchCtrl,
               decoration: InputDecoration(
+                filled: true,
+                fillColor: AppColors.surface,
                 hintText: 'Search directory...',
                 hintStyle: HeritageTypography.bodySmall.copyWith(color: AppColors.textSecondary),
-                border: InputBorder.none,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(999),
+                  borderSide: BorderSide.none,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(999),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(999),
+                  borderSide: BorderSide.none,
+                ),
                 icon: const Icon(Icons.search_rounded, size: 20, color: AppColors.primary),
                 suffixIcon: _query.isNotEmpty
                     ? IconButton(

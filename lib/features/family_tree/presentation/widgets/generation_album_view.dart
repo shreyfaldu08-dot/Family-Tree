@@ -110,19 +110,31 @@ class _GenerationAlbumViewState extends State<GenerationAlbumView> {
               // Search field (capsule, borderless)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
+                clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
                   color: AppColors.surface,
-                  borderRadius: HeritageCurves.pill,
+                  borderRadius: BorderRadius.circular(999),
                   boxShadow: HeritageShadows.card,
                 ),
                 child: TextField(
                   controller: _searchCtrl,
                   decoration: InputDecoration(
+                    filled: true,
+                    fillColor: AppColors.surface,
                     hintText: 'Search by name, maiden name, or hometown...',
                     hintStyle: HeritageTypography.bodySmall.copyWith(color: AppColors.textSecondary),
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(999),
+                      borderSide: BorderSide.none,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(999),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(999),
+                      borderSide: BorderSide.none,
+                    ),
                     icon: const Icon(Icons.search_rounded, size: 20, color: AppColors.primary),
                     suffixIcon: _searchQuery.isNotEmpty
                         ? IconButton(
