@@ -14,7 +14,7 @@ import '../features/people/presentation/relationship_finder_screen.dart';
 import '../features/person_profile/presentation/person_profile_screen.dart';
 import '../features/archive/presentation/archive_screen.dart';
 import '../features/timeline/presentation/timeline_screen.dart';
-import '../features/settings/presentation/settings_screen.dart';
+import '../features/profile/presentation/user_profile_screen.dart';
 import '../features/membership/presentation/invitation_redemption_screen.dart';
 import '../features/membership/presentation/pending_approval_screen.dart';
 import '../features/admin/presentation/admin_dashboard_screen.dart';
@@ -96,7 +96,7 @@ final appRouter = GoRouter(
         return NavigationScaffold(navigationShell: navigationShell);
       },
       branches: [
-        // 1. Home Dashboard
+        // 1. Home Dashboard (Branch 0)
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -106,7 +106,7 @@ final appRouter = GoRouter(
           ],
         ),
 
-        // 2. Tree View
+        // 2. Tree View (Branch 1)
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -119,7 +119,7 @@ final appRouter = GoRouter(
           ],
         ),
 
-        // 3. Timeline
+        // 3. Timeline (Branch 2)
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -129,44 +129,44 @@ final appRouter = GoRouter(
           ],
         ),
 
-        // 4. Search & People Directory
+        // 4. Vault & Gallery Archive (Branch 3)
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/search',
-              builder: (context, state) => const PeopleDirectoryScreen(),
+              path: '/archive',
+              builder: (context, state) => const ArchiveScreen(),
             ),
-            GoRoute(
-              path: '/people',
-              builder: (context, state) => const PeopleDirectoryScreen(),
-            ),
-          ],
-        ),
-
-        // 5. Settings & Profile
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/settings',
-              builder: (context, state) => const SettingsScreen(),
-            ),
-            GoRoute(
-              path: '/profile',
-              builder: (context, state) => const SettingsScreen(),
-            ),
-          ],
-        ),
-
-        // 6. Gallery & Documents Archive
-        StatefulShellBranch(
-          routes: [
             GoRoute(
               path: '/gallery',
               builder: (context, state) => const ArchiveScreen(),
             ),
+          ],
+        ),
+
+        // 5. Search & People Directory (Branch 4)
+        StatefulShellBranch(
+          routes: [
             GoRoute(
-              path: '/archive',
-              builder: (context, state) => const ArchiveScreen(),
+              path: '/people',
+              builder: (context, state) => const PeopleDirectoryScreen(),
+            ),
+            GoRoute(
+              path: '/search',
+              builder: (context, state) => const PeopleDirectoryScreen(),
+            ),
+          ],
+        ),
+
+        // 6. Settings & Profile (Branch 5)
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/profile',
+              builder: (context, state) => const UserProfileScreen(),
+            ),
+            GoRoute(
+              path: '/settings',
+              builder: (context, state) => const UserProfileScreen(),
             ),
           ],
         ),
@@ -203,6 +203,16 @@ final appRouter = GoRouter(
     GoRoute(
       parentNavigatorKey: _rootNavigatorKey,
       path: '/relation',
+      builder: (context, state) => const RelationshipFinderScreen(),
+    ),
+    GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
+      path: '/relationships',
+      builder: (context, state) => const RelationshipFinderScreen(),
+    ),
+    GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
+      path: '/relationship-finder',
       builder: (context, state) => const RelationshipFinderScreen(),
     ),
     GoRoute(

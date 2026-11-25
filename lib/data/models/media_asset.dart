@@ -20,6 +20,19 @@ enum MediaType {
   }
 
   String get dbValue => name;
+
+  String get label {
+    switch (this) {
+      case MediaType.photo:
+        return 'Photograph';
+      case MediaType.video:
+        return 'Video Archive';
+      case MediaType.audio:
+        return 'Audio Story';
+      case MediaType.document:
+        return 'Historical Document';
+    }
+  }
 }
 
 class MediaAsset {

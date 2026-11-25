@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../app/theme/colors.dart';
 import '../../../data/models/family.dart';
+import '../../../data/models/membership.dart';
 import '../../../data/models/person.dart';
 import '../../../data/models/relationship.dart';
 import '../../../data/providers/repository_providers.dart';
@@ -106,30 +107,83 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   // 1. Top Header: Refined User avatar, personalized greeting, Tree ID pill, bell
   // ---------------------------------------------------------------------------
   Widget _buildTopHeader(BuildContext context, Family? family, bool isAdmin) {
+    final profile = ref.watch(currentProfileProvider).valueOrNull;
+    final activePersona = ref.watch(currentPersonaProvider);
+    final role = ref.watch(currentUserRoleProvider);
+
+    final displayName = profile?.displayName ?? activePersona?.displayName ?? 'Sara Wilson';
+    final avatarUrl = profile?.avatarUrl ?? activePersona?.avatarAsset;
+
+    String roleBadgeLabel = 'Admin';
+    Color roleBadgeBg = const Color(0xFFEFF6FF);
+    Color roleBadgeColor = const Color(0xFF1D4ED8);
+
+    switch (role) {
+      case MemberRole.primaryAdmin:
+        roleBadgeLabel = 'Admin';
+        roleBadgeBg = const Color(0xFFEFF6FF);
+        roleBadgeColor = const Color(0xFF1D4ED8);
+        break;
+      case MemberRole.branchElder:
+        roleBadgeLabel = 'Branch Elder';
+        roleBadgeBg = const Color(0xFFFEF3C7);
+        roleBadgeColor = const Color(0xFFB45309);
+        break;
+      case MemberRole.contributor:
+        roleBadgeLabel = 'Contributor';
+        roleBadgeBg = const Color(0xFFF0FDF4);
+        roleBadgeColor = const Color(0xFF15803D);
+        break;
+      case MemberRole.viewer:
+        roleBadgeLabel = 'Viewer';
+        roleBadgeBg = const Color(0xFFF1F5F9);
+        roleBadgeColor = const Color(0xFF475569);
+        break;
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: Row(
             children: [
-              // User Avatar with delicate double-ring border
-              Container(
-                width: 46,
-                height: 46,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.border, width: 1.5),
-                  boxShadow: HeritageShadows.card,
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(999),
-                  child: Image.asset(
-                    'assets/images/user_sara_portrait.jpg',
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      color: AppColors.paleBlue,
-                      child: const Icon(Icons.person, color: AppColors.primary),
-                    ),
+              // User Avatar with delicate double-ring border - tapping goes to Profile
+              InkWell(
+                onTap: () => context.go('/profile'),
+                borderRadius: BorderRadius.circular(999),
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.border, width: 1.5),
+                    boxShadow: HeritageShadows.card,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(999),
+                    child: (avatarUrl != null && avatarUrl.isNotEmpty)
+                        ? Image.asset(
+                            avatarUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              color: AppColors.paleBlue,
+                              child: Center(
+                                child: Text(
+                                  displayName.isNotEmpty ? displayName[0] : 'U',
+                                  style: GoogleFonts.poppins(fontWeight: FontWeight.w700, color: AppColors.primary),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            color: AppColors.paleBlue,
+                            child: Center(
+                              child: Text(
+                                displayName.isNotEmpty ? displayName[0] : 'U',
+                                style: GoogleFonts.poppins(fontWeight: FontWeight.w700, color: AppColors.primary),
+                              ),
+                            ),
+                          ),
                   ),
                 ),
               ),
@@ -154,34 +208,50 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                           ),
                         ),
                         const SizedBox(width: 6),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: AppColors.paleBlue,
-                            borderRadius: HeritageCurves.pill,
-                          ),
-                          child: Text(
-                            'ID: VANS-8842',
-                            style: GoogleFonts.inter(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.primary,
-                              letterSpacing: 0.3,
+                        // Interactive Role Switcher Pill
+                        InkWell(
+                          onTap: () => _showPersonaQuickSwitchSheet(context),
+                          borderRadius: BorderRadius.circular(999),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: roleBadgeBg,
+                              borderRadius: HeritageCurves.pill,
+                              border: Border.all(color: roleBadgeColor.withOpacity(0.3), width: 0.8),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  roleBadgeLabel,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w700,
+                                    color: roleBadgeColor,
+                                    letterSpacing: 0.2,
+                                  ),
+                                ),
+                                const SizedBox(width: 3),
+                                Icon(Icons.sync_alt_rounded, size: 9, color: roleBadgeColor),
+                              ],
                             ),
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 2),
-                    Text(
-                      'Sara Wilson',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.poppins(
-                        fontSize: 19,
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: -0.4,
+                    InkWell(
+                      onTap: () => context.go('/profile'),
+                      child: Text(
+                        displayName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.poppins(
+                          fontSize: 19,
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -0.4,
+                        ),
                       ),
                     ),
                   ],
@@ -192,17 +262,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         ),
         const SizedBox(width: 8),
 
-        // Action Button: Notification Bell
+        // Action Button: Notification Bell with proper navigation
         InkWell(
-          onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Vansora Lineage Vault is synchronized. Tree Code: VANS-8842'),
-                duration: Duration(seconds: 2),
-                backgroundColor: AppColors.primary,
-              ),
-            );
-          },
+          onTap: () => context.push('/notifications'),
           borderRadius: BorderRadius.circular(999),
           child: Container(
             width: 42,
@@ -238,6 +300,133 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  void _showPersonaQuickSwitchSheet(BuildContext context) {
+    final authRepo = ref.read(authRepositoryProvider);
+    final personas = authRepo.personas;
+    final currentUserId = authRepo.currentUserId;
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (ctx) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 28),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 42,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Switch Family Account Persona',
+                style: GoogleFonts.poppins(fontSize: 17, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Instantly test the interface and permissions as another member:',
+                style: GoogleFonts.inter(fontSize: 12, color: AppColors.textSecondary),
+              ),
+              const SizedBox(height: 16),
+              ...personas.map((persona) {
+                final isCurrent = persona.id == currentUserId;
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: InkWell(
+                    onTap: () async {
+                      await authRepo.switchPersona(persona.id);
+                      ref.read(currentUserRoleProvider.notifier).setRole(persona.role);
+                      ref.read(userBranchPersonIdProvider.notifier).setPersonId(persona.id);
+                      ref.invalidate(currentProfileProvider);
+                      ref.invalidate(currentMembershipProvider);
+                      if (!ctx.mounted || !context.mounted) return;
+                      Navigator.pop(ctx);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Switched to ${persona.displayName} (${persona.roleTitle})'),
+                          backgroundColor: AppColors.primary,
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(14),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: isCurrent ? AppColors.lightSage : Colors.grey.shade50,
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: isCurrent ? AppColors.primary : AppColors.border,
+                          width: isCurrent ? 1.5 : 0.8,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 38,
+                            height: 38,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.paleSage,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(999),
+                              child: persona.avatarAsset != null
+                                  ? Image.asset(persona.avatarAsset!, fit: BoxFit.cover)
+                                  : Center(
+                                      child: Text(
+                                        persona.displayName[0],
+                                        style: GoogleFonts.poppins(fontWeight: FontWeight.w700, color: AppColors.primary),
+                                      ),
+                                    ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  persona.displayName,
+                                  style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
+                                ),
+                                Text(
+                                  '${persona.roleTitle} • ${persona.generation}',
+                                  style: GoogleFonts.inter(fontSize: 11, color: AppColors.textSecondary),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (isCurrent)
+                            const Icon(Icons.check_circle_rounded, color: AppColors.primary, size: 20)
+                          else
+                            const Icon(Icons.arrow_forward_ios_rounded, color: AppColors.textSecondary, size: 14),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -426,9 +615,13 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   ) {
     final allPersons = personsAsync.valueOrNull ?? [];
 
-    // Find Viewer (Sara Wilson, Generation 9)
+    final activeFocusId = ref.watch(userBranchPersonIdProvider);
+
+    // Find Active Viewer (based on logged in persona or fallback)
     final viewer = allPersons.firstWhere(
-      (p) => p.firstName.toLowerCase() == 'sara' || p.id == 'p_gen9_sara',
+      (p) => (activeFocusId != null && p.id == activeFocusId) ||
+          p.firstName.toLowerCase() == 'sara' ||
+          p.id == 'p_gen9_sara',
       orElse: () => allPersons.where((p) => p.generationHint == 9).firstOrNull ??
           allPersons.firstOrNull ??
           Person(

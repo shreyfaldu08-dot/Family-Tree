@@ -70,6 +70,11 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                         ),
                         Row(
                           children: [
+                            IconButton(
+                              icon: const Icon(Icons.hub_rounded, color: Colors.white),
+                              tooltip: 'Kinship Graph Pathfinder',
+                              onPressed: () => context.push('/relation'),
+                            ),
                             if (isAdmin)
                               IconButton(
                                 icon: const Icon(Icons.person_add_alt_1, color: Colors.white),
@@ -128,55 +133,58 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                                 ),
                               ],
                             ),
-                            child: TextField(
-                              controller: _searchController,
-                              style: GoogleFonts.inter(
-                                fontSize: 13,
-                                color: AppColors.textPrimary,
-                              ),
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                hintText: 'Search relatives, branches...',
-                                hintStyle: GoogleFonts.inter(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(999),
+                              child: TextField(
+                                controller: _searchController,
+                                style: GoogleFonts.inter(
                                   fontSize: 13,
-                                  color: AppColors.textSecondary.withOpacity(0.7),
+                                  color: AppColors.textPrimary,
                                 ),
-                                prefixIcon: const Icon(
-                                  Icons.search_rounded,
-                                  color: AppColors.textSecondary,
-                                  size: 20,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  hintText: 'Search relatives, branches...',
+                                  hintStyle: GoogleFonts.inter(
+                                    fontSize: 13,
+                                    color: AppColors.textSecondary.withOpacity(0.7),
+                                  ),
+                                  prefixIcon: const Icon(
+                                    Icons.search_rounded,
+                                    color: AppColors.textSecondary,
+                                    size: 20,
+                                  ),
+                                  suffixIcon: _searchQuery.isNotEmpty
+                                      ? IconButton(
+                                          icon: const Icon(Icons.clear_rounded, size: 16, color: AppColors.textSecondary),
+                                          onPressed: () {
+                                            setState(() {
+                                              _searchController.clear();
+                                              _searchQuery = '';
+                                            });
+                                          },
+                                        )
+                                      : null,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(999),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(999),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(999),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                                 ),
-                                suffixIcon: _searchQuery.isNotEmpty
-                                    ? IconButton(
-                                        icon: const Icon(Icons.clear_rounded, size: 16, color: AppColors.textSecondary),
-                                        onPressed: () {
-                                          setState(() {
-                                            _searchController.clear();
-                                            _searchQuery = '';
-                                          });
-                                        },
-                                      )
-                                    : null,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(999),
-                                  borderSide: BorderSide.none,
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(999),
-                                  borderSide: BorderSide.none,
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(999),
-                                  borderSide: BorderSide.none,
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                                onChanged: (val) {
+                                  setState(() {
+                                    _searchQuery = val.trim();
+                                  });
+                                },
                               ),
-                              onChanged: (val) {
-                                setState(() {
-                                  _searchQuery = val.trim();
-                                });
-                              },
                             ),
                           ),
                         ),
@@ -218,10 +226,11 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
             ),
 
             // ===============================================================
-            // 2. BENTO CARDS GRID (Screen 2 Reference)
+            // 2. BENTO CARDS GRID (Screen 2 Reference) - Visible when not searching
             // ===============================================================
-            SliverPadding(
-              padding: const EdgeInsets.all(20),
+            if (_searchQuery.isEmpty)
+              SliverPadding(
+                padding: const EdgeInsets.all(20),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
                   // Large Featured Card (Top: Archibald / Founding Patriarch)
@@ -595,6 +604,91 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
                 if (_searchQuery.isNotEmpty) {
                   final q = _searchQuery.toLowerCase();
                   filtered = filtered.where((p) => p.displayName.toLowerCase().contains(q)).toList();
+                }
+
+                if (_searchQuery.isNotEmpty) {
+                  return SliverPadding(
+                    padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          if (index == 0) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 14),
+                              child: Text(
+                                filtered.isEmpty
+                                    ? 'No relatives found for "$_searchQuery"'
+                                    : 'Found ${filtered.length} relative${filtered.length == 1 ? "" : "s"} for "$_searchQuery"',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.textPrimary,
+                                ),
+                              ),
+                            );
+                          }
+                          final person = filtered[index - 1];
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(18),
+                              border: Border.all(color: AppColors.border, width: 0.8),
+                              boxShadow: HeritageShadows.card,
+                            ),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              onTap: () => context.push('/people/${person.id}'),
+                              leading: Container(
+                                width: 48,
+                                height: 48,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(999),
+                                  child: Image.asset(
+                                    person.effectivePortraitAsset,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              title: Text(
+                                person.displayName,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.textPrimary,
+                                ),
+                              ),
+                              subtitle: Text(
+                                'Generation ${person.generation} • ${person.lifeDateSpan}',
+                                style: GoogleFonts.inter(
+                                  fontSize: 11.5,
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
+                              trailing: Container(
+                                width: 32,
+                                height: 32,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.paleBlue,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.arrow_forward_rounded,
+                                  size: 16,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        childCount: filtered.isEmpty ? 1 : filtered.length + 1,
+                      ),
+                    ),
+                  );
                 }
 
                 return SliverPadding(

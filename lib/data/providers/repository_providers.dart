@@ -85,7 +85,8 @@ final activeFamilyIdProvider = NotifierProvider<ActiveFamilyIdNotifier, String>(
 class CurrentUserRoleNotifier extends Notifier<MemberRole> {
   @override
   MemberRole build() {
-    return MemberRole.primaryAdmin;
+    final authRepo = ref.watch(authRepositoryProvider);
+    return authRepo.currentRole;
   }
 
   void setRole(MemberRole newRole) {
@@ -105,6 +106,11 @@ class CurrentUserRoleNotifier extends Notifier<MemberRole> {
 }
 
 final currentUserRoleProvider = NotifierProvider<CurrentUserRoleNotifier, MemberRole>(CurrentUserRoleNotifier.new);
+
+final currentPersonaProvider = Provider<FamilyPersona?>((ref) {
+  final repo = ref.watch(authRepositoryProvider);
+  return repo.currentPersona;
+});
 
 final isCurrentAdminProvider = Provider<bool>((ref) {
   final role = ref.watch(currentUserRoleProvider);

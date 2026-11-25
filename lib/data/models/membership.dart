@@ -1,14 +1,30 @@
 enum MemberRole {
   primaryAdmin,
+  branchElder,
+  contributor,
   viewer;
 
   static MemberRole fromString(String? val) {
     if (val == 'primary_admin') return MemberRole.primaryAdmin;
+    if (val == 'branch_elder') return MemberRole.branchElder;
+    if (val == 'contributor') return MemberRole.contributor;
     return MemberRole.viewer;
   }
 
-  String get dbValue => this == MemberRole.primaryAdmin ? 'primary_admin' : 'viewer';
-  bool get isPrimaryAdmin => this == MemberRole.primaryAdmin;
+  String get dbValue {
+    switch (this) {
+      case MemberRole.primaryAdmin:
+        return 'primary_admin';
+      case MemberRole.branchElder:
+        return 'branch_elder';
+      case MemberRole.contributor:
+        return 'contributor';
+      case MemberRole.viewer:
+        return 'viewer';
+    }
+  }
+
+  bool get isPrimaryAdmin => this == MemberRole.primaryAdmin || this == MemberRole.branchElder;
 }
 
 enum MemberStatus {
