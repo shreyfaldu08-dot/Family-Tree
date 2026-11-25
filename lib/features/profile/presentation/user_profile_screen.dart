@@ -4,11 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../app/theme/colors.dart';
+import '../../../data/models/membership.dart';
 import '../../../data/models/person.dart';
 import '../../../data/providers/repository_providers.dart';
 
 class UserProfileScreen extends ConsumerStatefulWidget {
-  const UserProfileScreen({super.key});
+  final int initialTabIndex;
+  const UserProfileScreen({super.key, this.initialTabIndex = 0});
 
   @override
   ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -35,7 +37,11 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> with Sing
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(
+      length: 4,
+      vsync: this,
+      initialIndex: widget.initialTabIndex.clamp(0, 3),
+    );
   }
 
   @override
@@ -339,6 +345,9 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> with Sing
     final effectiveDisplayName = _displayName.isNotEmpty
         ? _displayName
         : (profile?.displayName ?? activePersona?.displayName ?? sara?.displayName ?? 'Sara Wilson');
+    final presentationName = (_maidenName.isNotEmpty && !effectiveDisplayName.contains(_maidenName))
+        ? '$effectiveDisplayName ($_maidenName)'
+        : effectiveDisplayName;
     final effectiveRoleTitle = activePersona?.roleTitle ?? (isAdmin ? 'Primary Admin • Archivist' : 'Active Family Member');
     final effectiveGeneration = activePersona?.generation ?? 'Generation 9';
 
@@ -351,84 +360,75 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> with Sing
             // 1. TOP FULL PHOTOGRAPHY HERO HEADER (Screen 3 Reference)
             // ===============================================================
             SliverToBoxAdapter(
-              child: Container(
-                height: 380,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(32)),
-                ),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      // Full-bleed photography image of active user
-                      Image.asset(
-                        activePersona?.avatarAsset ?? sara?.effectivePortraitAsset ?? 'assets/images/user_sara_portrait.jpg',
-                        fit: BoxFit.cover,
-                        alignment: const Alignment(0, -0.35),
-                        errorBuilder: (context, error, stackTrace) => Container(
-                          color: AppColors.primary,
-                          child: Center(
-                            child: Text(
-                              effectiveDisplayName.isNotEmpty ? effectiveDisplayName[0] : '?',
-                              style: GoogleFonts.poppins(fontSize: 48, fontWeight: FontWeight.w700, color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                child: Container(
+                  height: 395,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.18),
+                        blurRadius: 18,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        // Full-bleed photography image background (replacing flat blue card)
+                        Image.asset(
+                          activePersona?.avatarAsset ?? sara?.effectivePortraitAsset ?? 'assets/images/user_sara_portrait.jpg',
+                          fit: BoxFit.cover,
+                          alignment: const Alignment(0, -0.35),
+                          errorBuilder: (context, error, stackTrace) => Container(
+                            color: AppColors.primary,
+                            child: Center(
+                              child: Text(
+                                presentationName.isNotEmpty ? presentationName[0] : 'S',
+                                style: GoogleFonts.poppins(fontSize: 48, fontWeight: FontWeight.w700, color: Colors.white),
+                              ),
                             ),
                           ),
                         ),
-                      ),
 
-                      // Multi-stop cinematic dark gradient overlay for text readability
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.black.withOpacity(0.65),
-                              Colors.black.withOpacity(0.05),
-                              Colors.black.withOpacity(0.45),
-                              Colors.black.withOpacity(0.92),
-                            ],
-                            stops: const [0.0, 0.28, 0.62, 1.0],
+                        // Cinematic gradient overlay ensuring maximum contrast and legibility
+                        Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                const Color(0xFF163E72).withOpacity(0.88),
+                                const Color(0xFF0F1E36).withOpacity(0.72),
+                                const Color(0xFF0A1526).withOpacity(0.95),
+                              ],
+                              stops: const [0.0, 0.48, 1.0],
+                            ),
                           ),
                         ),
-                      ),
 
-                      // Header Overlay UI
-                      SafeArea(
-                        bottom: false,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 16, 20, 22),
+                        // Header Card Content
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              // Top bar: Living Heritage Profile badge + Copy ID + Share + Settings
+                              // Top Bar: Living Heritage Profile + VANS-8842 + Settings
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.38),
-                                      borderRadius: BorderRadius.circular(999),
-                                      border: Border.all(color: Colors.white.withOpacity(0.22)),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        const Icon(Icons.verified_user_rounded, size: 14, color: Color(0xFF38BDF8)),
-                                        const SizedBox(width: 6),
-                                        Text(
-                                          'Living Heritage Profile',
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.white,
-                                            letterSpacing: 0.2,
-                                          ),
-                                        ),
-                                      ],
+                                  Text(
+                                    'Living Heritage Profile',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white,
+                                      letterSpacing: -0.2,
                                     ),
                                   ),
                                   Row(
@@ -443,46 +443,28 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> with Sing
                                             ),
                                           );
                                         },
-                                        borderRadius: BorderRadius.circular(999),
+                                        borderRadius: BorderRadius.circular(10),
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                                           decoration: BoxDecoration(
-                                            color: Colors.black.withOpacity(0.38),
-                                            borderRadius: BorderRadius.circular(999),
-                                            border: Border.all(color: Colors.white.withOpacity(0.22)),
+                                            color: Colors.white.withOpacity(0.18),
+                                            borderRadius: BorderRadius.circular(10),
+                                            border: Border.all(color: Colors.white.withOpacity(0.25)),
                                           ),
                                           child: Row(
+                                            mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              const Icon(Icons.copy_rounded, size: 12, color: Colors.white),
+                                              const Icon(Icons.copy_rounded, size: 13, color: Colors.white),
                                               const SizedBox(width: 5),
                                               Text(
                                                 'VANS-8842',
                                                 style: GoogleFonts.inter(
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w700,
                                                   color: Colors.white,
                                                 ),
                                               ),
                                             ],
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      InkWell(
-                                        onTap: _showInviteDialog,
-                                        borderRadius: BorderRadius.circular(999),
-                                        child: Container(
-                                          width: 36,
-                                          height: 36,
-                                          decoration: BoxDecoration(
-                                            color: Colors.black.withOpacity(0.38),
-                                            shape: BoxShape.circle,
-                                            border: Border.all(color: Colors.white.withOpacity(0.22)),
-                                          ),
-                                          child: const Icon(
-                                            Icons.share_outlined,
-                                            size: 17,
-                                            color: Colors.white,
                                           ),
                                         ),
                                       ),
@@ -494,9 +476,9 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> with Sing
                                           width: 36,
                                           height: 36,
                                           decoration: BoxDecoration(
-                                            color: Colors.black.withOpacity(0.38),
+                                            color: Colors.white.withOpacity(0.18),
                                             shape: BoxShape.circle,
-                                            border: Border.all(color: Colors.white.withOpacity(0.22)),
+                                            border: Border.all(color: Colors.white.withOpacity(0.25)),
                                           ),
                                           child: const Icon(
                                             Icons.settings_outlined,
@@ -510,80 +492,114 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> with Sing
                                 ],
                               ),
 
-                              // Bottom Section: Verified badge, Name, Generation, Roles
+                              // Center Section: Circular Avatar with Green Checkmark + Name + Title + Badges
                               Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFF22C55E),
-                                          borderRadius: BorderRadius.circular(6),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: const Color(0xFF22C55E).withOpacity(0.45),
-                                              blurRadius: 8,
-                                              offset: const Offset(0, 2),
-                                            ),
-                                          ],
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            const Icon(Icons.check_circle_rounded, size: 13, color: Colors.white),
-                                            const SizedBox(width: 4),
-                                            Text(
-                                              'VERIFIED LIVING MEMBER',
-                                              style: GoogleFonts.inter(
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w800,
-                                                color: Colors.white,
-                                                letterSpacing: 0.6,
+                                  // Circular Portrait Avatar with Green Checkmark
+                                  Center(
+                                    child: Stack(
+                                      clipBehavior: Clip.none,
+                                      children: [
+                                        Container(
+                                          width: 86,
+                                          height: 86,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(color: Colors.white, width: 3),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withOpacity(0.4),
+                                                blurRadius: 12,
+                                                offset: const Offset(0, 4),
+                                              ),
+                                            ],
+                                          ),
+                                          child: ClipOval(
+                                            child: Image.asset(
+                                              activePersona?.avatarAsset ?? sara?.effectivePortraitAsset ?? 'assets/images/user_sara_portrait.jpg',
+                                              fit: BoxFit.cover,
+                                              alignment: const Alignment(0, -0.3),
+                                              errorBuilder: (context, error, stackTrace) => Container(
+                                                color: AppColors.primary,
+                                                child: Center(
+                                                  child: Text(
+                                                    presentationName.isNotEmpty ? presentationName[0] : 'S',
+                                                    style: GoogleFonts.poppins(fontSize: 28, fontWeight: FontWeight.w700, color: Colors.white),
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                        Positioned(
+                                          bottom: 1,
+                                          right: 1,
+                                          child: Container(
+                                            width: 25,
+                                            height: 25,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFF22C55E),
+                                              shape: BoxShape.circle,
+                                              border: Border.all(color: Colors.white, width: 2.2),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black.withOpacity(0.25),
+                                                  blurRadius: 4,
+                                                ),
+                                              ],
+                                            ),
+                                            child: const Icon(Icons.check_rounded, size: 15, color: Colors.white),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  const SizedBox(height: 8),
+                                  const SizedBox(height: 10),
+
+                                  // Name
                                   Text(
-                                    effectiveDisplayName,
+                                    presentationName,
+                                    textAlign: TextAlign.center,
                                     style: GoogleFonts.poppins(
-                                      fontSize: 24,
+                                      fontSize: 22,
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
-                                      letterSpacing: -0.4,
+                                      letterSpacing: -0.3,
                                       shadows: [
                                         Shadow(
                                           color: Colors.black.withOpacity(0.8),
-                                          blurRadius: 14,
+                                          blurRadius: 12,
                                           offset: const Offset(0, 2),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: 3),
+
+                                  // Subtitle: Generation & Title
                                   Text(
                                     '$effectiveGeneration • $effectiveRoleTitle',
+                                    textAlign: TextAlign.center,
                                     style: GoogleFonts.inter(
-                                      fontSize: 13.5,
-                                      color: const Color(0xFFE2E8F0),
+                                      fontSize: 13,
+                                      color: const Color(0xFFCBD5E1),
                                       fontWeight: FontWeight.w500,
                                       shadows: [
                                         Shadow(
-                                          color: Colors.black.withOpacity(0.8),
-                                          blurRadius: 10,
-                                          offset: const Offset(0, 2),
+                                          color: Colors.black.withOpacity(0.7),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 1),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(height: 12),
-                                  // Role & Branch Glass Badges
+                                  const SizedBox(height: 10),
+
+                                  // Badges Row
                                   Wrap(
+                                    alignment: WrapAlignment.center,
                                     spacing: 8,
                                     runSpacing: 6,
                                     children: [
@@ -597,62 +613,58 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> with Sing
                                   ),
                                 ],
                               ),
+
+                              // Bottom Row: Edit Profile (White) and View in Tree (Translucent)
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 46,
+                                      child: ElevatedButton.icon(
+                                        onPressed: () => _openEditProfileSheet(context),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white,
+                                          foregroundColor: const Color(0xFF163E72),
+                                          elevation: 0,
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                                        ),
+                                        icon: const Icon(Icons.edit_outlined, size: 16, color: Color(0xFF163E72)),
+                                        label: Text(
+                                          'Edit Profile',
+                                          style: GoogleFonts.inter(fontSize: 13.5, fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 46,
+                                      child: OutlinedButton.icon(
+                                        onPressed: () => context.push('/tree'),
+                                        style: OutlinedButton.styleFrom(
+                                          backgroundColor: Colors.white.withOpacity(0.18),
+                                          foregroundColor: Colors.white,
+                                          side: BorderSide(color: Colors.white.withOpacity(0.35)),
+                                          elevation: 0,
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                                        ),
+                                        icon: const Icon(Icons.account_tree_outlined, size: 16, color: Colors.white),
+                                        label: Text(
+                                          'View in Tree',
+                                          style: GoogleFonts.inter(fontSize: 13.5, fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-
-            // Quick Action Buttons (Edit Profile • View in Tree)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: ElevatedButton.icon(
-                        onPressed: () => _openEditProfileSheet(context),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: Colors.white,
-                          elevation: 0,
-                          padding: const EdgeInsets.symmetric(vertical: 13),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                          shadowColor: AppColors.primary.withOpacity(0.3),
-                        ),
-                        icon: const Icon(Icons.edit_outlined, size: 16),
-                        label: Text(
-                          'Edit Profile',
-                          style: GoogleFonts.inter(fontSize: 13.5, fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      flex: 3,
-                      child: OutlinedButton.icon(
-                        onPressed: () => context.push('/tree'),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: AppColors.primary,
-                          side: const BorderSide(color: AppColors.border, width: 1.5),
-                          backgroundColor: Colors.white,
-                          elevation: 0,
-                          padding: const EdgeInsets.symmetric(vertical: 13),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                        ),
-                        icon: const Icon(Icons.account_tree_outlined, size: 16),
-                        label: Text(
-                          'View in Tree',
-                          style: GoogleFonts.inter(fontSize: 13.5, fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ),
@@ -695,7 +707,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> with Sing
                     Tab(text: 'Overview'),
                     Tab(text: 'Family'),
                     Tab(text: 'Archives'),
-                    Tab(text: 'Security'),
+                    Tab(text: 'Account & Privacy'),
                   ],
                 ),
               ),
@@ -1157,20 +1169,463 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> with Sing
   }
 
   // ---------------------------------------------------------------------------
-  // Tab 4: Account & Security
+  // Tab 4: Account & Privacy (Matching Image 1 Specifications)
   // ---------------------------------------------------------------------------
   Widget _buildSecurityTab(bool isAdmin) {
+    final activePersona = ref.watch(currentPersonaProvider);
+    final currentRole = ref.watch(currentUserRoleProvider);
+    final isPrimaryAdmin = currentRole == MemberRole.primaryAdmin;
+    final currentProf = ref.watch(currentProfileProvider).valueOrNull;
+
+    final presentationName = (_maidenName.isNotEmpty && !_displayName.contains(_maidenName))
+        ? '$_displayName ($_maidenName)'
+        : (_displayName.isNotEmpty ? _displayName : (activePersona?.displayName ?? 'Sara Wilson'));
+    final effectiveEmail = _email.isNotEmpty ? _email : (activePersona?.email ?? 'sara.wilson@kensingtonlegacy.org');
+
+    String roleDisplayLabel;
+    switch (currentRole) {
+      case MemberRole.primaryAdmin:
+        roleDisplayLabel = 'Role: Primary Admin (Write Authorization)';
+        break;
+      case MemberRole.branchElder:
+        roleDisplayLabel = 'Role: Branch Elder (Advisory Approval)';
+        break;
+      case MemberRole.contributor:
+        roleDisplayLabel = 'Role: Branch Contributor (Branch Write)';
+        break;
+      case MemberRole.viewer:
+        roleDisplayLabel = 'Role: Approved Member (Strict Read-Only)';
+        break;
+    }
+
     return ListView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
       children: [
-        // Account Details Card
+        // Title: Account & Privacy
+        Center(
+          child: Text(
+            'Account & Privacy',
+            style: GoogleFonts.poppins(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textPrimary,
+            ),
+          ),
+        ),
+        const SizedBox(height: 18),
+
+        // 1. Account Details Card (Image 1 Style)
+        Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: AppColors.border, width: 1.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 10,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE0F2FE),
+                  shape: BoxShape.circle,
+                  border: Border.all(color: const Color(0xFFBAE6FD), width: 1.5),
+                ),
+                child: ClipOval(
+                  child: activePersona?.avatarAsset != null
+                      ? Image.asset(activePersona!.avatarAsset!, fit: BoxFit.cover)
+                      : Center(
+                          child: Text(
+                            presentationName.isNotEmpty ? presentationName[0].toUpperCase() : 'S',
+                            style: GoogleFonts.poppins(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF0369A1),
+                            ),
+                          ),
+                        ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      presentationName,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      effectiveEmail,
+                      style: GoogleFonts.inter(
+                        fontSize: 12.5,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3.5),
+                      decoration: BoxDecoration(
+                        color: isPrimaryAdmin ? const Color(0xFFE0F2FE) : const Color(0xFFF1F5F9),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        roleDisplayLabel,
+                        style: GoogleFonts.inter(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color: isPrimaryAdmin ? const Color(0xFF0369A1) : const Color(0xFF475569),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 24),
+
+        // 2. Authorization Role Testing (Image 1 Style)
+        Text(
+          'Authorization Role Testing',
+          style: GoogleFonts.poppins(
+            fontSize: 17,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        const SizedBox(height: 10),
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.border, width: 0.8),
-            boxShadow: HeritageShadows.card,
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: AppColors.border, width: 1.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 10,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Experience Simulator',
+                style: GoogleFonts.poppins(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Switch between Primary Admin and Read-Only Viewer mode to verify that viewers cannot create, edit, or modify canonical records.',
+                style: GoogleFonts.inter(
+                  fontSize: 12.5,
+                  color: AppColors.textSecondary,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 46,
+                      child: OutlinedButton(
+                        onPressed: () async {
+                          final authRepo = ref.read(authRepositoryProvider);
+                          await authRepo.switchPersona('p_guest_relative');
+                          ref.read(currentUserRoleProvider.notifier).setRole(MemberRole.viewer);
+                          ref.read(userBranchPersonIdProvider.notifier).setPersonId('p_guest_relative');
+                          if (mounted) {
+                            setState(() {
+                              _displayName = 'Guest Relative (Explorer)';
+                              _maidenName = '';
+                              _email = 'guest.relative@clan.heritage';
+                            });
+                          }
+                          ref.invalidate(currentProfileProvider);
+                          ref.invalidate(currentMembershipProvider);
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Switched to Read-Only Viewer mode!'),
+                              backgroundColor: AppColors.primary,
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        },
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: !isPrimaryAdmin ? const Color(0xFF1E4E79) : const Color(0xFFF8FAFC),
+                          foregroundColor: !isPrimaryAdmin ? Colors.white : AppColors.textPrimary,
+                          side: BorderSide(
+                            color: !isPrimaryAdmin ? const Color(0xFF1E4E79) : AppColors.border,
+                            width: !isPrimaryAdmin ? 1.8 : 1.0,
+                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        ),
+                        child: Text(
+                          'Viewer Mode',
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: SizedBox(
+                      height: 46,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final authRepo = ref.read(authRepositoryProvider);
+                          await authRepo.switchPersona('p_gen9_sara');
+                          ref.read(currentUserRoleProvider.notifier).setRole(MemberRole.primaryAdmin);
+                          ref.read(userBranchPersonIdProvider.notifier).setPersonId('p_gen9_sara');
+                          if (mounted) {
+                            setState(() {
+                              _displayName = 'Sara Wilson';
+                              _maidenName = 'Kensington';
+                              _email = 'sara.wilson@kensingtonlegacy.org';
+                            });
+                          }
+                          ref.invalidate(currentProfileProvider);
+                          ref.invalidate(currentMembershipProvider);
+                          if (!mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Switched to Primary Admin mode!'),
+                              backgroundColor: AppColors.primary,
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isPrimaryAdmin ? const Color(0xFF1E4E79) : const Color(0xFFF8FAFC),
+                          foregroundColor: isPrimaryAdmin ? Colors.white : AppColors.textPrimary,
+                          elevation: 0,
+                          side: BorderSide(
+                            color: isPrimaryAdmin ? const Color(0xFF1E4E79) : AppColors.border,
+                            width: isPrimaryAdmin ? 1.8 : 1.0,
+                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        ),
+                        child: Text(
+                          'Admin Mode',
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 20),
+
+        // 3. Prominent Red Sign Out Button (Image 1 Style)
+        SizedBox(
+          width: double.infinity,
+          height: 50,
+          child: ElevatedButton.icon(
+            onPressed: () async {
+              await ref.read(authRepositoryProvider).signOut();
+              ref.invalidate(currentProfileProvider);
+              ref.invalidate(currentMembershipProvider);
+              if (!mounted) return;
+              context.go('/login');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFDC2626),
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            ),
+            icon: const Icon(Icons.logout_rounded, size: 18),
+            label: Text(
+              'Sign Out & Clear Secure Session',
+              style: GoogleFonts.inter(
+                fontSize: 14.5,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 28),
+
+        // 4. Multi-User Persona Switcher (Extended Evaluation Catalog)
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: AppColors.border, width: 1.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 10,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Complete Persona Switcher',
+                style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Select any family persona to evaluate tree viewing, contributor branching, and admin abilities.',
+                style: GoogleFonts.inter(fontSize: 12, color: AppColors.textSecondary),
+              ),
+              const SizedBox(height: 14),
+              ...() {
+                return ref.watch(authRepositoryProvider).personas.map((persona) {
+                  final isCurrent = (currentProf?.id == persona.id) || (activePersona?.id == persona.id);
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: InkWell(
+                      onTap: () async {
+                        final authRepo = ref.read(authRepositoryProvider);
+                        await authRepo.switchPersona(persona.id);
+                        ref.read(currentUserRoleProvider.notifier).setRole(persona.role);
+                        ref.read(userBranchPersonIdProvider.notifier).setPersonId(persona.id);
+                        if (mounted) {
+                          setState(() {
+                            _displayName = persona.displayName;
+                            _maidenName = (persona.id == 'p_gen9_sara') ? 'Kensington' : '';
+                            _email = persona.email;
+                          });
+                        }
+                        ref.invalidate(currentProfileProvider);
+                        ref.invalidate(currentMembershipProvider);
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Switched to ${persona.displayName} (${persona.roleTitle})'),
+                            backgroundColor: AppColors.primary,
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: isCurrent ? AppColors.lightSage : Colors.grey.shade50,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: isCurrent ? AppColors.primary : AppColors.border,
+                            width: isCurrent ? 1.5 : 0.8,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 36,
+                              height: 36,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.paleSage,
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(999),
+                                child: persona.avatarAsset != null
+                                    ? Image.asset(persona.avatarAsset!, fit: BoxFit.cover)
+                                    : Center(
+                                        child: Text(
+                                          persona.displayName.isNotEmpty ? persona.displayName[0] : '?',
+                                          style: GoogleFonts.poppins(fontWeight: FontWeight.w700, color: AppColors.primary),
+                                        ),
+                                      ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    persona.displayName,
+                                    style: GoogleFonts.poppins(fontSize: 13.5, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
+                                  ),
+                                  Text(
+                                    '${persona.roleTitle} • ${persona.generation}',
+                                    style: GoogleFonts.inter(fontSize: 11, color: AppColors.textSecondary),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (isCurrent)
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text(
+                                  'ACTIVE',
+                                  style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.white),
+                                ),
+                              )
+                            else
+                              const Icon(Icons.arrow_forward_ios_rounded, size: 13, color: AppColors.textSecondary),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList();
+              }(),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 20),
+
+        // 5. Account Credentials & Contact
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: AppColors.border, width: 1.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 10,
+                offset: const Offset(0, 3),
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1189,16 +1644,22 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> with Sing
           ),
         ),
 
-        const SizedBox(height: 18),
+        const SizedBox(height: 20),
 
-        // Notification Preferences
+        // 6. Notification Preferences
         Container(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.border, width: 0.8),
-            boxShadow: HeritageShadows.card,
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: AppColors.border, width: 1.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 10,
+                offset: const Offset(0, 3),
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1248,16 +1709,22 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> with Sing
           ),
         ),
 
-        const SizedBox(height: 18),
+        const SizedBox(height: 20),
 
-        // Data Export & Sharing Card
+        // 7. Data Management & Lineage Export
         Container(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.border, width: 0.8),
-            boxShadow: HeritageShadows.card,
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: AppColors.border, width: 1.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 10,
+                offset: const Offset(0, 3),
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1299,157 +1766,6 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> with Sing
             ],
           ),
         ),
-
-        const SizedBox(height: 18),
-
-        // Role Simulator
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.border, width: 0.8),
-            boxShadow: HeritageShadows.card,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Multi-User Persona Switcher',
-                style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Seamlessly switch between family member accounts to evaluate role-based views and permissions.',
-                style: GoogleFonts.inter(fontSize: 12, color: AppColors.textSecondary),
-              ),
-              const SizedBox(height: 14),
-              ...() {
-                final currentProf = ref.watch(currentProfileProvider).valueOrNull;
-                final activePers = ref.watch(currentPersonaProvider);
-                return ref.watch(authRepositoryProvider).personas.map((persona) {
-                  final isCurrent = (currentProf?.id == persona.id) || (activePers?.id == persona.id);
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: InkWell(
-                      onTap: () async {
-                        final authRepo = ref.read(authRepositoryProvider);
-                        await authRepo.switchPersona(persona.id);
-                        ref.read(currentUserRoleProvider.notifier).setRole(persona.role);
-                        ref.read(userBranchPersonIdProvider.notifier).setPersonId(persona.id);
-                        if (mounted) {
-                          setState(() {
-                            _displayName = persona.displayName;
-                            _email = persona.email;
-                          });
-                        }
-                        ref.invalidate(currentProfileProvider);
-                        ref.invalidate(currentMembershipProvider);
-                        if (!mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Switched to ${persona.displayName} (${persona.roleTitle})'),
-                            backgroundColor: AppColors.primary,
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                      },
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: isCurrent ? AppColors.lightSage : Colors.grey.shade50,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: isCurrent ? AppColors.primary : AppColors.border,
-                          width: isCurrent ? 1.5 : 0.8,
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 36,
-                            height: 36,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.paleSage,
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(999),
-                              child: persona.avatarAsset != null
-                                  ? Image.asset(persona.avatarAsset!, fit: BoxFit.cover)
-                                  : Center(
-                                      child: Text(
-                                        persona.displayName.isNotEmpty ? persona.displayName[0] : '?',
-                                        style: GoogleFonts.poppins(fontWeight: FontWeight.w700, color: AppColors.primary),
-                                      ),
-                                    ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  persona.displayName,
-                                  style: GoogleFonts.poppins(fontSize: 13.5, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
-                                ),
-                                Text(
-                                  '${persona.roleTitle} • ${persona.generation}',
-                                  style: GoogleFonts.inter(fontSize: 11, color: AppColors.textSecondary),
-                                ),
-                              ],
-                            ),
-                          ),
-                          if (isCurrent)
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                              decoration: BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                'ACTIVE',
-                                style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.white),
-                              ),
-                            )
-                          else
-                            const Icon(Icons.arrow_forward_ios_rounded, size: 13, color: AppColors.textSecondary),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              }).toList();
-            }(),
-            ],
-          ),
-        ),
-
-        const SizedBox(height: 18),
-
-        // Sign Out Button
-        ElevatedButton.icon(
-          onPressed: () async {
-            await ref.read(authRepositoryProvider).signOut();
-            ref.invalidate(currentProfileProvider);
-            ref.invalidate(currentMembershipProvider);
-            if (!mounted) return;
-            context.go('/login');
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFEF4444),
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-          ),
-          icon: const Icon(Icons.logout_rounded, size: 18),
-          label: Text('Sign Out & Lock Vault Session', style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600)),
-        ),
-
-        const SizedBox(height: 32),
       ],
     );
   }

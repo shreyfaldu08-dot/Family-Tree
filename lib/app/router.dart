@@ -166,7 +166,7 @@ final appRouter = GoRouter(
             ),
             GoRoute(
               path: '/settings',
-              builder: (context, state) => const UserProfileScreen(),
+              builder: (context, state) => const UserProfileScreen(initialTabIndex: 3),
             ),
           ],
         ),

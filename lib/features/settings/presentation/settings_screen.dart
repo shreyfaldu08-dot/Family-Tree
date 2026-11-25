@@ -6,6 +6,6 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const UserProfileScreen();
+    return const UserProfileScreen(initialTabIndex: 3);
   }
 }
